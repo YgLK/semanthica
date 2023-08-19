@@ -15,8 +15,6 @@ services:
     restart: always
 
 
-
-
 networks:
   semanthica_net:
     driver: bridge

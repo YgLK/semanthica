@@ -65,11 +65,18 @@ class UserUpdate(BaseModel):
 
 class OderBase(BaseModel):
     user_id: int
-    order_status: Optional[OrderStatus] = None
+    status: Optional[OrderStatus] = None
+
+class OrderCreate(OderBase):
+    pass
+
+class OrderOut(OderBase):
+    id: int
     created_at: PastDatetime
 
-class Order(OderBase):
-    id: int
+class OrderUpdate(BaseModel):
+    user_id: Optional[int] = None
+    status: Optional[OrderStatus] = None
 
 
 class OrderRecord(BaseModel):

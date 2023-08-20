@@ -4,6 +4,7 @@ from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 
 from .database import Base
+from .schemas import OrderStatus
 
 
 class User(Base):
@@ -26,6 +27,7 @@ class User(Base):
     last_name = Column(String, index=True)
     phone_number = Column(String, index=True)
     addresses = relationship("Address", backref="users")
+    orders = relationship("Order", backref="users")
 
 
 class Address(Base):
@@ -38,6 +40,20 @@ class Address(Base):
     street = Column(String, index=True, nullable=False)
     city = Column(String, index=True, nullable=False)
     postal_code = Column(String, index=True, nullable=False)
+    created_at = Column(
+        TIMESTAMP(timezone=True),
+        index=True,
+        nullable=False,
+        server_default=text("NOW()"),
+    )
+
+
+class Order(Base):
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    status = Column(String, index=True, nullable=False, default=OrderStatus.PENDING)
     created_at = Column(
         TIMESTAMP(timezone=True),
         index=True,

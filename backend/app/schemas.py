@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, PastDatetime
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -17,6 +17,26 @@ class OrderStatus(str, Enum):
     CANCELLED = "cancelled"
 
 
+class AddressBase(BaseModel):
+    user_id: int
+    street: str
+    city: str
+    postal_code: str
+
+class AddressCreate(AddressBase):
+    pass
+
+class AddressOut(AddressBase):
+    id: int
+    created_at: PastDatetime
+
+class AddressUpdate(BaseModel):
+    user_id : Optional[int] = None
+    street: Optional[str] = None
+    city: Optional[str] = None
+    postal_code: Optional[str] = None
+
+
 class UserBase(BaseModel):
     username: str
     email: EmailStr
@@ -31,6 +51,7 @@ class UserCreate(UserBase):
 class UserOut(UserBase):
     id: int
     created_at: PastDatetime
+    addresses: Optional[List[AddressOut]] = None
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
@@ -40,18 +61,6 @@ class UserUpdate(BaseModel):
     last_name: Optional[str] = None
     role: Optional[Role] = None
     phone_number: Optional[PhoneNumber] = None
-
-
-class AddressBase(BaseModel):
-    user_id: int
-    street: str
-    city: str
-    state: str
-    postal_code: str
-    created_at: PastDatetime
-
-class Address(AddressBase):
-    id: int
 
 
 class OderBase(BaseModel):

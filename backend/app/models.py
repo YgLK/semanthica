@@ -25,7 +25,7 @@ class User(Base):
     first_name = Column(String, index=True)
     last_name = Column(String, index=True)
     phone_number = Column(String, index=True)
-    addresses = relationship("Address", backref="user")
+    addresses = relationship("Address", backref="users")
 
 
 class Address(Base):

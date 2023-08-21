@@ -28,7 +28,7 @@ class User(Base):
     phone_number = Column(String, index=True)
     addresses = relationship("Address", backref="users")
     orders = relationship("Order", back_populates="user")
-    reviews = relationship("Review", backref="user")
+    reviews = relationship("Review", back_populates="user")
 
 
 class Address(Base):
@@ -48,6 +48,7 @@ class Address(Base):
         server_default=text("NOW()"),
     )
 
+
 class Order(Base):
     __tablename__ = "orders"
 
@@ -61,6 +62,20 @@ class Order(Base):
         server_default=text("NOW()"),
     )
     user = relationship("User", back_populates="orders")
+    order_records = relationship("OrderRecord", back_populates="order")
+
+
+class OrderRecord(Base):
+    __tablename__ = "order_records"
+
+    order_id = Column(
+        Integer, ForeignKey("orders.id", ondelete="CASCADE"), primary_key=True
+    )
+    item_id = Column(Integer, ForeignKey("items.id"), primary_key=True)
+    quantity = Column(Integer)
+    order = relationship("Order", back_populates="order_records")
+    item = relationship("Item", backref="order_records")
+
 
 class Item(Base):
     __tablename__ = "items"
@@ -81,6 +96,7 @@ class Item(Base):
     )
     reviews = relationship("Review", back_populates="item")
 
+
 class Review(Base):
     __tablename__ = "reviews"
 
@@ -93,7 +109,7 @@ class Review(Base):
         TIMESTAMP(timezone=True),
         index=True,
         nullable=False,
-        server_default=text("NOW()")
+        server_default=text("NOW()"),
     )
-    item = relationship("Item", back_populates="reviews") 
-    user = relationship("User", back_populates="reviews") 
+    item = relationship("Item", back_populates="reviews")
+    user = relationship("User", back_populates="reviews")

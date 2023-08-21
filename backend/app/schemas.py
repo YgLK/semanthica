@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, EmailStr, Field, PastDatetime
+from pydantic import BaseModel, EmailStr, Field, PastDatetime, conint
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 
@@ -99,7 +99,7 @@ class ReviewCreate(ReviewBase):
     pass
 
 class ReviewUpdate(BaseModel):
-    rating: Optional[int] = Field(None, ge=1, le=5)  # Restrict to integer values between 1 and 5
+    rating: Optional[int] = Field(None, ge=1, le=5)
     comment: Optional[str] = None
 
 class ItemBase(BaseModel):
@@ -127,3 +127,19 @@ class ItemUpdate(BaseModel):
     image_url: Optional[str] = None
     stock_quantity: Optional[int] = None
     price: Optional[float] = None
+
+class OrderRecordBase(BaseModel):
+    order_id: int
+    item_id: int
+    quantity: conint(gt=0)
+
+class OrderRecordCreate(OrderRecordBase):
+    pass
+
+class OrderRecordOut(OrderRecordBase):
+    pass
+
+class OrderRecordUpdate(BaseModel):
+    order_id: Optional[int] = None
+    item_id: Optional[int] = None
+    quantity: Optional[conint(gt=0)] = None

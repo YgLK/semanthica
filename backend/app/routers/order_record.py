@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
@@ -12,9 +12,56 @@ router = APIRouter(
 )
 
 
+def find_order_record(db: Session, order_id: int, item_id: int):
+    order_record = (
+        db.query(models.OrderRecord)
+        .filter(
+            models.OrderRecord.order_id == order_id,
+            models.OrderRecord.item_id == item_id,
+        )
+        .first()
+    )
+    if not order_record:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Order record not found"
+        )
+    return order_record
+
+
+def find_item(db: Session, item_id: int):
+    item = db.query(models.Item).filter(models.Item.id == item_id).first()
+    if not item:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
+        )
+    return item
+
+
+def find_order(db: Session, order_id: int):
+    order = db.query(models.Order).filter(models.Order.id == order_id).first()
+    if not order:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
+        )
+    return order
+
+
+def is_order_record_duplicated(
+    db: Session, order_id: int, item_id: int
+) -> Optional[HTTPException]:
+    try:
+        find_order_record(db, order_id, item_id)
+    except HTTPException as e:
+        if e.status_code != status.HTTP_404_NOT_FOUND:
+            raise e  # Reraise if there's another error
+        return False  # No duplicate, continue with order record creation
+    else:
+        # found duplicate
+        return True
+
+
 @router.get(
-    "/",
-    status_code=status.HTTP_200_OK, response_model=List[schemas.OrderRecordOut]
+    "/", status_code=status.HTTP_200_OK, response_model=List[schemas.OrderRecordOut]
 )
 async def get_all_order_records(db: Session = Depends(get_db)):
     return db.query(models.OrderRecord).all()
@@ -26,26 +73,16 @@ async def get_all_order_records(db: Session = Depends(get_db)):
 async def create_order_record(
     record: schemas.OrderRecordCreate, db: Session = Depends(get_db)
 ):
-    item = db.query(models.Item).filter(models.Item.id == record.item_id).first()
-    if not item:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
-        )
-    order = db.query(models.Order).filter(models.Order.id == record.order_id).first()
-    if not order:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
-        )
+    # check if the item exists
+    item = find_item(db, record.item_id)
+    # check if the order exists
+    find_order(db, record.order_id)
 
     # check if the order record already exists
-    duplicate_order_record = db.query(models.OrderRecord).filter(
-        models.OrderRecord.item_id == record.item_id,
-        models.OrderRecord.order_id == record.order_id
-    ).first()
-    if duplicate_order_record:
+    if is_order_record_duplicated(db, record.order_id, record.item_id):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="An order record with the same item_id and order_id already exists."
+            detail="An order record with the same item_id and order_id already exists.",
         )
 
     # check the available quantity of the item
@@ -66,19 +103,7 @@ async def create_order_record(
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=schemas.OrderRecordOut)
 async def get_order_record(order_id: int, item_id: int, db: Session = Depends(get_db)):
-    order_record = (
-        db.query(models.OrderRecord)
-        .filter(
-            models.OrderRecord.order_id == order_id,
-            models.OrderRecord.item_id == item_id,
-        )
-        .first()
-    )
-    if not order_record:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order record not found"
-        )
-    return order_record
+    return find_order_record(db, order_id, item_id)
 
 
 @router.put(
@@ -92,38 +117,12 @@ async def update_order_record(
     record_update: schemas.OrderRecordUpdate,
     db: Session = Depends(get_db),
 ):
-    order_record = (
-        db.query(models.OrderRecord)
-        .filter(
-            models.OrderRecord.order_id == order_id,
-            models.OrderRecord.item_id == item_id,
-        )
-        .first()
-    )
-
-    if not order_record:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order record not found"
-        )
-
-    item = db.query(models.Item).filter(models.Item.id == order_record.item_id).first()
-
-    if not item:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
-        )
+    order_record = find_order_record(db, order_id, item_id)
+    item = find_item(db, order_record.item_id)
 
     # change item of the order record
     if record_update.item_id:
-        target_item = (
-            db.query(models.Item)
-            .filter(models.Item.id == record_update.item_id)
-            .first()
-        )
-        if not target_item:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
-            )
+        target_item = find_item(db, record_update.item_id)
 
         item.stock_quantity += order_record.quantity
         order_record.item_id = record_update.item_id
@@ -142,13 +141,15 @@ async def update_order_record(
     # change only the quantity of the order record
     elif record_update.quantity:
         item.stock_quantity += order_record.quantity
+        # for logging
+        curr_available_items = item.stock_quantity
         item.stock_quantity -= record_update.quantity
 
         if item.stock_quantity < 0:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Quantity is greater than the available quantity. "
-                + f"Available: {item.stock_quantity}",
+                + f"Available: {curr_available_items}",
             )
 
         order_record.quantity = record_update.quantity
@@ -158,15 +159,8 @@ async def update_order_record(
         record_update.order_id is not None
         and record_update.order_id != order_record.order_id
     ):
-        order = (
-            db.query(models.Order)
-            .filter(models.Order.id == record_update.order_id)
-            .first()
-        )
-        if not order:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
-            )
+        # check if the order exists
+        _ = find_order(db, record_update.order_id)
         order_record.order_id = record_update.order_id
 
     db.commit()
@@ -178,25 +172,9 @@ async def update_order_record(
 async def delete_order_record(
     order_id: int, item_id: int, db: Session = Depends(get_db)
 ):
-    order_record = (
-        db.query(models.OrderRecord)
-        .filter(
-            models.OrderRecord.order_id == order_id,
-            models.OrderRecord.item_id == item_id,
-        )
-        .first()
-    )
-    if not order_record:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Order record not found"
-        )
-
+    order_record = find_order_record(db, order_id, item_id)
     # return the quantity of the item to the stock
-    item = db.query(models.Item).filter(models.Item.id == order_record.item_id).first()
-    if not item:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
-        )
+    item = find_item(db, order_record.item_id)
     item.stock_quantity += order_record.quantity
 
     db.delete(order_record)

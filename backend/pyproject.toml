@@ -1,0 +1,8 @@
+[tool.ruff]
+select = ["E", "F", "W", "D4", "PT", "PL", 
+    "C4", "SIM", "TCH", "DTZ", "ICN", "PIE", 
+    "ARG", "PTH", "I", "N", "PD", "Q", "RET",
+    "PD", "NPY", "PERF", "RUF", ]
+ignore = []
+show-fixes = true
+target-version = "py39"

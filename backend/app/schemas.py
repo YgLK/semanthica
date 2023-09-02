@@ -10,6 +10,7 @@ class Role(str, Enum):
     MODERATOR = "moderator"
     ADMIN = "admin"
 
+
 class OrderStatus(str, Enum):
     PENDING = "pending"
     PROCESSING = "processing"
@@ -23,15 +24,18 @@ class AddressBase(BaseModel):
     city: str
     postal_code: str
 
+
 class AddressCreate(AddressBase):
     pass
+
 
 class AddressOut(AddressBase):
     id: int
     created_at: PastDatetime
 
+
 class AddressUpdate(BaseModel):
-    user_id : Optional[int] = None
+    user_id: Optional[int] = None
     street: Optional[str] = None
     city: Optional[str] = None
     postal_code: Optional[str] = None
@@ -45,13 +49,16 @@ class UserBase(BaseModel):
     role: Optional[Role] = None
     phone_number: Optional[PhoneNumber] = None
 
+
 class UserCreate(UserBase):
     password: str
+
 
 class UserOut(UserBase):
     id: int
     created_at: PastDatetime
     addresses: Optional[List[AddressOut]] = None
+
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
@@ -67,12 +74,15 @@ class OderBase(BaseModel):
     user_id: int
     status: Optional[OrderStatus] = None
 
+
 class OrderCreate(OderBase):
     pass
+
 
 class OrderOut(OderBase):
     id: int
     created_at: PastDatetime
+
 
 class OrderUpdate(BaseModel):
     user_id: Optional[int] = None
@@ -88,19 +98,23 @@ class OrderRecord(BaseModel):
 class ReviewBase(BaseModel):
     user_id: int
     item_id: int
-    rating: int = Field(None, ge=1, le=5) # Restrict to integer values between 1 and 5
+    rating: int = Field(None, ge=1, le=5)  # Restrict to integer values between 1 and 5
     comment: str
+
 
 class ReviewOut(ReviewBase):
     id: int
     created_at: PastDatetime
 
+
 class ReviewCreate(ReviewBase):
     pass
+
 
 class ReviewUpdate(BaseModel):
     rating: Optional[int] = Field(None, ge=1, le=5)
     comment: Optional[str] = None
+
 
 class ItemBase(BaseModel):
     name: str
@@ -111,13 +125,16 @@ class ItemBase(BaseModel):
     stock_quantity: int
     price: float
 
+
 class ItemOut(ItemBase):
     id: int
     created_at: PastDatetime
     reviews: Optional[List[ReviewOut]] = None
 
+
 class ItemCreate(ItemBase):
     pass
+
 
 class ItemUpdate(BaseModel):
     name: Optional[str] = None
@@ -128,16 +145,20 @@ class ItemUpdate(BaseModel):
     stock_quantity: Optional[int] = None
     price: Optional[float] = None
 
+
 class OrderRecordBase(BaseModel):
     order_id: int
     item_id: int
     quantity: conint(gt=0)
 
+
 class OrderRecordCreate(OrderRecordBase):
     pass
 
+
 class OrderRecordOut(OrderRecordBase):
     pass
+
 
 class OrderRecordUpdate(BaseModel):
     order_id: Optional[int] = None

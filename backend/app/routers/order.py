@@ -37,6 +37,8 @@ async def get_order(order_id: int, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Order not found"
         )
+    # access the user of the order
+    # print(order.user.email)
     return order
 
 

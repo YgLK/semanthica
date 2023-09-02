@@ -163,3 +163,5 @@ cython_debug/
 
 # db files
 **/relational/data
+/backend/db/
+/backend/TODO.md

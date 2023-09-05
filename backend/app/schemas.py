@@ -164,3 +164,25 @@ class OrderRecordUpdate(BaseModel):
     order_id: Optional[int] = None
     item_id: Optional[int] = None
     quantity: Optional[conint(gt=0)] = None
+
+
+class SearchQuery(BaseModel):
+    top_k: Optional[int]
+
+
+class SearchQueryText(SearchQuery):
+    text_query: str
+
+
+class SearchQueryImage(SearchQuery):
+    image_url: Optional[str]
+
+
+class ResponseItem(BaseModel):
+    item_id: int
+    score: float
+    content: ItemOut
+
+
+class SearchResponse(BaseModel):
+    items: List[ResponseItem]

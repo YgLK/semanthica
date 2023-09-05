@@ -48,7 +48,7 @@ def find_order(db: Session, order_id: int):
 
 def is_order_record_duplicated(
     db: Session, order_id: int, item_id: int
-) -> Optional[HTTPException]:
+) -> bool:
     try:
         find_order_record(db, order_id, item_id)
     except HTTPException as e:

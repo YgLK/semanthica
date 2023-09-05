@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from .. import models, schemas
 from ..database import get_db
+from ..semantic_search import vector_client, QDRANT_COLLECTION_NAME
 
 router = APIRouter(
     prefix="/items",
@@ -20,6 +21,10 @@ async def create_item(item: schemas.ItemCreate, db: Session = Depends(get_db)):
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
+
+    # add item to  vector db
+    _ = vector_client.index_item(QDRANT_COLLECTION_NAME, new_item.id, new_item.name, new_item.image_url)
+
     return new_item
 
 
@@ -39,9 +44,9 @@ async def get_item(item_id: int, db: Session = Depends(get_db)):
     "/{item_id}", status_code=status.HTTP_200_OK, response_model=schemas.ItemOut
 )
 async def update_item(
-    item_id: int,
-    item_updated: schemas.ItemUpdate,
-    db: Session = Depends(get_db),
+        item_id: int,
+        item_updated: schemas.ItemUpdate,
+        db: Session = Depends(get_db),
 ):
     item = db.query(models.Item).filter(models.Item.id == item_id).first()
 
@@ -54,8 +59,16 @@ async def update_item(
         if value is not None:
             setattr(item, attr, value)
 
+    # update vector db
+    if item_updated.name is not None or item_updated.image_url is not None:
+        name = item_updated.name if item_updated.name is not None else item.name
+        image_url = item_updated.image_url if item_updated.image_url is not None else item.image_url
+        _ = vector_client.index_item(QDRANT_COLLECTION_NAME, item.id, name, image_url)
+
+    # commit after vector db update to ensure consistency
     db.commit()
     db.refresh(item)
+
     return item
 
 
@@ -66,6 +79,10 @@ async def delete_item(item_id: int, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Item not found"
         )
+
+    # delete from vector db
+    _ = vector_client.delete_item(QDRANT_COLLECTION_NAME, item.id)
+
     db.delete(item)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)

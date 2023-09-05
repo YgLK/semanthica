@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from . import models
 from .database import engine
-from .routers import address, item, order, order_record, review, user
+from .routers import address, item, order, order_record, review, user, search
 
 # create tables
 models.Base.metadata.create_all(bind=engine)
@@ -15,6 +15,7 @@ app.include_router(order.router)
 app.include_router(item.router)
 app.include_router(review.router)
 app.include_router(order_record.router)
+app.include_router(search.router)
 
 
 @app.get("/")

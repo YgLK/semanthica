@@ -3,6 +3,7 @@ from typing import List, Union
 from sentence_transformers import SentenceTransformer
 from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.applications.resnet50 import preprocess_input
+from ..utils import ImageTool
 
 
 class TextEmbeddingGenerator:
@@ -18,7 +19,7 @@ class TextEmbeddingGenerator:
             text (Union[str, List[str]]): Input text or a list of texts.
 
         Returns:
-            np.ndarray: Text embedding as a NumPy array.
+            np.ndarray: Text embedding.
         """
         return self.model.encode(text)
 
@@ -30,7 +31,7 @@ class TextEmbeddingGenerator:
             texts (List[str]): List of input texts.
 
         Returns:
-            List[np.ndarray]: List of text embeddings as NumPy arrays.
+            List[np.ndarray]: List of text embeddings.
         """
         return self.model.encode(texts)
 
@@ -40,7 +41,7 @@ class ImageEmbeddingGenerator:
         # vec dim = 2048 - it might need to be reduced to save memory
         self.model = ResNet50(weights="imagenet", include_top=False, pooling='avg')
 
-    def generate_embedding(self, image: np.ndarray):
+    def generate_embedding_from_image_data(self, image: np.ndarray):
         """
         Generate an image embedding for a single image.
 
@@ -69,3 +70,21 @@ class ImageEmbeddingGenerator:
         preprocessed_images = [preprocess_input(image) for image in images]
         image_embeddings = self.model.predict(np.array(preprocessed_images))
         return image_embeddings
+
+    def generate_embedding_from_image_url(self, image_url: str):
+        """
+        Generate an image embedding for a single image URL.
+        """
+        # Load the image
+        image = ImageTool.load_image_from_url(image_url)
+        # Preprocess the image and compute the embedding
+        return self.generate_embedding_from_image_data(image)
+
+    def generate_embedding_from_image_url_batch(self, image_urls: List[str]):
+        """
+        Generate image embeddings for a batch of image URLs.
+        """
+        # Load the images
+        images = [ImageTool.load_image_from_url(image_url) for image_url in image_urls]
+        # Preprocess all images and compute the embeddings
+        return self.generate_embeddings_batch(images)

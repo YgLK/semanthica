@@ -1,12 +1,8 @@
-from io import BytesIO
-
-import PIL.ImageShow
-import cv2
 import urllib.request
-from passlib.context import CryptContext
-import requests
+
+import cv2
 import numpy as np
-from PIL import Image
+from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

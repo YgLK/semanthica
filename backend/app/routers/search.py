@@ -50,7 +50,7 @@ async def search_text(search_request: schemas.SearchQueryText, db: Session = Dep
 )
 async def search_image(search_request: schemas.SearchQueryImage, db: Session = Depends(get_db)):
     query_image = ImageTool.load_image_from_url(search_request.image_url)
-    query_embedding = image_embedding_generator.generate_embedding(query_image)
+    query_embedding = image_embedding_generator.generate_embedding_from_image_data(query_image)
     res_items = vector_client.search(
         collection_name=QDRANT_COLLECTION_NAME,
         query_vector=query_embedding,
@@ -59,7 +59,7 @@ async def search_image(search_request: schemas.SearchQueryImage, db: Session = D
     )
 
     for res_item in res_items:
-        item = get_item(db, res_item["id"])
+        item = get_item(db, res_item["item_id"])
         res_item["content"] = item.__dict__
 
     return schemas.SearchResponse(items=res_items)

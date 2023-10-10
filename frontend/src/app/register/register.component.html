@@ -1,0 +1,51 @@
+<div class="registerWrapper">
+  <h1>Register</h1>
+  <form class="form-group" [formGroup]="registerForm" (ngSubmit)="register()">
+    <!--  username -->
+    <div class="form-group" [ngClass]="{'error': !validateUsername()}">
+      <label for="username">Username</label>
+      <em *ngIf="!validateUsername()">Required</em>
+      <input type="text" class="form-control" formControlName="username"  id="username" placeholder="Your username" required>
+    </div>
+    <!--    password -->
+    <div class="form-group" [ngClass]="{'error': !validatePassword()}">
+      <label for="password">Password</label>
+      <em *ngIf="!validatePassword()">Required</em>
+      <input type="text" class="form-control" formControlName="password" id="password" placeholder="Password" required>
+    </div>
+    <!-- first name -->
+    <div class="form-group" [ngClass]="{'error': !validateFirstName()}">
+      <label for="firstName">First name</label>
+      <em *ngIf="!validateFirstName()">Required</em>
+      <input type="text" class="form-control" formControlName="firstName" id="firstName" placeholder="First name" required>
+    </div>
+    <!-- last name -->
+    <div class="form-group" [ngClass]="{'error': !validateLastName()}">
+      <label for="lastName">Last name</label>
+      <em *ngIf="!validateLastName()">Required</em>
+      <input type="text" class="form-control" formControlName="lastName" id="lastName" placeholder="Last name" required>
+    </div>
+    <!-- email -->
+    <div class="form-group" [ngClass]="{'error': !validateEmail()}">
+      <label for="email">Email</label>
+      <em *ngIf="!validateEmail()">Required</em>
+      <input type="text" class="form-control" formControlName="email" id="email" placeholder="Email" required>
+    </div>
+    <!-- phone -->
+    <div class="form-group" [ngClass]="{'error': !validatePhone()}">
+      <label for="phone">Phone number</label>
+      <em *ngIf="!validatePhone()">Required</em>
+      <input type="text" class="form-control" formControlName="phone" id="phone" placeholder="Phone number" required>
+    </div>
+    <!-- address -->
+    <div class="form-group" [ngClass]="{'error': !validateAddress()}">
+      <label for="address">Address</label>
+      <em *ngIf="!validateAddress()">Required</em>
+      <input type="text" class="form-control" formControlName="address" id="address" placeholder="Address" required>
+    </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!inputValid()">REGISTER</button>
+      <button mat-raised-button color="basic" (click)="this.router.navigate(['/login']);">BACK</button>
+    </div>
+  </form>
+</div>

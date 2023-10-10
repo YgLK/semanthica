@@ -1,0 +1,58 @@
+<h2>Add new dish to the menu!</h2>
+
+<form class="form-group" [formGroup]="dishForm" (ngSubmit)="addNewDish(dishForm.value)">
+  <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
+    <strong> Success!</strong> Dish has been added to the menu.
+    <button (click)="isSubmitted=false" type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin: 0 auto">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!--  DISH NAME -->
+  <div [ngClass]="{'error': !validateDishName()}">
+    <em *ngIf="!validateDishName()">Required</em>
+    <label for="dishName">Name</label>
+    <input type="text" class="form-control" formControlName="name"  id="dishName" placeholder="e.g. Pizza" required>
+  </div>
+  <!--  CUISINE -->
+  <label for="cuisine">Cuisine</label>
+  <select class="form-control" formControlName="cuisine" [(ngModel)]='cuisineSelect' id="cuisine"  required>
+    <option *ngFor="let cuis of cuisine"  [value]="cuis">{{cuis}}</option>
+  </select>
+  <!--  CATEGORY -->
+  <label for="category">Category</label>
+  <select class="form-control" formControlName="category" [(ngModel)]='categorySelect' id="category" required>
+    <option *ngFor="let cat of category" [value]="cat">{{cat}}</option>
+  </select>
+  <!--  INGREDIENTS -->
+  <div [ngClass]="{'error': !validateIngredients()}">
+    <em *ngIf="!validateIngredients()">Required</em>
+    <label for="ingredients">Ingredients [CSV format]</label>
+    <input type="text" class="form-control" formControlName="ingredients" id="ingredients" placeholder="e.g. Flour, Sugar, Milk, Cheese" required>
+  </div>
+  <!--  MAX AVAILABLE -->
+  <div [ngClass]="{'error': !validateMaxAvailable()}">
+    <em *ngIf="!validateMaxAvailable()">Required</em>
+    <label for="maxAvailable">Max Available</label>
+    <input type="number" class="form-control" formControlName="maxAvailable" id="maxAvailable" placeholder="e.g. 10" required>
+  </div>
+  <!--  DISH PRICE -->
+  <div [ngClass]="{'error': !validatePrice()}">
+    <em *ngIf="!validatePrice()">Required</em>
+    <label for="dishPrice">Price</label>
+    <input type="number" class="form-control" formControlName="price" id="dishPrice" placeholder="e.g. 15.99" required>
+  </div>
+  <!--  DISH DESCRIPTION -->
+  <div [ngClass]="{'error': !validateDescription()}">
+    <em *ngIf="!validateDescription()">Required</em>
+    <label for="dishDescription">Description</label>
+    <input type="text" class="form-control" formControlName="description" id="dishDescription" placeholder="e.g. Tasty pizza with cheese topping." required>
+  </div>
+    <!--  DISH IMAGES URLS -->
+  <div [ngClass]="{'error': !validateImageUrls()}">
+    <em *ngIf="!validateImageUrls()">Required</em>
+    <label for="dishImage">Images' URLs [CSV format]</label>
+    <input type="text" class="form-control" formControlName="imageUrls" id="dishImage" placeholder="e.g. pizza-images.com/pizza11.jpg, pizza-images.com/pizza12.jpg"  required>
+  </div>
+  <!--  SUBMIT-->
+  <button mat-raised-button color="primary" type="submit" [disabled]="!inputValid()">Save</button>
+</form>

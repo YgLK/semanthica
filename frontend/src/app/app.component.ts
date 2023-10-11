@@ -4,6 +4,8 @@ import {DishService} from "./shared/dish.service";
 import {Filter} from "../models/filter";
 import {Router} from "@angular/router";
 import {CartService} from "./shared/cart.service";
+import {Item} from "../models/item";
+import {ItemService} from "./shared/item.service";
 
 @Component({
   selector: 'app-root',
@@ -12,37 +14,32 @@ import {CartService} from "./shared/cart.service";
 })
 export class AppComponent implements OnInit{
   title = 'restaurant-app';
-  dishesList: Dish[];
-  dishesCart: Map<Dish, number>;
+  itemsList: Item[];
+  itemsCart: Map<Item, number>;
   filter: Filter;
 
-  constructor(private dishService: DishService, public router: Router, private cartService: CartService) {
-    this.dishesCart = cartService.dishesCart;
+  constructor(private itemService: ItemService, public router: Router, private cartService: CartService) {
+    this.itemsCart = cartService.itemsCart;
   }
 
   ngOnInit() {
-    this.dishesList = this.dishService.dishesList;
+    // this.dishesList = this.dishService.dishesList;
+    this.itemsList = this.itemService.itemsList;
     // initialize filter used for dishes filtering
     this.filter = new Filter();
   }
 
   getAllCategories() {
     let categories = new Set<string>();
-    this.dishesList.forEach(dish => categories.add(dish.category));
+    this.itemsList.forEach(item => categories.add(item.mainCategory));
     return Array.from(categories);
   }
 
-  getAllOfCuisines() {
-    let cuisines = new Set<string>();
-    this.dishesList.forEach(dish => cuisines.add(dish.cuisine));
-    return Array.from(cuisines);
+  addItemToCart(item: Item) {
+    this.cartService.addItemToCart(item);
   }
 
-  addDishToCart(dish: Dish) {
-    this.cartService.addDishToCart(dish);
-  }
-
-  removeDishFromCart(dish: Dish) {
-    this.cartService.removeDishFromCart(dish);
+  removeItemFromCart(item: Item) {
+    this.cartService.removeItemFromCart(item);
   }
 }

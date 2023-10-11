@@ -5,42 +5,42 @@
     ></ng-image-slider>
   </div>
   <div class="dish-info">
-    <p class="property-description">dish name</p>
+    <p class="property-description">item name</p>
     <span class="name">
-       {{dish.name | uppercase}}
-      <span *ngIf="dish.maxAvailable == 0" class="name" style="color: red">[SOLD OUT]</span>
+       {{item.name | uppercase}}
+      <span *ngIf="item.stockQuantity == 0" class="name" style="color: red">[SOLD OUT]</span>
         </span>
-    <app-rating [dish]="dish"></app-rating>
+<!--    TODO: <app-rating [dish]="item"></app-rating>-->
     <p class="property-description">cuisine</p>
-    <span class="cuisine">{{dish.cuisine | uppercase}}</span>
+    <span class="cuisine">{{item.mainCategory | uppercase}}</span>
     <p class="property-description">category</p>
-    <span class="category">{{dish.category}}</span>
-    <p class="property-description">ingredients</p>
-    <span class="category">{{dish.ingredients.toString().replaceAll(',', ' 🍽 ')}}</span>
+    <span class="category">{{item.subCategory}}</span>
+<!--    <p class="property-description">ingredients</p>-->
+<!--    <span class="category">{{dish.ingredients.toString().replaceAll(',', ' 🍽 ')}}</span>-->
     <p class="property-description">description</p>
-    <span class="description">{{dish.description}}</span>
+    <span class="description">{{item.description}}</span>
     <p class="property-description">price</p>
-    <span class="price">{{dish.price | currency:'USD'}}</span>
+    <span class="price">{{item.price | currency:'USD'}}</span>
     <!--          INGREDIENTS AND MORE IMAGES WILL BE SHOWN IN DISH INFO VIEW -->
-    <p class="property-description" style="display: none">ingredients</p>
-    <span class="ingredients" style="display: none">{{dish.ingredients}}</span>
+<!--    <p class="property-description" style="display: none">ingredients</p>-->
+<!--    <span class="ingredients" style="display: none">{{dish.ingredients}}</span>-->
     <div class="statsDiv" [style.background-color]="'rgba(255,145,0,0.58)'">
       <p class="property-description">available / ordered </p>
-      <span class="availability" [style.color]="dish.maxAvailable > 3 ? 'black' : 'red'">{{dish.maxAvailable}} </span>
+      <span class="availability" [style.color]="item.stockQuantity > 3 ? 'black' : 'red'">{{item.stockQuantity}} </span>
       /
-      <span class="availability"> {{cartService.dishesCart.get(dish) ? cartService.dishesCart.get(dish) : 0}} </span>
+      <span class="availability"> {{cartService.itemsCart.get(item) ? cartService.itemsCart.get(item) : 0}} </span>
     </div>
   </div>
   <div class="buttons">
     <!--          ADD TO CART -->
     <!-- if dish unavailable disable button -->
-    <button [disabled]="dish.maxAvailable == 0" mat-fab color="accent" aria-label="Add to cart" (click)="addDishToCart(dish)">
+    <button [disabled]="item.stockQuantity == 0" mat-fab color="accent" aria-label="Add to cart" (click)="addItemToCart(item)">
       <mat-icon>add</mat-icon>
     </button>
     <!--          REMOVE FROM CART -->
-    <button [disabled]="!(dishesCart.get(dish)! > 0)" mat-fab color="accent" aria-label="Add to cart" (click)="removeDishFromCart(dish)">
+    <button [disabled]="!(itemsCart.get(item)! > 0)" mat-fab color="accent" aria-label="Add to cart" (click)="removeItemFromCart(item)">
       <mat-icon>remove</mat-icon>
     </button>
   </div>
 </div>
-<app-reviews [dish]="dish"></app-reviews>
+<!-- TODO: <app-reviews [dish]="dish"></app-reviews>-->

@@ -2,128 +2,109 @@ import {Injectable} from '@angular/core';
 import {Dish} from "../../models/dish";
 import {Review} from "../../models/review";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Item} from "../../models/item";
 
 
 @Injectable()
 export class DishService {
-  itemsList: Item[];
+  dishesList: Dish[];
 
   constructor(private http: HttpClient) {
-    this.itemsList = [];
-    this.getItems();
+    this.dishesList = [];
+    this.getDishes();
   }
 
-  getItems() {
-    // let dishesPrepared: Dish[] = [];
-    let itemsPrepared: Item[] = [];
-    console.log("get dishes and prepare them");
-    this.http.get<any>('/api/items/?page=20&items_per_page=2') // TODO: limit items and pagination
+  getDishes() {
+    let dishesPrepared: Dish[] = [];
+    this.http.get<any>('/api/dishes')
       .subscribe((data: any) => {
         data.forEach((dish: any) => {
           console.log(dish);
-          itemsPrepared.push(this.prepareItem(dish));
+          dishesPrepared.push(this.prepareDish(dish));
         });
       });
-    this.itemsList = itemsPrepared;
-    console.log("items prepared");
-    console.log(this.itemsList);
+    this.dishesList = dishesPrepared;
   }
 
-  getItem(id: number): Item {
-    return this.itemsList.find(item => item.id === id)!;
+  getDish(id: number): Dish {
+    return this.dishesList.find(dish => dish.id === id)!;
   }
 
-  addItem(item: Item) {
-    this.itemsList.push(item);
+  addDish(dish: Dish) {
+    this.dishesList.push(dish);
     this.http.post(
       '/api/dishes',
-      item,
+      dish,
       {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
     ).subscribe(() => {
       console.log('dish added');
     });
   }
 
-  deleteItem(id: number) {
-    this.itemsList = this.itemsList.filter(item => item.id !== id);
-    this.http.delete('/api/items/' + id)
+  deleteDish(id: number) {
+    this.dishesList = this.dishesList.filter(dish => dish.id !== id);
+    this.http.delete('/api/dishes/' + id)
       .subscribe(() => {
-        console.log('item deleted');
+        console.log('dish deleted');
       });
   }
 
-  // addReview(dishId: number, review: Review) {
-  //   const dish = this.getDishById(dishId);
-  //   dish.reviews.push(review);
-  //   this.http.patch(
-  //     '/api/dishes/' + dishId,
-  //     // TODO: nickname instead of id
-  //     {reviews: dish.reviews},
-  //     {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
-  //   ).subscribe(() => {
-  //     console.log('review added');
-  //   });
-  // }
-  //
-  // updateAvailability(dishId: number, newMaxAvailable: number) {
-  //   this.http.patch(
-  //     '/api/dishes/' + dishId,
-  //     {maxAvailable: newMaxAvailable},
-  //     {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
-  //   ).subscribe(() => {
-  //     console.log('availability updated');
-  //   });
-  // }
+  addReview(dishId: number, review: Review) {
+    const dish = this.getDishById(dishId);
+    dish.reviews.push(review);
+    this.http.patch(
+      '/api/dishes/' + dishId,
+      // TODO: nickname instead of id
+      {reviews: dish.reviews},
+      {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
+    ).subscribe(() => {
+      console.log('review added');
+    });
+  }
 
-   // TODO: refactor needed since now we've got separate record for each item
-  // addRating(itemId: number, rating: number) {
-  //   const item = this.getItemById(itemId);
-  //   item.ratings.push(rating);
-  //   this.http.patch(
-  //     '/api/dishes/' + dishId,
-  //     {ratings: dish.ratings},
-  //     {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
-  //   ).subscribe(() => {
-  //     console.log('rating added');
-  //   });
-  // }
+  updateAvailability(dishId: number, newMaxAvailable: number) {
+    this.http.patch(
+      '/api/dishes/' + dishId,
+      {maxAvailable: newMaxAvailable},
+      {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
+    ).subscribe(() => {
+      console.log('availability updated');
+    });
+  }
 
-  // prepareDish(dishData: any): Dish {
-  //   return new Dish(
-  //     dishData.id,
-  //     dishData.name,
-  //     dishData.ratings,
-  //     dishData.reviews,
-  //     dishData.cuisine,
-  //     dishData.category,
-  //     dishData.ingredients,
-  //     dishData.maxAvailable,
-  //     dishData.price,
-  //     dishData.description,
-  //     dishData.imageUrls
-  //   );
-  // }
+  addRating(dishId: number, rating: number) {
+    const dish = this.getDishById(dishId);
+    dish.ratings.push(rating);
+    this.http.patch(
+      '/api/dishes/' + dishId,
+      {ratings: dish.ratings},
+      {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
+    ).subscribe(() => {
+      console.log('rating added');
+    });
+  }
 
-    prepareItem(itemData: any): Item {
-    return new Item(
-      itemData.id,
-      itemData.name,
-      itemData.description,
-      itemData.main_category,
-      itemData.sub_category,
-      itemData.stock_quantity,
-      itemData.price,
-      itemData.image_url
+  prepareDish(dishData: any): Dish {
+    return new Dish(
+      dishData.id,
+      dishData.name,
+      dishData.ratings,
+      dishData.reviews,
+      dishData.cuisine,
+      dishData.category,
+      dishData.ingredients,
+      dishData.maxAvailable,
+      dishData.price,
+      dishData.description,
+      dishData.imageUrls
     );
   }
 
   // in the end the Dish will be retrieved by id from the database
-  getItemByName(name: string) {
-    return this.itemsList.find(item => item.name.toLowerCase() === name.toLowerCase());
+  getDishByName(name: string) {
+    return this.dishesList.find(dish => dish.name.toLowerCase() === name.toLowerCase());
   }
 
-  getItemById(id: number): Item {
-    return this.itemsList.find(item => item.id === id)!;
+  getDishById(id: number): Dish {
+    return this.dishesList.find(dish => dish.id === id)!;
   }
 }

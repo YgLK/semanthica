@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {CartService} from "../shared/cart.service";
 import {FilterService} from "../shared/filter.service";
 import {Item} from "../../models/item";
+import {ItemService} from "../shared/item.service";
 
 
 @Component({
@@ -14,67 +15,67 @@ import {Item} from "../../models/item";
 })
 export class DishesComponent implements OnInit{
   title: string = 'Dishes';
-  dishes: Item[];
-  dishesCart: Map<Dish, number>;
+  items: Item[];
+  itemsCart: Map<Item, number>;
   // dishes meeting the filter criteria
-  filteredDishesList: Dish[] = [];
+  filteredItemsList: Item[] = [];
   filter: any;
   // pagination
   page:number = 1;
   itemsPerPage: number = 5;
 
-  constructor(private dishService: DishService, private cartService: CartService, private filterService: FilterService,
+  constructor(private itemService: ItemService, private cartService: CartService, private filterService: FilterService,
               public router: Router) {
-    this.dishesCart = cartService.dishesCart;
+    this.itemsCart = cartService.itemsCart;
     this.filter = filterService.filter;
   }
 
   ngOnInit(): void {
-    this.dishes = this.dishService.itemsList;
+    this.items = this.itemService.itemsList;
     // set init max, min prices
     this.filter.minPrice = this.getMinPrice();
     this.filter.maxPrice = this.getMaxPrice();
   }
 
-  removeDishFromMenu(dishToDel: Dish) {
-    console.log(dishToDel.name + ' removed from the menu');
+  removeItemFromMenu(itemToDel: Item) {
+    console.log(itemToDel.name + ' removed from the menu');
     // remove from menu
-    this.dishes = this.dishes.filter(dish => dish.name !== dishToDel.name);
+    this.items = this.items.filter(item => item.name !== itemToDel.name);
     // remove from cart since it's no longer available
-    if(this.dishesCart.has(dishToDel)) {
-      this.dishesCart.delete(dishToDel);
+    if(this.itemsCart.has(itemToDel)) {
+      this.itemsCart.delete(itemToDel);
     }
     // remove from database
-    this.dishService.deleteItem(dishToDel.id);
+    this.itemService.deleteItem(itemToDel.id);
   }
 
-  addDishToCart(dish: Dish) {
-    this.cartService.addDishToCart(dish);
-    dish.maxAvailable -= 1;
+  addDishToCart(item: Item) {
+    this.cartService.addItemToCart(item);
+    item.stockQuantity -= 1;
   }
 
-  removeDishFromCart(dish: Dish) {
-    this.cartService.removeDishFromCart(dish);
-    dish.maxAvailable += 1;
+  removeDishFromCart(item: Item) {
+    this.cartService.removeItemFromCart(item);
+    item.stockQuantity += 1;
   }
 
   getMaxPrice() {
-    return Math.max(...this.dishes.map(dish => dish.price));
+    return Math.max(...this.items.map(item => item.price));
   }
 
   getMinPrice() {
-    return Math.min(...this.dishes.map(dish => dish.price));
+    return Math.min(...this.items.map(item => item.price));
   }
 
   getAllCategories() {
     let categories = new Set<string>();
-    this.dishes.forEach(dish => categories.add(dish.category));
+    this.items.forEach(item => categories.add(item.mainCategory));
     return Array.from(categories);
   }
 
   getAllOfCuisines() {
     let cuisines = new Set<string>();
-    this.dishes.forEach(dish => cuisines.add(dish.cuisine));
+    this.items.forEach(item => cuisines.add(item.subCategory));
     return Array.from(cuisines);
   }
 }

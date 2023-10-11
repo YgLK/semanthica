@@ -6,6 +6,8 @@ import {User} from "../../models/user";
 import {OrderService} from "../shared/order.service";
 import {Order} from "../../models/order";
 import {DishService} from "../shared/dish.service";
+import {Item} from "../../models/item";
+import {ItemService} from "../shared/item.service";
 
 @Component({
   selector: 'app-cart',
@@ -16,35 +18,37 @@ import {DishService} from "../shared/dish.service";
 export class CartComponent {
   user: User;
   title: string = 'Cart';
-  dishesCart: Map<Dish, number>;
+  itemsCart: Map<Item, number>;
   isOrderPlaced: boolean = false;
 
   constructor(private cartService: CartService,
               private userService: UserService,
               private orderService: OrderService,
-              private dishService: DishService) {
-    this.dishesCart = cartService.dishesCart;
+              private itemService: ItemService,
+              // private dishService: DishService
+      ) {
+    this.itemsCart = cartService.itemsCart;
     this.user = userService.user;
   }
 
-  addDishToCart(dish: Dish) {
-    if (this.dishesCart.has(dish)) {
-      this.dishesCart.set(dish, this.dishesCart.get(dish)! + 1);
+  addDishToCart(item: Item) {
+    if (this.itemsCart.has(item)) {
+      this.itemsCart.set(item, this.itemsCart.get(item)! + 1);
     } else {
-      this.dishesCart.set(dish, 1);
+      this.itemsCart.set(item, 1);
     }
-    dish.maxAvailable -= 1;
+    item.stockQuantity -= 1;
   }
 
-  removeDishFromCart(dish: Dish) {
-    if(this.dishesCart.has(dish)) {
-      let newQuantity = this.dishesCart.get(dish)! - 1;
+  removeDishFromCart(item: Item) {
+    if(this.itemsCart.has(item)) {
+      let newQuantity = this.itemsCart.get(item)! - 1;
       if(newQuantity > 0) {
-        this.dishesCart.set(dish, newQuantity);
+        this.itemsCart.set(item, newQuantity);
       } else {
-        this.dishesCart.delete(dish);
+        this.itemsCart.delete(item);
       }
-      dish.maxAvailable += 1;
+      item.stockQuantity += 1;
     }
   }
 
@@ -55,38 +59,41 @@ export class CartComponent {
 
   calculateTotal() {
     let total: number = 0;
-    for(let [dish, quantity] of this.dishesCart) {
-      total += dish.price * quantity;
+    for(let [item, quantity] of this.itemsCart) {
+      total += item.price * quantity;
     }
     return Math.round(total * 100) / 100;
   }
 
   calculateTotalOfOrder(dishQuantityMap: Map<number, number>) {
     let total: number = 0;
-    for(let [dishId, quantity] of dishQuantityMap) {
-      total += this.dishService.getDishById(dishId).price * quantity;
+    for(let [itemId, quantity] of dishQuantityMap) {
+      total += this.itemService.getItemById(itemId).price * quantity;
     }
     return Math.round(total * 100) / 100;
   }
 
-  orderSingleDish(dish: Dish) {
-    if(this.dishesCart.has(dish)) {
+  orderSingleDish(item: Item) {
+    if(this.itemsCart.has(item)) {
       let singleDishOrder = new Map<number, number>();
-      let quantity = this.dishesCart.get(dish)!;
-      singleDishOrder.set(dish.id, quantity);
-      this.user.addOrder(singleDishOrder, dish.price * quantity);
+      let quantity = this.itemsCart.get(item)!;
+      singleDishOrder.set(item.id, quantity);
+      this.user.addOrder(singleDishOrder, item.price * quantity);
 
       // add order to the database
       // PS. id in Order constructor is redundant, mongodb will generate it automatically
       let order = new Order(999, this.user.id, new Date().toLocaleString(), singleDishOrder, this.calculateTotalOfOrder(singleDishOrder));
       // subtract ordered quantity from the dish's maxAvailable
-      this.dishService.updateAvailability(dish.id, dish.maxAvailable);
+      // TODO: UPDATE stockQuantity ! it should be lowered here instead of staying the same in the updateAvailability method
+      //       check if it's not updated somewhere else
+      // UPDATE: stockQuantity is updated already during the adding to the cart! :)
+      this.itemService.updateAvailability(item.id, item.stockQuantity);
       // save order in the database
       this.orderService.addOrder(order);
 
       this.isOrderPlaced = true;
       // remove the dish from the cart after placing the order
-      this.dishesCart.delete(dish);
+      this.itemsCart.delete(item);
     } else {
       console.log("Cart is empty! Please add some dishes to your cart before placing the order.");
       this.isOrderPlaced = false;
@@ -95,24 +102,23 @@ export class CartComponent {
 
   // order all dishes from the cart
   placeOrder() {
-    if(this.dishesCart.size > 0) {
+    if(this.itemsCart.size > 0) {
       // this.user.addOrder(this.getDishId_QuantityMap(), this.calculateTotal());
       this.isOrderPlaced = true;
-      console.log(this.dishesCart);
+      console.log(this.itemsCart);
       console.log(this.user.orderHistory);
 
       // add order to the database
       // PS. id in Order constructor is redundant, mongodb will generate it automatically
       let order = new Order( 999, this.user.id, new Date().toLocaleString(), this.getDishId_QuantityMap(), this.calculateTotal());
       // subtract ordered quantity from the dish's maxAvailable
-      this.dishesCart.forEach(
-        (count, dish) =>
-          this.dishService.updateAvailability(dish.id, dish.maxAvailable)
+      this.itemsCart.forEach(
+        (count, item) =>
+          this.itemService.updateAvailability(item.id, item.stockQuantity)
       );
       // save order in the database
       this.orderService.addOrder(order);
-
-      this.dishesCart.clear();
+      this.itemsCart.clear();
     } else {
       console.log("Cart is empty! Please add some dishes to your cart before placing the order.");
       this.isOrderPlaced = false;
@@ -123,19 +129,19 @@ export class CartComponent {
   // in order to send it to the backend
   getDishId_QuantityMap(): Map<number, number>{
     let dishId_quantity = new Map<number, number>();
-    this.dishesCart.forEach(
-      (count, dish) => {
-        dishId_quantity.set(dish.id, count);
+    this.itemsCart.forEach(
+      (count, item) => {
+        dishId_quantity.set(item.id, count);
       });
     return dishId_quantity;
   }
 
   clearCart() {
-    this.dishesCart.forEach(
-      (count, dish) => {
-        dish.maxAvailable += count;
+    this.itemsCart.forEach(
+      (count, item) => {
+        item.stockQuantity += count;
       });
-    this.dishesCart.clear();
+    this.itemsCart.clear();
     this.isOrderPlaced = false;
   }
 }

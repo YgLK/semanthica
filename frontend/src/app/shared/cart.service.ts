@@ -1,32 +1,32 @@
 import { Injectable } from '@angular/core';
-import {Dish} from "../../models/dish";
+import {Item} from "../../models/item";
 
 @Injectable({
   providedIn: 'root'
 })
 // cart service is a singleton
 export class CartService {
-  dishesCart: Map<Dish, number>;
+  itemsCart: Map<Item, number>;
 
   constructor() {
-    this.dishesCart = new Map<Dish, number>();
+    this.itemsCart = new Map<Item, number>();
   }
 
-  addDishToCart(dish: Dish) {
-    if (this.dishesCart.has(dish)) {
-      this.dishesCart.set(dish, this.dishesCart.get(dish)! + 1);
+  addItemToCart(item: Item) {
+    if (this.itemsCart.has(item)) {
+      this.itemsCart.set(item, this.itemsCart.get(item)! + 1);
     } else {
-      this.dishesCart.set(dish, 1);
+      this.itemsCart.set(item, 1);
     }
   }
 
-  removeDishFromCart(dish: Dish) {
-    if(this.dishesCart.has(dish)) {
-      let newQuantity = this.dishesCart.get(dish)! - 1;
+  removeItemFromCart(item: Item) {
+    if(this.itemsCart.has(item)) {
+      let newQuantity = this.itemsCart.get(item)! - 1;
       if(newQuantity > 0) {
-        this.dishesCart.set(dish, newQuantity);
+        this.itemsCart.set(item, newQuantity);
       } else {
-        this.dishesCart.delete(dish);
+        this.itemsCart.delete(item);
       }
     }
   }

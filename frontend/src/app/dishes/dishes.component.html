@@ -5,60 +5,61 @@
   </button>
 </h1>
 <div class="menuWrapper">
-  <app-menu-filter
-    [allCategories]="getAllCategories()"
-    [allCuisines]="getAllOfCuisines()"
-    [filter]="filter"
-  ></app-menu-filter>
+<!--  TODO: <app-menu-filter-->
+<!--    [allCategories]="getAllCategories()"-->
+<!--    [allCuisines]="getAllOfCuisines()"-->
+<!--    [filter]="filter"-->
+<!--  ></app-menu-filter>-->
   <!-- LIST OF DISHES -->
   <ul class="dishList">
-    <li *ngFor="let dish of dishes | filterPipe:filter | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"
+<!--    <li *ngFor="let dish of dishes | filterPipe:filter | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"-->
+    <li *ngFor="let item of items | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"
         [ngStyle]="{'box-shadow':
-      (dish.price == getMaxPrice()) ?
+      (item.price == getMaxPrice()) ?
       '0 4px 8px 0 rgba(0, 255, 78, 0.2), 0 6px 20px 0 rgba(40, 143, 40, 0.19)'
       :
-      ((dish.price == getMinPrice()) ?
+      ((item.price == getMinPrice()) ?
       '0 4px 8px 0 rgba(196, 20, 20, 0.2), 0 6px 20px 0 rgba(238, 13, 13, 0.19)'
        :
        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)') }"
         class="dishCard">
-      <img [src]=dish.imageUrls[0] [routerLink]="['/dish', dish.name]" routerLinkActive="active" class="dishImg">
+      <img [src]=item.imageUrls[0] [routerLink]="['/dish', item.name]" routerLinkActive="active" class="dishImg">
       <div class="dish-info">
         <p class="property-description">dish name</p>
         <span class="name">
-         {{dish.name | uppercase}}
-          <span *ngIf="dish.maxAvailable == 0" class="name" style="color: red">[SOLD OUT]</span>
+         {{item.name | uppercase}}
+          <span *ngIf="item.stockQuantity == 0" class="name" style="color: red">[SOLD OUT]</span>
           </span>
         <p class="property-description">average rating</p>
-        <p class="rating">⭐{{dish.ratings.length > 0 ?  this.dish.getAvgRating() + " (" + dish.ratings.length + ")" : "Not rated yet" }}</p>
+<!--        TODO: <p class="rating">⭐{{item.ratings.length > 0 ?  this.dish.getAvgRating() + " (" + dish.ratings.length + ")" : "Not rated yet" }}</p>-->
         <p class="property-description">cuisine</p>
-        <span class="cuisine">{{dish.cuisine | uppercase}}</span>
+        <span class="cuisine">{{item.mainCategory | uppercase}}</span>
         <p class="property-description">category</p>
-        <span class="category">{{dish.category}}</span>
+        <span class="category">{{item.subCategory}}</span>
         <p class="property-description">price</p>
-        <span class="price">{{dish.price | currency:'USD'}}</span>
+        <span class="price">{{item.price | currency:'USD'}}</span>
         <!--          INGREDIENTS AND MORE IMAGES WILL BE SHOWN IN DISH INFO VIEW -->
-        <p class="property-description" style="display: none">ingredients</p>
-        <span class="ingredients" style="display: none">{{dish.ingredients}}</span>
-        <div class="statsDiv" [style.background-color]="(dishesCart.get(dish) === undefined || dishesCart.get(dish)! < 10) ? 'rgba(255,145,0,0.58)' : 'rgba(0,233,255,0.71)'">
+<!--        <p class="property-description" style="display: none">ingredients</p>-->
+<!--        <span class="ingredients" style="display: none">{{dish.ingredients}}</span>-->
+        <div class="statsDiv" [style.background-color]="(itemsCart.get(item) === undefined || itemsCart.get(item)! < 10) ? 'rgba(255,145,0,0.58)' : 'rgba(0,233,255,0.71)'">
           <p class="property-description">available / ordered </p>
-          <span class="availability" [style.color]="dish.maxAvailable > 3 ? 'black' : 'red'">{{dish.maxAvailable}} </span>
+          <span class="availability" [style.color]="item.stockQuantity > 3 ? 'black' : 'red'">{{item.stockQuantity}} </span>
           /
-          <span class="availability">{{(dishesCart.get(dish) === undefined) ? 0 : dishesCart.get(dish) }}</span>
+          <span class="availability">{{(itemsCart.get(item) === undefined) ? 0 : itemsCart.get(item) }}</span>
         </div>
       </div>
       <div class="buttons">
         <!--          ADD TO CART -->
         <!-- if dish unavailable disable button -->
-        <button [disabled]="dish.maxAvailable == 0" mat-fab color="accent" aria-label="Add to cart" (click)="addDishToCart(dish)">
+        <button [disabled]="item.stockQuantity == 0" mat-fab color="accent" aria-label="Add to cart" (click)="addDishToCart(item)">
           <mat-icon>add</mat-icon>
         </button>
         <!--          REMOVE FROM CART -->
-        <button [disabled]="!(dishesCart.get(dish)! > 0)" mat-fab color="accent" aria-label="Add to cart" (click)="removeDishFromCart(dish)">
+        <button [disabled]="!(itemsCart.get(item)! > 0)" mat-fab color="accent" aria-label="Add to cart" (click)="removeDishFromCart(item)">
           <mat-icon>remove</mat-icon>
         </button>
         <!--          DELETE FROM MENU -->
-        <button mat-fab color="primary" aria-label="Delete from cart" (click)="removeDishFromMenu(dish)">
+        <button mat-fab color="primary" aria-label="Delete from cart" (click)="removeItemFromMenu(item)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

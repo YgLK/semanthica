@@ -12,6 +12,18 @@ router = APIRouter(
 )
 
 
+@router.get(
+    "/{review_id}", status_code=status.HTTP_200_OK, response_model=schemas.ReviewOut
+)
+async def get_review(review_id: int, db: Session = Depends(get_db)):
+    review = db.query(models.Review).filter(models.Review.id == review_id).first()
+    if not review:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Review not found"
+        )
+    return review
+
+
 @router.post(
     "/", status_code=status.HTTP_201_CREATED, response_model=schemas.ReviewOut
 )
@@ -32,18 +44,6 @@ async def create_review(review: schemas.ReviewCreate, db: Session = Depends(get_
     db.commit()
     db.refresh(new_review)
     return new_review
-
-
-@router.get(
-    "/{review_id}", status_code=status.HTTP_200_OK, response_model=schemas.ReviewOut
-)
-async def get_review(review_id: int, db: Session = Depends(get_db)):
-    review = db.query(models.Review).filter(models.Review.id == review_id).first()
-    if not review:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Review not found"
-        )
-    return review
 
 
 @router.put(

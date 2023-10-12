@@ -107,6 +107,16 @@ class ReviewOut(ReviewBase):
     created_at: PastDatetime
 
 
+class ItemReviewsOut(ReviewBase):
+    """
+    This class is used to return reviews for a specific item in the GET /items/{item_id}/reviews endpoint.
+    """
+    id: int
+    created_at: PastDatetime
+    title: str = Field("Temporary title, TBD", max_length=50)
+    username: str
+
+
 class ReviewCreate(ReviewBase):
     pass
 

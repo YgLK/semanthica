@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Item} from "../../models/item";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Review} from "../../models/review";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,6 @@ export class ItemService {
   }
 
   getItems() {
-    // let dishesPrepared: Dish[] = [];
     let itemsPrepared: Item[] = [];
     console.log("get dishes and prepare them");
     this.http.get<any>('/api/items/?page=20&items_per_page=2') // TODO: limit items and pagination
@@ -27,6 +27,46 @@ export class ItemService {
     this.itemsList = itemsPrepared;
     console.log("items prepared");
     console.log(this.itemsList);
+  }
+
+  getItemReviews(itemId: number): Review[] {
+    // let dishesPrepared: Dish[] = [];
+    let reviews: Review[] = [];
+    this.http.get<any>(`/api/items/${itemId}/reviews`) // TODO: limit items and pagination
+      .subscribe((data: any) => {
+        data.forEach((review: any) => {
+          console.log(review);
+          reviews.push(new Review(
+            review.username,
+            review.title,
+            review.created_at,
+            review.comment
+          ));
+        });
+      });
+    return reviews;
+  }
+
+  addReview(itemId: number, review: Review) {
+    // TODO: use logged in user id, add rating to review
+    const user_id = 2;
+    const rating = 4;
+
+    const body = {
+        user_id: user_id,
+        item_id: itemId,
+        rating: rating,
+        // title: review.title,
+        comment: review.reviewContent
+    }
+    console.log(body)
+    this.http.post(
+      '/api/reviews',
+        body,
+      {headers: new HttpHeaders({'Content-Type': 'application/json'})}
+    ).subscribe(() => {
+      console.log('review added');
+    });
   }
 
   getItem(itemId: number): Item {
@@ -69,9 +109,10 @@ export class ItemService {
       itemData.description,
       itemData.main_category,
       itemData.sub_category,
+      // itemData.reviews,
       itemData.stock_quantity,
       itemData.price,
-      itemData.image_url
+      [itemData.image_url] // TODO: handle multiple images, for image search use the main one (first)
     );
   }
 

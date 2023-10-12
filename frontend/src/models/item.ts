@@ -7,17 +7,17 @@ export class Item {
               public description: string,
               public mainCategory: string,
               public subCategory: string,
-              // public reviews: string[], // Review[],
-              // public ingredients: string[],
+              // TODO: load reviews after somebody click on item
+              // public reviews: Review[],
               public stockQuantity: number,
               public price: number,
-              public imageUrl: string
+              public imageUrls: string[]
   ){}
 
-  // public decreaseAvailability() {
-  //   this.maxAvailable--;
-  // }
-  //
+  public decreaseAvailability() {
+    this.stockQuantity--;
+  }
+
   // public getAvgRating() {
   //   if(this.ratings.length === 0) {
   //     // console.log('No ratings for ' + this.name + ' yet.');

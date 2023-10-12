@@ -13,7 +13,7 @@ import {ItemService} from "./shared/item.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'restaurant-app';
+  title = 'semanthica';
   itemsList: Item[];
   itemsCart: Map<Item, number>;
   filter: Filter;
@@ -33,6 +33,12 @@ export class AppComponent implements OnInit{
     let categories = new Set<string>();
     this.itemsList.forEach(item => categories.add(item.mainCategory));
     return Array.from(categories);
+  }
+
+  getAllSubcategories() {
+    let subcategories = new Set<string>();
+    this.itemsList.forEach(item => subcategories.add(item.subCategory));
+    return Array.from(subcategories);
   }
 
   addItemToCart(item: Item) {

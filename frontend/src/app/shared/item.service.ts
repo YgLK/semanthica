@@ -116,11 +116,6 @@ export class ItemService {
     );
   }
 
-    // in the end the Dish will be retrieved by id from the database
-    getDishByName(name: string) {
-        return this.itemsList.find(item => item.name.toLowerCase() === name.toLowerCase());
-    }
-
     getItemById(id: number): Item {
     return this.itemsList.find(item => item.id === id)!;
   }

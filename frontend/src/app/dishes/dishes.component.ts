@@ -14,7 +14,7 @@ import {ItemService} from "../shared/item.service";
   styleUrls: ['./dishes.component.css']
 })
 export class DishesComponent implements OnInit{
-  title: string = 'Dishes';
+  title: string = 'Items';
   items: Item[];
   itemsCart: Map<Item, number>;
   // dishes meeting the filter criteria

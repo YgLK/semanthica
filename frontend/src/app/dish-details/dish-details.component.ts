@@ -26,8 +26,8 @@ export class DishDetailsComponent implements OnInit{
 
   ngOnInit(): void {
     // here id will be retrieved from the URL and passed to the service
-    this.item = this.itemService.getDishByName(
-      this.route.snapshot.params['id']
+    this.item = this.itemService.getItemById(
+      Number(this.route.snapshot.params['id'])
     )!;
     this.item.imageUrls.forEach(
       (url: string) => {

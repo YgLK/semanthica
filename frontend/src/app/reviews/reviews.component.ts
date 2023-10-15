@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Dish} from "../../models/dish";
 import {Review} from "../../models/review";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {DishService} from "../shared/dish.service";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
 

@@ -16,7 +16,7 @@ export class ItemService {
 
   getItems() {
     let itemsPrepared: Item[] = [];
-    console.log("get dishes and prepare them");
+    // console.log("get dishes and prepare them");
     this.http.get<any>('/api/items/?page=20&items_per_page=2') // TODO: limit items and pagination
       .subscribe((data: any) => {
         data.forEach((item: any) => {
@@ -25,8 +25,8 @@ export class ItemService {
         });
       });
     this.itemsList = itemsPrepared;
-    console.log("items prepared");
-    console.log(this.itemsList);
+    // console.log("items prepared");
+    // console.log(this.itemsList);
   }
 
   getItemReviews(itemId: number): Review[] {
@@ -35,7 +35,7 @@ export class ItemService {
     this.http.get<any>(`/api/items/${itemId}/reviews`) // TODO: limit items and pagination
       .subscribe((data: any) => {
         data.forEach((review: any) => {
-          console.log(review);
+          // console.log(review);
           reviews.push(new Review(
             review.username,
             review.title,
@@ -59,18 +59,14 @@ export class ItemService {
         // title: review.title,
         comment: review.reviewContent
     }
-    console.log(body)
+    // console.log(body)
     this.http.post(
       '/api/reviews',
         body,
       {headers: new HttpHeaders({'Content-Type': 'application/json'})}
     ).subscribe(() => {
-      console.log('review added');
+      // console.log('review added');
     });
-  }
-
-  getItem(itemId: number): Item {
-    return this.itemsList.find(item => item.id === itemId)!;
   }
 
   addItem(item: Item) {

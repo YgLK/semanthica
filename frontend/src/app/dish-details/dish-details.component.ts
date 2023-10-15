@@ -1,6 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {DishService} from "../shared/dish.service";
-import {Dish} from "../../models/dish";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CartService} from "../shared/cart.service";
 import {Item} from "../../models/item";

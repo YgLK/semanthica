@@ -4,6 +4,7 @@ import {CartService} from "../shared/cart.service";
 import {FilterService} from "../shared/filter.service";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -21,6 +22,7 @@ export class DishesComponent implements OnInit{
   // pagination
   page:number = 1;
   itemsPerPage: number = 5;
+  private itemsListSubscription: Subscription;
 
   constructor(private itemService: ItemService, private cartService: CartService, private filterService: FilterService,
               public router: Router) {
@@ -29,11 +31,22 @@ export class DishesComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.itemsListSubscription = this.itemService.itemsList$.subscribe(updatedItems => {
+      this.items = updatedItems;
+    });
+    // set default items list
     this.items = this.itemService.itemsList;
     // set init max, min prices
     this.filter.minPrice = this.getMinPrice();
     this.filter.maxPrice = this.getMaxPrice();
   }
+
+  ngOnDestroy() {
+    if (this.itemsListSubscription) {
+      this.itemsListSubscription.unsubscribe();
+    }
+  }
+
 
   removeItemFromMenu(itemToDel: Item) {
     console.log(itemToDel.name + ' removed from the menu');

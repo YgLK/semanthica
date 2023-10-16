@@ -2,12 +2,20 @@ import { Injectable } from '@angular/core';
 import {Item} from "../../models/item";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Review} from "../../models/review";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
-  itemsList: Item[];
+  itemsList: Item[] = [];
+  itemsList$ = new BehaviorSubject<Item[]>(this.itemsList);
+
+  // update the items list and notify subscribers
+  updateItemsList(updatedItems: Item[]) {
+    this.itemsList = updatedItems;
+    this.itemsList$.next(this.itemsList);
+  }
 
   constructor(private http: HttpClient) {
     this.itemsList = [];
@@ -21,7 +29,7 @@ export class ItemService {
       .subscribe((data: any) => {
         data.forEach((item: any) => {
           console.log(item);
-          itemsPrepared.push(this.prepareItem(item));
+          itemsPrepared.push(Item.createItem(item));
         });
       });
     this.itemsList = itemsPrepared;
@@ -98,21 +106,7 @@ export class ItemService {
       });
   }
 
-  prepareItem(itemData: any): Item {
-    return new Item(
-      itemData.id,
-      itemData.name,
-      itemData.description,
-      itemData.main_category,
-      itemData.sub_category,
-      // itemData.reviews,
-      itemData.stock_quantity,
-      itemData.price,
-      [itemData.image_url] // TODO: handle multiple images, for image search use the main one (first)
-    );
-  }
-
-    getItemById(id: number): Item {
+  getItemById(id: number): Item {
     return this.itemsList.find(item => item.id === id)!;
   }
 }

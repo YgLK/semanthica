@@ -34,6 +34,7 @@ import { OrderHistoryComponent } from './order-history/order-history.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { SearchComponent } from './search/search.component';
 // import { LoginComponent } from './login/login.component';
 // import { RegisterComponent } from './register/register.component';
 
@@ -55,6 +56,7 @@ import { RegisterComponent } from './register/register.component';
     RegisterComponent,
     LoginComponent,
     RegisterComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

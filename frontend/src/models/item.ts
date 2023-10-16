@@ -25,4 +25,18 @@ export class Item {
   //   }
   //  return Number(this.ratings.reduce((a, b) => a + b, 0) / this.ratings.length).toFixed(2);
   // }
+
+  static createItem(itemData: any): Item {
+    return new Item(
+      itemData.id,
+      itemData.name,
+      itemData.description,
+      itemData.main_category,
+      itemData.sub_category,
+      // itemData.reviews,
+      itemData.stock_quantity,
+      itemData.price,
+      [itemData.image_url] // TODO: handle multiple images, for image search use the main one (first)
+    );
+  }
 }

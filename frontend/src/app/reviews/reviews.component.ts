@@ -48,6 +48,7 @@ export class ReviewsComponent implements OnInit{
       this.itemService.addReview(this.item.id, newReview);
       this.isSubmitted = true;
       this.reviewForm.reset();
+      this.reviews.push(newReview);
     } else {
       console.log('invalid input');
     }

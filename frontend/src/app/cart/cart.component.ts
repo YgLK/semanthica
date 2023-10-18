@@ -68,7 +68,7 @@ export class CartComponent {
   calculateTotalOfOrder(dishQuantityMap: Map<number, number>) {
     let total: number = 0;
     for(let [itemId, quantity] of dishQuantityMap) {
-      total += this.itemService.getItemById(itemId).price * quantity;
+      total += this.itemService.filterItemById(itemId).price * quantity;
     }
     return Math.round(total * 100) / 100;
   }

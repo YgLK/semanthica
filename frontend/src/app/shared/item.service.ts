@@ -19,12 +19,10 @@ export class ItemService {
 
   constructor(private http: HttpClient) {
     this.itemsList = [];
-    this.getItems();
   }
 
   getItems() {
     let itemsPrepared: Item[] = [];
-    // console.log("get dishes and prepare them");
     this.http.get<any>('/api/items/?page=20&items_per_page=2') // TODO: limit items and pagination
       .subscribe((data: any) => {
         data.forEach((item: any) => {
@@ -33,8 +31,6 @@ export class ItemService {
         });
       });
     this.itemsList = itemsPrepared;
-    // console.log("items prepared");
-    // console.log(this.itemsList);
   }
 
   getItemReviews(itemId: number): Review[] {

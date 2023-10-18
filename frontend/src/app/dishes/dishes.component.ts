@@ -28,6 +28,7 @@ export class DishesComponent implements OnInit{
               public router: Router) {
     this.itemsCart = cartService.itemsCart;
     this.filter = filterService.filter;
+    this.itemService.getItems();
   }
 
   ngOnInit(): void {

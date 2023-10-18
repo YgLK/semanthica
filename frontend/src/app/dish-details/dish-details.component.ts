@@ -11,7 +11,7 @@ import {Subscription} from "rxjs";
   styleUrls: ['./dish-details.component.css']
 })
 export class DishDetailsComponent implements OnInit{
-  item: Item;
+  item: Item = new Item();
   itemsCart: Map<Item, number>;
   // image for the slider
   imageObject: Array<object> = new Array<object>();

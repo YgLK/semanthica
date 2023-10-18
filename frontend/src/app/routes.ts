@@ -11,7 +11,7 @@ import {RegisterComponent} from "./register/register.component";
 export const appRoutes:Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'menu', component: DishesComponent },
-  { path: 'dish/:id', component: DishDetailsComponent },
+  { path: 'item/:id', component: DishDetailsComponent },
   { path: 'cart', component: CartComponent },
   { path: 'order-history', component: OrderHistoryComponent },
   { path: 'create-dish', component: CreateDishFormComponent },

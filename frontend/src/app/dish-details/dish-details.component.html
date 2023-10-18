@@ -43,4 +43,6 @@
     </button>
   </div>
 </div>
-<app-reviews [item]="item"></app-reviews>
+<div *ngIf="item && item.id !== -1">
+  <app-reviews [item]="item"></app-reviews>
+</div>

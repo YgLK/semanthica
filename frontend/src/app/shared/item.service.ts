@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {Item} from "../../models/item";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Review} from "../../models/review";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -106,7 +106,17 @@ export class ItemService {
       });
   }
 
-  getItemById(id: number): Item {
+  filterItemById(id: number): Item {
     return this.itemsList.find(item => item.id === id)!;
+  }
+
+  getItemById(itemId: number): Observable<Item> {
+    return this.http.get<any>('/api/items/' + itemId)
+      .pipe(
+        map((itemData: any) => {
+          console.log(itemData);
+          return Item.createItem(itemData);
+        })
+      );
   }
 }

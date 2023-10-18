@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CartService} from "../shared/cart.service";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-dish-details',
@@ -14,6 +15,7 @@ export class DishDetailsComponent implements OnInit{
   itemsCart: Map<Item, number>;
   // image for the slider
   imageObject: Array<object> = new Array<object>();
+  private itemSub: Subscription;
 
   constructor(private itemService: ItemService, private router: Router, private route: ActivatedRoute,
               public  cartService: CartService) {
@@ -23,13 +25,16 @@ export class DishDetailsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // here id will be retrieved from the URL and passed to the service
-    this.item = this.itemService.getItemById(
-      Number(this.route.snapshot.params['id'])
-    )!;
-    this.item.imageUrls.forEach(
-      (url: string) => {
-        this.imageObject.push({image: url, thumbImage: url});
+    const itemId = Number(this.route.snapshot.params['id']);
+    this.itemService.getItemById(itemId).subscribe(
+      (foundItem: Item) => {
+        this.item = foundItem;
+        this.item.imageUrls.forEach((url: string) => {
+          this.imageObject.push({ image: url, thumbImage: url });
+        });
+      },
+      (error: any) => {
+        console.log(error)
       }
     );
   }

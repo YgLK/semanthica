@@ -25,20 +25,18 @@
 <!--    <p class="property-description" style="display: none">ingredients</p>-->
 <!--    <span class="ingredients" style="display: none">{{dish.ingredients}}</span>-->
     <div class="statsDiv" [style.background-color]="'rgba(255,145,0,0.58)'">
-      <p class="property-description">available / ordered </p>
+      <p class="property-description">Available </p>
       <span class="availability" [style.color]="item.stockQuantity > 3 ? 'black' : 'red'">{{item.stockQuantity}} </span>
-      /
-      <span class="availability"> {{cartService.itemsCart.get(item) ? cartService.itemsCart.get(item) : 0}} </span>
     </div>
   </div>
   <div class="buttons">
     <!--          ADD TO CART -->
-    <!-- if dish unavailable disable button -->
-    <button [disabled]="item.stockQuantity == 0" mat-fab color="accent" aria-label="Add to cart" (click)="addItemToCart(item)">
+    <!-- if item unavailable disable button -->
+    <button [disabled]="item.stockQuantity == 0 || cartService.getItemCartQuantity(item.id) == item.stockQuantity" mat-fab color="accent" aria-label="Add to cart" (click)="addItemToCart(item)">
       <mat-icon>add</mat-icon>
     </button>
     <!--          REMOVE FROM CART -->
-    <button [disabled]="!(itemsCart.get(item)! > 0)" mat-fab color="accent" aria-label="Add to cart" (click)="removeItemFromCart(item)">
+    <button [disabled]="!(cartService.getItemCartQuantity(item.id)! > 0)" mat-fab color="accent" aria-label="Add to cart" (click)="removeItemFromCart(item)">
       <mat-icon>remove</mat-icon>
     </button>
   </div>

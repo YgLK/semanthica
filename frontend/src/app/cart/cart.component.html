@@ -6,7 +6,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div *ngIf="itemsCart.size > 0" class="cartWrapper">
+<div *ngIf="this.cartService.itemsCart.size > 0" class="cartWrapper">
   <ul class="cartContent">
     <li class="orderWrapper">
       <div class="orderName">NAME</div>
@@ -15,14 +15,14 @@
       <div class="orderQuantity">SUM</div>
       <div class="buttons"></div>
     </li>
-    <li *ngFor="let order of itemsCart.keys()" class="orderWrapper">
+    <li *ngFor="let order of this.cartService.itemsCart.keys()" class="orderWrapper">
       <div class="orderName">{{order.name}}</div>
       <div class="orderPrice">{{order.price}}</div>
-      <div class="orderQuantity">{{itemsCart.get(order)}}</div>
-      <div class="orderQuantity">{{itemsCart.get(order)! * order.price}}</div>
+      <div class="orderQuantity">{{this.cartService.itemsCart.get(order)}}</div>
+      <div class="orderQuantity">{{this.cartService.itemsCart.get(order)! * order.price}}</div>
       <div class="buttons">
-        <button mat-raised-button color="primary" [disabled]="order.stockQuantity == 0" (click)="addDishToCart(order)">+</button>
-        <button mat-raised-button color="warn" (click)="removeDishFromCart(order)">-</button>
+        <button mat-raised-button color="primary" [disabled]="order.stockQuantity == 0" (click)="this.cartService.addItemToCart(order)">+</button>
+        <button mat-raised-button color="warn" (click)="this.cartService.removeItemFromCart(order)">-</button>
 <!--        Buy the position instantly -->
         <button mat-raised-button style="background-color: #69F0AE" (click)="orderSingleDish(order)"><mat-icon>payment</mat-icon></button>
       </div>
@@ -38,6 +38,6 @@
   </div>
 </div>
 
-<div *ngIf="itemsCart.size == 0">
+<div *ngIf="this.cartService.itemsCart.size == 0">
   <h3>Cart is empty!</h3>
 </div>

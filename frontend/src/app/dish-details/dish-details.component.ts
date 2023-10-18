@@ -15,7 +15,6 @@ export class DishDetailsComponent implements OnInit{
   itemsCart: Map<Item, number>;
   // image for the slider
   imageObject: Array<object> = new Array<object>();
-  private itemSub: Subscription;
 
   constructor(private itemService: ItemService, private router: Router, private route: ActivatedRoute,
               public  cartService: CartService) {
@@ -41,11 +40,9 @@ export class DishDetailsComponent implements OnInit{
 
   addItemToCart(item: Item) {
     this.cartService.addItemToCart(item);
-    item.stockQuantity -= 1;
   }
 
   removeItemFromCart(item: Item) {
     this.cartService.removeItemFromCart(item);
-    item.stockQuantity += 1;
   }
 }

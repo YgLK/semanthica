@@ -24,7 +24,7 @@ export class DishesComponent implements OnInit{
   itemsPerPage: number = 5;
   private itemsListSubscription: Subscription;
 
-  constructor(private itemService: ItemService, private cartService: CartService, private filterService: FilterService,
+  constructor(private itemService: ItemService, protected cartService: CartService, private filterService: FilterService,
               public router: Router) {
     this.itemsCart = cartService.itemsCart;
     this.filter = filterService.filter;
@@ -48,27 +48,27 @@ export class DishesComponent implements OnInit{
     }
   }
 
-
-  removeItemFromMenu(itemToDel: Item) {
+  removeItemFromDatabase(itemToDel: Item) {
+    /**
+     * TODO: Remove item from db, but it should be done by switching some flag in the db
+     *      (e.g. isAvailable) instead of deleting it from the db because we want to keep
+     *      the history of orders and reviews + we don't want to break the references
+     */
     console.log(itemToDel.name + ' removed from the menu');
     // remove from menu
     this.items = this.items.filter(item => item.name !== itemToDel.name);
     // remove from cart since it's no longer available
-    if(this.itemsCart.has(itemToDel)) {
-      this.itemsCart.delete(itemToDel);
-    }
+    this.cartService.removeItemFromCart(itemToDel);
     // remove from database
     this.itemService.deleteItem(itemToDel.id);
   }
 
-  addDishToCart(item: Item) {
+  addItemToCart(item: Item) {
     this.cartService.addItemToCart(item);
-    item.stockQuantity -= 1;
   }
 
-  removeDishFromCart(item: Item) {
+  removeItemFromCart(item: Item) {
     this.cartService.removeItemFromCart(item);
-    item.stockQuantity += 1;
   }
 
   getMaxPrice() {

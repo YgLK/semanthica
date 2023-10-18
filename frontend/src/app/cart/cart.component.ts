@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
-import {Dish} from "../../models/dish";
 import {CartService} from "../shared/cart.service";
 import {UserService} from "../shared/user.service";
 import {User} from "../../models/user";
 import {OrderService} from "../shared/order.service";
 import {Order} from "../../models/order";
-import {DishService} from "../shared/dish.service";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
 
@@ -18,38 +16,17 @@ import {ItemService} from "../shared/item.service";
 export class CartComponent {
   user: User;
   title: string = 'Cart';
+  // itemsCart as a map: item -> quantity
   itemsCart: Map<Item, number>;
   isOrderPlaced: boolean = false;
 
-  constructor(private cartService: CartService,
+  constructor(protected cartService: CartService,
               private userService: UserService,
               private orderService: OrderService,
-              private itemService: ItemService,
-              // private dishService: DishService
+              protected itemService: ItemService,
       ) {
     this.itemsCart = cartService.itemsCart;
     this.user = userService.user;
-  }
-
-  addDishToCart(item: Item) {
-    if (this.itemsCart.has(item)) {
-      this.itemsCart.set(item, this.itemsCart.get(item)! + 1);
-    } else {
-      this.itemsCart.set(item, 1);
-    }
-    item.stockQuantity -= 1;
-  }
-
-  removeDishFromCart(item: Item) {
-    if(this.itemsCart.has(item)) {
-      let newQuantity = this.itemsCart.get(item)! - 1;
-      if(newQuantity > 0) {
-        this.itemsCart.set(item, newQuantity);
-      } else {
-        this.itemsCart.delete(item);
-      }
-      item.stockQuantity += 1;
-    }
   }
 
   private precise_round(num: number, decimals: number) {

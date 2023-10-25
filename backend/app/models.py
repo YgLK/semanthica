@@ -54,7 +54,7 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    status = Column(String, index=True, nullable=False, default=OrderStatus.PENDING)
+    status = Column(String, index=True, nullable=False, default=OrderStatus.CREATED)
     created_at = Column(
         TIMESTAMP(timezone=True),
         index=True,

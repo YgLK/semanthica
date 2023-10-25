@@ -12,7 +12,7 @@ class Role(str, Enum):
 
 
 class OrderStatus(str, Enum):
-    PENDING = "pending"
+    CREATED = "created"
     PROCESSING = "processing"
     DELIVERED = "delivered"
     CANCELLED = "cancelled"
@@ -93,6 +93,24 @@ class OrderRecord(BaseModel):
     order_id: int
     item_id: int
     quantity: int
+
+
+class OrderFullBase(BaseModel):
+    user_id: int
+    item_ids: List[int]
+    quantities: List[int]
+
+
+class OrderFullCreate(OrderFullBase):
+    pass
+
+
+class OrderFullOut(BaseModel):
+    id: int
+    user_id: int
+    status: OrderStatus
+    created_at: PastDatetime
+    order_records: List[OrderRecord]
 
 
 class ReviewBase(BaseModel):

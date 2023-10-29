@@ -3,17 +3,17 @@
 <p class="filterName">Search by name</p>
 <input type="text" id="searchDishName" placeholder="e.g. Pasta" [(ngModel)]="filter.filterText">
 
-<div class="cuisineFilters">
-  <p class="filterName">Cuisine</p>
-  <mat-checkbox class="example-margin" *ngFor="let cuisine of allCuisines"
-                (change)="onChangeCuisine(cuisine)">{{cuisine}}</mat-checkbox>
-</div>
 <div class="categoryFilters">
   <p class="filterName">Category</p>
   <mat-checkbox class="example-margin" *ngFor="let category of allCategories"
                 (change)="onChangeCategory(category)">{{category}}</mat-checkbox>
 </div>
 
+<div class="cuisineFilters">
+  <p class="filterName">Subcategory #TODO</p>
+  <mat-checkbox class="example-margin" *ngFor="let cuisine of allCuisines"
+                (change)="onChangeCuisine(cuisine)">{{cuisine}}</mat-checkbox>
+</div>
 
 <p class="filterName">Min. rating</p>
 <ngb-rating [max]="5" [(ngModel)]="filter.minRating"></ngb-rating>

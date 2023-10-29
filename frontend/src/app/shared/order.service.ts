@@ -11,20 +11,14 @@ export class OrderService {
   ordersListSubject = new Subject<Order[]>();
 
   constructor(private http: HttpClient) {
-    this.ordersList = [];
     this.getOrders();
-  }
-
-  // Method to subscribe to changes in the list
-  onItemListChange() {
-    return this.ordersListSubject.asObservable();
   }
 
   getOrders() {
     /*
     * Get orders from db with order records and prepare them to show in the Order history
      */
-    this.http.get<any>('/api/orders-full')
+    this.http.get<any>('/api/orders/history')
         .subscribe((data: any) => {
           this.ordersList = data.map((order: any) => this.prepareOrder(order));
           this.ordersListSubject.next(this.ordersList);
@@ -64,7 +58,7 @@ export class OrderService {
      */
     let orderRecords: OrderRecord[] = [];
     orderData.order_records.forEach((order_record: any) => {
-      orderRecords.push(new OrderRecord(order_record.item_id, order_record.quantity));
+      orderRecords.push(new OrderRecord(order_record.item_id, order_record.quantity, order_record.item_name, order_record.item_price));
     })
 
     return new Order(

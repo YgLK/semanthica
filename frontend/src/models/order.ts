@@ -1,21 +1,24 @@
 export class OrderRecord {
   constructor(
     public item_id: number,
-    public quantity: number
+    public quantity: number,
+    public item_name?: string,
+    public item_price?: number
   ){}
 }
 
-enum OrderStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
-  CREATED = 'created'
+export enum OrderStatus {
+  CREATED = "created",
+  PROCESSING = "processing",
+  DELIVERED = "delivered",
+  CANCELLED = "cancelled"
 }
 
 export class Order {
   constructor(
     public userId: number,
     public createdAt: string,
-    public status: string,
+    public status: OrderStatus,
     public orderRecords: OrderRecord[],
     public total: number,
     public id?: number // id is set after adding the order to the database

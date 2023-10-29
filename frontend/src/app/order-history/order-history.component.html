@@ -8,10 +8,12 @@
         <div class="orderDate">Total: {{order.total}}</div>
         <div class="orderDishes">Items:
           <ul>
-            <li *ngFor="let orderRecord of order.orderRecords">
-              <div class="dishName">{{filterOrderedItemsById(orderRecord.item_id).name}}</div>
-              <div class="dishPrice">{{filterOrderedItemsById(orderRecord.item_id).price}}</div>
-              <div class="dishCount">{{orderRecord.quantity!}}</div>
+            <li *ngFor="let orderRecord of order.orderRecords" [routerLink]="['/item', orderRecord.item_id]" routerLinkActive="active">
+              <div class="orderRecord">
+                <div class="dishName">{{orderRecord.item_name}}</div>
+                <div class="dishPrice">{{orderRecord.item_price}}</div>
+                <div class="dishCount">{{orderRecord.quantity!}}</div>
+              </div>
             </li>
           </ul>
         </div>

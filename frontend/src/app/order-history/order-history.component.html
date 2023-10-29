@@ -4,13 +4,14 @@
     <li *ngFor="let order of getOrderHistory()" class="orderWrapper">
       <div class="cartItem">
         <div class="orderId">OrderID: {{order.id}}</div>
-        <div class="orderDate">Date: {{order.date}}</div>
-        <div class="orderDishes">Dishes:
+        <div class="orderDate">Date of order: {{order.createdAt}}</div>
+        <div class="orderDate">Total: {{order.total}}</div>
+        <div class="orderDishes">Items:
           <ul>
-            <li *ngFor="let dishId_quantity of getOrderPositions(order) | keyvalue">
-              <div class="dishName">{{dishService.getDishById(dishId_quantity.key).name}}</div>
-              <div class="dishPrice">{{dishService.getDishById(dishId_quantity.key).price}}</div>
-              <div class="dishCount">{{dishId_quantity.value!}}</div>
+            <li *ngFor="let orderRecord of order.orderRecords">
+              <div class="dishName">{{filterOrderedItemsById(orderRecord.item_id).name}}</div>
+              <div class="dishPrice">{{filterOrderedItemsById(orderRecord.item_id).price}}</div>
+              <div class="dishCount">{{orderRecord.quantity!}}</div>
             </li>
           </ul>
         </div>

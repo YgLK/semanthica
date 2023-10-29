@@ -1,27 +1,38 @@
+export class OrderRecord {
+  constructor(
+    public item_id: number,
+    public quantity: number
+  ){}
+}
+
+enum OrderStatus {
+  PENDING = 'pending',
+  COMPLETED = 'completed',
+  CREATED = 'created'
+}
+
 export class Order {
   constructor(
-    public id: number,
     public userId: number,
-    public date: string,
-    public dishes: Map<number, number>,
+    public createdAt: string,
+    public status: string,
+    public orderRecords: OrderRecord[],
     public total: number,
+    public id?: number // id is set after adding the order to the database
   ){}
 
   getOrderJson() {
-    class OrderEntry {
-      constructor(
-        public dishId: number,
-        public quantity: number
-      ){}
-    }
-    let entries = Array.from(this.dishes.entries()).map((entry) => new OrderEntry(entry[0], entry[1]));
-
     return {
-      id: this.id,
-      userId: this.userId,
-      date: this.date,
-      dishes: entries,
+      user_id: this.userId,
+      status: this.status,
+      created_at: this.createdAt,
+      order_records: this.orderRecords,
       total: this.total
     };
+  }
+
+  getItemIds(): Set<number> {
+    const itemIds: number[] = this.orderRecords.map(orderRecord => orderRecord.item_id);
+    return new Set<number>(itemIds);
   }
 }

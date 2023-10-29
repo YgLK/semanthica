@@ -24,7 +24,7 @@
         <button mat-raised-button color="primary" [disabled]="order.stockQuantity == 0" (click)="this.cartService.addItemToCart(order)">+</button>
         <button mat-raised-button color="warn" (click)="this.cartService.removeItemFromCart(order)">-</button>
 <!--        Buy the position instantly -->
-        <button mat-raised-button style="background-color: #69F0AE" (click)="orderSingleDish(order)"><mat-icon>payment</mat-icon></button>
+<!--        <button mat-raised-button style="background-color: #69F0AE" (click)="orderSingleDish(order)"><mat-icon>payment</mat-icon></button>-->
       </div>
     </li>
   </ul>

@@ -89,16 +89,18 @@ class OrderUpdate(BaseModel):
     status: Optional[OrderStatus] = None
 
 
-class OrderRecord(BaseModel):
-    order_id: int
+class OrderRecordBase(BaseModel):
     item_id: int
     quantity: int
 
 
+class OrderRecord(OrderRecordBase):
+    order_id: int
+
+
 class OrderFullBase(BaseModel):
     user_id: int
-    item_ids: List[int]
-    quantities: List[int]
+    order_records: List[OrderRecordBase]
 
 
 class OrderFullCreate(OrderFullBase):

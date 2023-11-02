@@ -61,8 +61,10 @@ class Order(Base):
         nullable=False,
         server_default=text("NOW()"),
     )
+    # total = Column(Numeric, nullable=False)
     user = relationship("User", back_populates="orders")
-    order_records = relationship("OrderRecord", back_populates="order")
+    order_records = relationship("OrderRecord", back_populates="order",
+                                 cascade="save-update, merge, delete, delete-orphan")
 
 
 class OrderRecord(Base):
@@ -95,6 +97,16 @@ class Item(Base):
         server_default=text("NOW()"),
     )
     reviews = relationship("Review", back_populates="item")
+
+    def is_in_stock(self):
+        return self.stock_quantity > 0
+
+    def update_stock(self, quantity):
+        if quantity < 0:
+            raise ValueError("Quantity must be positive")
+        if self.stock_quantity < quantity:
+            raise ValueError("Not enough stock")
+        self.stock_quantity -= quantity
 
 
 class Review(Base):

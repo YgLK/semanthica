@@ -4,10 +4,17 @@ from . import models
 from .database import engine
 from .routers import address, item, order, order_record, full_order, review, user, search
 
+from app.logging import LogConfig
+from logging.config import dictConfig
+import logging
+
+dictConfig(LogConfig().dict())
+logger = logging.getLogger("semanthica_logger")
+
 # create tables
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI()
+app = FastAPI(debug=True)
 
 app.include_router(user.router, prefix="/api")
 app.include_router(address.router, prefix="/api")

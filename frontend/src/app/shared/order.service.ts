@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Order, OrderRecord} from "../../models/order";
 import {Subject} from "rxjs";
 
@@ -30,15 +30,13 @@ export class OrderService {
     * Add order to the database and to the ordersList
      */
     this.ordersList.push(order);
-    console.log(order.getOrderJson());
-    // TODO
-    // this.http.post(
-    //   '/api/orders',
-    //   order.getOrderJson(),
-    //   {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
-    // ).subscribe(() => {
-    //   console.log('order added');
-    // });
+    this.http.post(
+      '/api/orders-full',
+      order.getOrderJson(),
+      {headers: new HttpHeaders({'Content-Type': 'application/json'})}
+    ).subscribe(() => {
+      console.log('order added');
+    });
   }
 
   deleteOrder(id: number) {

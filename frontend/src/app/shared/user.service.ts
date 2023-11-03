@@ -10,7 +10,7 @@ export class UserService {
 
   constructor() {
     // create sample user
-    this.user = new User(1, "user1", "password1", "admin", "John", "Doe",
+    this.user = new User(2, "user1", "password1", "admin", "John", "Doe",
       "johndoe@gmail.com", "+48777888999", "123 Maple Street, Any-town", []);
   }
 

@@ -97,6 +97,8 @@ class Item(Base):
         server_default=text("NOW()"),
     )
     reviews = relationship("Review", back_populates="item")
+    # indicates whether the item has been deleted (SOFT DELETE)
+    is_deleted = Column(String, nullable=False, default="false")
 
     def is_in_stock(self):
         return self.stock_quantity > 0

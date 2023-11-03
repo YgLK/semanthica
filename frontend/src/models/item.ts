@@ -14,10 +14,6 @@ export class Item {
               public imageUrls: string[] = []
   ){}
 
-  public decreaseAvailability() {
-    this.stockQuantity--;
-  }
-
   // public getAvgRating() {
   //   if(this.ratings.length === 0) {
   //     // console.log('No ratings for ' + this.name + ' yet.');
@@ -25,6 +21,18 @@ export class Item {
   //   }
   //  return Number(this.ratings.reduce((a, b) => a + b, 0) / this.ratings.length).toFixed(2);
   // }
+
+  toJSON() {
+    return {
+      name: this.name,
+      description: this.description,
+      main_category: this.mainCategory,
+      sub_category: this.subCategory,
+      stock_quantity: this.stockQuantity,
+      image_url: this.imageUrls[0],
+      price: this.price
+    }
+  }
 
   static createItem(itemData: any): Item {
     return new Item(

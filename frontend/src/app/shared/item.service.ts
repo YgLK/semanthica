@@ -77,7 +77,7 @@ export class ItemService {
     this.itemsList.push(item);
     this.http.post(
       '/api/items',
-      item,
+      item.toJSON(),
       {headers: new HttpHeaders({'Content-Type': 'application/json'})}
     ).subscribe(() => {
       console.log('dish added');

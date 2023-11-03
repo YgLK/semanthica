@@ -22,7 +22,7 @@ export class ReviewsComponent implements OnInit{
 
   ngOnInit(): void {
     //  get reviews from dish
-    this.reviews = this.itemService.getItemReviews(this.item.id); // # TODOthis.dish.reviews;
+    this.reviews = this.itemService.getItemReviews(this.item.id);
     // create form group for new review
     let nickname = new FormControl(null, Validators.required);
     let title = new FormControl(null, Validators.required);

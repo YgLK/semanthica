@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Dish} from "../../models/dish";
 import {Filter} from "../../models/filter";
 import {FilterService} from "../shared/filter.service";
-import {DishService} from "../shared/dish.service";
+import {ItemService} from "../shared/item.service";
+import {Item} from "../../models/item";
 
 @Component({
   selector: 'app-create-dish-form',
@@ -11,114 +11,143 @@ import {DishService} from "../shared/dish.service";
   styleUrls: ['./create-dish-form.component.css']
 })
 export class CreateDishFormComponent implements OnInit {
-  dishesList: Dish[];
   // passed to update min/max price
   filter: Filter;
-  cuisine: string[] = [
-    'American', 'Asian', 'British', 'Caribbean', 'Central European',
-    'Chinese', 'Eastern European', 'French', 'Indian', 'Italian',
-    'Japanese', 'Kosher', 'Mediterranean', 'Mexican', 'Middle Eastern',
-    'Nordic', 'South American', 'South East Asian', 'Spanish', 'Thai',
-    'Vietnamese', 'Other'
-  ];
-  category: string[] = ['Appetizer', 'Main', 'Dessert', 'Beverage','Salad', 'Soup', 'Vegan', 'Vegetarian', 'Gluten Free'];
-  dishProperties: string[] = [
-    'name', 'cuisine', 'category', 'ingredients',
-    'maxAvailable', 'price', 'description', 'imageUrl'
+  categories: any[] = [
+    {
+      "category_name": "Electronics",
+      "subcategories": [
+        "Computers & Accessories",
+        "Television & Video",
+        "Camera, Photo & Video",
+        "Headphones",
+        "Cell Phones & Accessories"
+      ]
+    },
+    {
+      "category_name": "Books",
+      "subcategories": [
+        "Fiction",
+        "Non-Fiction",
+        "Children's Books",
+        "Mystery & Thrillers",
+        "Science Fiction & Fantasy"
+      ]
+    },
+    {
+      "category_name": "Clothing and Accessories",
+      "subcategories": [
+        "Men's Fashion",
+        "Women's Fashion",
+        "Kids & Baby",
+        "Shoes",
+        "Watches"
+      ]
+    },
+    {
+      "category_name": "Home and Kitchen",
+      "subcategories": [
+        "Furniture",
+        "Home Décor",
+        "Kitchen & Dining",
+        "Bedding",
+        "Bath"
+      ]
+    }
   ];
   // default selected values
-  cuisineSelect = this.cuisine[0];
-  categorySelect = this.category[1];
+  categoriesUnique = this.categories.map(category => category.category_name);
+  categorySelect = this.categoriesUnique[0];
+  subCategoriesUnique = this.categories.find(category => category.category_name === this.categorySelect)?.subcategories;
+  subCategorySelect = "Computers & Accessories";
+
   //if all fields are filled correctly, changes submit button from disabled to enabled and vice versa
   fieldsCorrect: boolean = false;
   // form group
-  dishForm!: FormGroup;
-  // used to show prompt when new dish is added
+  itemForm!: FormGroup;
+  // used to show prompt when new item is added
   isSubmitted: boolean;
 
-  constructor(private filterService: FilterService, private dishService: DishService) {
+  constructor(private filterService: FilterService, private itemService: ItemService) {
     this.filter = filterService.filter;
-    this.dishesList = dishService.dishesList;
   }
 
   ngOnInit(): void {
     let name = new FormControl(null, Validators.required);
-    let cuisine = new FormControl(null, Validators.required);
-    let category = new FormControl(null, Validators.required);
-    let ingredients = new FormControl(null, Validators.required);
-    let maxAvailable = new FormControl(null, Validators.required);
-    let price = new FormControl(null, Validators.required);
     let description = new FormControl(null, Validators.required);
+    let category = new FormControl(null, Validators.required);
+    let subCategory = new FormControl(null, Validators.required);
+    let stockQuantity = new FormControl(null, Validators.required);
+    let price = new FormControl(null, Validators.required);
     let imageUrls = new FormControl(null, Validators.required);
-    this.dishForm = new FormGroup({
+    this.itemForm = new FormGroup({
       name: name,
-      cuisine: cuisine,
-      category: category,
-      ingredients: ingredients,
-      maxAvailable: maxAvailable,
-      price: price,
       description: description,
+      category: category,
+      subCategory: subCategory,
+      stockQuantity: stockQuantity,
+      price: price,
       imageUrls: imageUrls
     });
   }
 
   inputValid() {
     // check if all fields are valid
-    return this.dishForm.valid;
+    return this.itemForm.valid;
   }
 
-  addNewDish(formValues: any) {
-    if (this.dishForm.valid){
-      let ingredients = formValues.ingredients.split(',').map((ingredient: string) => ingredient.trim());
+  onCategoryChange() {
+    // update subcategories when category is changed
+    this.subCategoriesUnique = this.categories.find(category => category.category_name === this.categorySelect)?.subcategories;
+  }
+
+  addNewItem(formValues: any) {
+    if (this.itemForm.valid){
       let imageUrls = formValues.imageUrls.split(',').map((imageUrl: string) => imageUrl.trim());
-      let newDish = new Dish(this.getConsecutiveId(), formValues.name, [], [], formValues.cuisine, formValues.category,
-        ingredients, formValues.maxAvailable, formValues.price, formValues.description, imageUrls)
-      // add new dish to the mongoDB and dish list
-      this.dishService.addDish(newDish);
+
+      let newItem = new Item();
+      newItem.name = formValues.name;
+      newItem.description = formValues.description;
+      newItem.mainCategory = formValues.category;
+      newItem.subCategory = formValues.subCategory;
+      newItem.stockQuantity = formValues.stockQuantity;
+      newItem.price = formValues.price;
+      newItem.imageUrls = imageUrls;
+
+      this.itemService.addItem(newItem);
+
       // update min/max price in filter
       this.filter.minPrice = Math.min(this.filter.minPrice, formValues.price);
       this.filter.maxPrice = Math.max(this.filter.maxPrice, formValues.price);
-      // show prompt when new dish is added
+      // show prompt when new item is added
       this.isSubmitted = true;
       // reset form
-      this.dishForm.reset();
+      this.itemForm.reset();
       // set default selected values
-      this.dishForm.controls['cuisine'].setValue(this.cuisine[0]);
-      this.dishForm.controls['category'].setValue(this.category[1]);
+      this.itemForm.controls['category'].setValue(this.categories[1]);
+      this.itemForm.controls['subCategory'].setValue(this.categories[0]); // TODO: subcategory
     } else {
       console.log('Something went wrong. Please check your input.');
     }
   }
 
-  validateDishName() {
-    return this.dishForm.controls['name'].valid || this.dishForm.controls['name'].untouched;
-  }
-
-  validateIngredients() {
-    return this.dishForm.controls['ingredients'].valid || this.dishForm.controls['ingredients'].untouched;
-  }
-
-  validateMaxAvailable() {
-    return this.dishForm.controls['maxAvailable'].valid || this.dishForm.controls['maxAvailable'].untouched;
-  }
-
-  validatePrice() {
-    return this.dishForm.controls['price'].valid || this.dishForm.controls['price'].untouched;
+  validateItemName() {
+    return this.itemForm.controls['name'].valid || this.itemForm.controls['name'].untouched;
   }
 
   validateDescription() {
-    return this.dishForm.controls['description'].valid || this.dishForm.controls['description'].untouched;
+    return this.itemForm.controls['description'].valid || this.itemForm.controls['description'].untouched;
+  }
+
+  validateStockQuantity() {
+    return this.itemForm.controls['stockQuantity'].valid || this.itemForm.controls['stockQuantity'].untouched;
+  }
+
+  validatePrice() {
+    return this.itemForm.controls['price'].valid || this.itemForm.controls['price'].untouched;
   }
 
   validateImageUrls() {
-    return this.dishForm.controls['imageUrls'].valid || this.dishForm.controls['imageUrls'].untouched;
-  }
-
-  getConsecutiveId() {
-    let id = 1;
-    while (this.dishesList.find(dish => dish.id === id) !== undefined) {
-      id++;
-    }
-    return id;
+    return this.itemForm.controls['imageUrls'].valid || this.itemForm.controls['imageUrls'].untouched;
   }
 }

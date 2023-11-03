@@ -81,12 +81,14 @@ class OrderCreate(OderBase):
 
 class OrderOut(OderBase):
     id: int
+    total: float
     created_at: PastDatetime
 
 
 class OrderUpdate(BaseModel):
     user_id: Optional[int] = None
     status: Optional[OrderStatus] = None
+    total: float
 
 
 class OrderRecordBase(BaseModel):
@@ -110,6 +112,7 @@ class OrderFullCreate(OrderFullBase):
 class OrderFullOut(BaseModel):
     id: int
     user_id: int
+    total: float
     status: OrderStatus
     created_at: PastDatetime
     order_records: List[OrderRecord]
@@ -118,7 +121,8 @@ class OrderFullOut(BaseModel):
 class ReviewBase(BaseModel):
     user_id: int
     item_id: int
-    rating: int = Field(None, ge=1, le=5)  # Restrict to integer values between 1 and 5
+    rating: Optional[int] = Field(None, ge=1, le=5)  # Restrict to integer values between 1 and 5
+    title: str
     comment: str
 
 

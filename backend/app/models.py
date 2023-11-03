@@ -61,7 +61,7 @@ class Order(Base):
         nullable=False,
         server_default=text("NOW()"),
     )
-    # total = Column(Numeric, nullable=False)
+    total = Column(Numeric, nullable=False)
     user = relationship("User", back_populates="orders")
     order_records = relationship("OrderRecord", back_populates="order",
                                  cascade="save-update, merge, delete, delete-orphan")
@@ -116,8 +116,8 @@ class Review(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
     item_id = Column(Integer, ForeignKey("items.id", ondelete="CASCADE"), index=True)
     rating = Column(Integer)
-    title = Column(String)
-    comment = Column(String)
+    title = Column(String, nullable=False)
+    comment = Column(String, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True),
         index=True,

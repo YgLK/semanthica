@@ -116,6 +116,7 @@ class Review(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
     item_id = Column(Integer, ForeignKey("items.id", ondelete="CASCADE"), index=True)
     rating = Column(Integer)
+    title = Column(String)
     comment = Column(String)
     created_at = Column(
         TIMESTAMP(timezone=True),

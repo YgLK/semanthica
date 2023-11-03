@@ -166,4 +166,4 @@ cython_debug/
 /backend/db/
 /backend/TODO.md
 /backend/app/semantic_search/test_*
-alembic*
+/backend/app/alembic/versions/*

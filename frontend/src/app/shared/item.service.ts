@@ -3,6 +3,7 @@ import {Item} from "../../models/item";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Review} from "../../models/review";
 import {BehaviorSubject, map, Observable} from "rxjs";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +12,14 @@ export class ItemService {
   itemsList: Item[] = [];
   itemsList$ = new BehaviorSubject<Item[]>(this.itemsList);
 
+  constructor(private http: HttpClient, private userService : UserService) {
+    this.itemsList = [];
+  }
+
   // update the items list and notify subscribers
   updateItemsList(updatedItems: Item[]) {
     this.itemsList = updatedItems;
     this.itemsList$.next(this.itemsList);
-  }
-
-  constructor(private http: HttpClient) {
-    this.itemsList = [];
   }
 
   getItems() {
@@ -52,15 +53,14 @@ export class ItemService {
   }
 
   addReview(itemId: number, review: Review) {
-    // TODO: use logged in user id, add rating to review
-    const user_id = 2;
+    // TODO: add rating to review
     const rating = 4;
 
     const body = {
-        user_id: user_id,
+        user_id: this.userService.user.id,
         item_id: itemId,
         rating: rating,
-        // title: review.title,
+        title: review.title,
         comment: review.reviewContent
     }
     // console.log(body)
@@ -69,7 +69,7 @@ export class ItemService {
         body,
       {headers: new HttpHeaders({'Content-Type': 'application/json'})}
     ).subscribe(() => {
-      // console.log('review added');
+      console.log('review added');
     });
   }
 
@@ -85,25 +85,9 @@ export class ItemService {
   }
 
   deleteItem(itemId: number) {
-    this.itemsList = this.itemsList.filter(item => item.id !== itemId);
-    this.http.delete('/api/items/' + itemId)
-      .subscribe(() => {
-        console.log('item deleted');
-      });
-  }
-
-  updateAvailability(itemId: number, newMaxAvailable: number) {
-      this.http.patch(
-          '/api/items/' + itemId,
-          {stockQuantity: newMaxAvailable},
-          {headers: new HttpHeaders( {'Content-Type': 'application/json'})}
-      ).subscribe(() => {
-          console.log('availability updated');
-      });
-  }
-
-  filterItemById(id: number): Item {
-    return this.itemsList.find(item => item.id === id)!;
+    // TODO: Remove item from db by switching switching some flag telling if the item is available or deleted
+    //      Its just SOFT DELETE, hard delete can be done only manually by admin in the db
+      return
   }
 
   getItemById(itemId: number): Observable<Item> {

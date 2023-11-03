@@ -61,7 +61,7 @@ class Order(Base):
         nullable=False,
         server_default=text("NOW()"),
     )
-    total = Column(Numeric, nullable=False)
+    total = Column(Numeric)
     user = relationship("User", back_populates="orders")
     order_records = relationship("OrderRecord", back_populates="order",
                                  cascade="save-update, merge, delete, delete-orphan")

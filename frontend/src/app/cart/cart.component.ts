@@ -13,7 +13,6 @@ import {Item} from "../../models/item";
 })
 
 export class CartComponent {
-  user: User;
   title: string = 'Cart';
   // itemsCart as a map: item -> quantity
   itemsCart: Map<Item, number>;
@@ -25,7 +24,6 @@ export class CartComponent {
               private orderService: OrderService,
       ) {
     this.itemsCart = cartService.itemsCart;
-    this.user = userService.user;
   }
 
   calculateTotal() {
@@ -48,7 +46,7 @@ export class CartComponent {
           orderRecords.push(new OrderRecord(item.id, count));
         });
       // add order
-      let order = new Order(this.TEMP_CONST_USER_ID, new Date().toLocaleString(), OrderStatus.CREATED, orderRecords, this.calculateTotal());
+      let order = new Order(this.userService.user.id, new Date().toLocaleString(), OrderStatus.CREATED, orderRecords, this.calculateTotal());
       // save order in the database
       this.orderService.addOrder(order);
       this.itemsCart.clear();

@@ -34,6 +34,7 @@ async def create_full_order(order_full: schemas.OrderFullCreate, db: Session = D
 
     # Create the order records
     order_records = []
+    total_cost = 0
     for order_record in order_full.order_records:
         item_id, quantity = order_record.item_id, order_record.quantity
         item = find_item(db, item_id)
@@ -50,6 +51,7 @@ async def create_full_order(order_full: schemas.OrderFullCreate, db: Session = D
                 detail=f"Provided quantity ({quantity}) is invalid. "
                        + f"Available: {item.stock_quantity}",
             )
+        total_cost += item.price * quantity
         order_record = models.OrderRecord(
             order_id=new_order.id,
             item_id=item_id,
@@ -60,6 +62,10 @@ async def create_full_order(order_full: schemas.OrderFullCreate, db: Session = D
         db.commit()
         db.refresh(order_record)
         order_records.append(order_record)
+
+    # update the total cost
+    new_order.total = total_cost
+    db.commit()
 
     new_order.order_records = order_records
     return new_order

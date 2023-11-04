@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from . import models
 from .database import engine
-from .routers import address, item, order, order_record, full_order, review, user, search
+from .routers import address, item, order, order_record, full_order, review, user, search, register
 
 from app.logging import LogConfig
 from logging.config import dictConfig
@@ -24,6 +24,7 @@ app.include_router(review.router, prefix="/api")
 app.include_router(order_record.router, prefix="/api")
 app.include_router(search.router, prefix="/api")
 app.include_router(full_order.router, prefix="/api")
+app.include_router(register.router, prefix="/api")
 
 
 @app.get("/")

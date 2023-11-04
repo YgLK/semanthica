@@ -14,7 +14,7 @@ dotenv.load_dotenv(r"../.env")
 config = context.config
 
 # here we allow ourselves to pass interpolation vars to alembic.ini
-# fron the host env
+# from the host env
 section = config.config_ini_section
 config.set_section_option(section, "DB_USER", os.environ.get("POSTGRES_USER"))
 config.set_section_option(section, "DB_PASSWORD", os.environ.get("POSTGRES_PASSWORD"))

@@ -1,22 +1,23 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-// import {AuthenticationService} from "../shared/authentication.service";
+import {Role, User} from "../../models/user";
+import {Address} from "../../models/address";
+import {AuthService} from "../shared/auth.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   // form
   registerForm!: FormGroup;
-  //if all fields are filled correctly, changes submit button from disabled to enabled and vice versa
-  fieldsCorrect: boolean = false;
-  isSubmitted:boolean = false;
+  // used to show prompt when new user is added
+  isSubmitted: boolean = false;
 
   constructor(public router: Router,
-              // private authenticationService: AuthenticationService
+              private authenticationService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -26,8 +27,12 @@ export class RegisterComponent {
     let firstName = new FormControl(null, Validators.required);
     let lastName = new FormControl(null, Validators.required);
     let email = new FormControl(null, [Validators.required, Validators.email]);
-    let phone = new FormControl(null, [Validators.required, Validators.pattern("^[0-9]*$")]);
-    let address = new FormControl(null, Validators.required);
+    let phone = new FormControl(null, [Validators.required, Validators.pattern(/^\+?[1-9][0-9]{7,14}$/)]);
+    // address
+    let street = new FormControl(null, Validators.required);
+    let city = new FormControl(null, Validators.required);
+    let postalCode = new FormControl(null, Validators.required);
+    let country = new FormControl(null, Validators.required);
     this.registerForm = new FormGroup({
       username: username,
       password: password,
@@ -35,12 +40,35 @@ export class RegisterComponent {
       lastName: lastName,
       email: email,
       phone: phone,
-      address: address
+      street: street,
+      city: city,
+      postalCode: postalCode,
+      country: country
     });
   }
 
-  register() {
+  registerUser(formValues: any) {
+    if(this.registerForm.valid){
+      let address = new Address(formValues.street, formValues.city, formValues.postalCode, formValues.country);
+      // ID will be set by the backend automatically
+      let user = new User(-1,
+        formValues.username,
+        formValues.password,
+        Role.USER,
+        formValues.firstName,
+        formValues.lastName,
+        formValues.email,
+        formValues.phone,
+        [address]
+      );
 
+      this.authenticationService.registerUser(user);
+      this.isSubmitted = true;
+      // reset form
+      this.registerForm.reset();
+    } else {
+      console.log('Something went wrong. Please check your input.');
+    }
   }
 
   inputValid() {
@@ -71,9 +99,18 @@ export class RegisterComponent {
     return this.registerForm.controls['phone'].valid || this.registerForm.controls['phone'].untouched;
   }
 
-  validateAddress() {
-    return this.registerForm.controls['address'].valid || this.registerForm.controls['address'].untouched;
+  validateStreet() {
+    return this.registerForm.controls['street'].valid || this.registerForm.controls['street'].untouched;
   }
 
+  validateCity() {
+    return this.registerForm.controls['city'].valid || this.registerForm.controls['city'].untouched;
+  }
+  validatePostalCode() {
+    return this.registerForm.controls['postalCode'].valid || this.registerForm.controls['postalCode'].untouched;
+  }
 
+  validateCountry() {
+    return this.registerForm.controls['country'].valid || this.registerForm.controls['country'].untouched;
+  }
 }

@@ -61,8 +61,6 @@ export class CreateDishFormComponent implements OnInit {
   subCategoriesUnique = this.categories.find(category => category.category_name === this.categorySelect)?.subcategories;
   subCategorySelect = "Computers & Accessories";
 
-  //if all fields are filled correctly, changes submit button from disabled to enabled and vice versa
-  fieldsCorrect: boolean = false;
   // form group
   itemForm!: FormGroup;
   // used to show prompt when new item is added
@@ -113,7 +111,6 @@ export class CreateDishFormComponent implements OnInit {
       newItem.stockQuantity = formValues.stockQuantity;
       newItem.price = formValues.price;
       newItem.imageUrls = imageUrls;
-
       this.itemService.addItem(newItem);
 
       // update min/max price in filter
@@ -125,7 +122,7 @@ export class CreateDishFormComponent implements OnInit {
       this.itemForm.reset();
       // set default selected values
       this.itemForm.controls['category'].setValue(this.categories[1]);
-      this.itemForm.controls['subCategory'].setValue(this.categories[0]); // TODO: subcategory
+      this.itemForm.controls['subCategory'].setValue(this.subCategoriesUnique[0]);
     } else {
       console.log('Something went wrong. Please check your input.');
     }

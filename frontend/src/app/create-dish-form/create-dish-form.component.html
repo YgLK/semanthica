@@ -30,7 +30,7 @@
   <select class="form-control" formControlName="subCategory" [(ngModel)]='subCategorySelect' id="subcategory" required>
     <option *ngFor="let subCat of subCategoriesUnique" [value]="subCat">{{subCat}}</option>
   </select>
-  <!--  MAX AVAILABLE -->
+  <!--  STOCK QUANTITY -->
   <div [ngClass]="{'error': !validateStockQuantity()}">
     <em *ngIf="!validateStockQuantity()">Required</em>
     <label for="stockQuantity">Stock quantity</label>

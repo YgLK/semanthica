@@ -47,18 +47,13 @@ export class DishesComponent implements OnInit{
   }
 
   removeItemFromDatabase(itemToDel: Item) {
-    /**
-     * TODO: Remove item from db, but it should be done by switching some flag in the db
-     *      (e.g. isAvailable) instead of deleting it from the db because we want to keep
-     *      the history of orders and reviews + we don't want to break the references
-     */
-    console.log(itemToDel.name + ' removed from the menu');
+    console.log(`Item "${itemToDel.name}" removed from platform (soft delete)`);
     // remove from menu
     this.items = this.items.filter(item => item.name !== itemToDel.name);
     // remove from cart since it's no longer available
     this.cartService.removeItemFromCart(itemToDel);
-    // remove from database
-    this.itemService.deleteItem(itemToDel.id);
+    // tag item as deleted
+    this.itemService.softDeleteItem(itemToDel.id);
   }
 
   addItemToCart(item: Item) {

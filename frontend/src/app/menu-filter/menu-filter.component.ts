@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {MatCheckboxChange} from "@angular/material/checkbox";
+import {Filter} from "../../models/filter";
 
 @Component({
   selector: 'app-menu-filter',
@@ -9,7 +10,9 @@ import {MatCheckboxChange} from "@angular/material/checkbox";
 export class MenuFilterComponent {
   @Input() allCategories: any;
   // filters
-  @Input() filter: any;
+  @Input() filter: Filter;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
 
   //check if the filter is applied
   onChangeCategory(event: MatCheckboxChange, category: any) {

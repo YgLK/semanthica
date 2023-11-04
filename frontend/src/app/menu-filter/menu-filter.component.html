@@ -9,7 +9,7 @@
 <div class="priceFilters">
   <p class="filterName">Price</p>
   <label for="minPrice">from</label>
-  <input type="number" [(ngModel)]="filter.minPrice" id="minPrice">
+  <input type="number" [(ngModel)]="this.minPrice" (change)="filter.setMinPrice(this.minPrice)" id="minPrice">
   <label for="maxPrice">to</label>
-  <input type="number" [(ngModel)]="filter.maxPrice" id="maxPrice">
+  <input type="number" [(ngModel)]="this.maxPrice" (change)="filter.setMaxPrice(this.maxPrice)" id="maxPrice">
 </div>

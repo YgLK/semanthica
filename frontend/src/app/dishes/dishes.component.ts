@@ -5,6 +5,7 @@ import {FilterService} from "../shared/filter.service";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
 import {Subscription} from "rxjs";
+import {Filter} from "../../models/filter";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class DishesComponent implements OnInit{
   itemsCart: Map<Item, number>;
   // dishes meeting the filter criteria
   filteredItemsList: Item[] = [];
-  filter: any;
+  filter: Filter;
   // pagination
   page:number = 1;
   itemsPerPage: number = 5;
@@ -37,9 +38,6 @@ export class DishesComponent implements OnInit{
     });
     // set default items list
     this.items = this.itemService.itemsList;
-    // set init max, min prices
-    this.filter.minPrice = this.getMinPrice();
-    this.filter.maxPrice = this.getMaxPrice();
   }
 
   ngOnDestroy() {
@@ -67,10 +65,6 @@ export class DishesComponent implements OnInit{
     this.cartService.addItemToCart(item);
   }
 
-  removeItemFromCart(item: Item) {
-    this.cartService.removeItemFromCart(item);
-  }
-
   getMaxPrice() {
     return Math.max(...this.items.map(item => item.price));
   }
@@ -83,11 +77,5 @@ export class DishesComponent implements OnInit{
     let categories = new Set<string>();
     this.items.forEach(item => categories.add(item.mainCategory));
     return Array.from(categories);
-  }
-
-  getAllOfCuisines() {
-    let cuisines = new Set<string>();
-    this.items.forEach(item => cuisines.add(item.subCategory));
-    return Array.from(cuisines);
   }
 }

@@ -1,0 +1,27 @@
+<h1 style="text-align: center;">Order history</h1>
+<div *ngIf="getOrderHistory().length > 0" class="cartWrapper">
+  <ul class="cartContent">
+    <li *ngFor="let order of getOrderHistory()" class="orderWrapper">
+      <div class="cartItem">
+        <div class="orderId">OrderID: {{order.id}}</div>
+        <div class="orderDate">Date of order: {{order.createdAt}}</div>
+        <div class="orderDate">Total: {{order.total}}</div>
+        <div class="orderDishes">Items:
+          <ul>
+            <li *ngFor="let orderRecord of order.orderRecords" [routerLink]="['/item', orderRecord.item_id]" routerLinkActive="active">
+              <div class="orderRecord">
+                <div class="dishName">{{orderRecord.item_name}}</div>
+                <div class="dishPrice">{{orderRecord.item_price}}</div>
+                <div class="dishCount">{{orderRecord.quantity!}}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="getOrderHistory().length == 0">
+  <h3>Order history is empty.</h3>
+</div>

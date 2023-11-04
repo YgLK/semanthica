@@ -1,0 +1,16 @@
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+iframe {
+  width: 55%;
+  height: 70%;
+  margin-left: 25%;
+}
+
+.restaurant-description {
+  width: 60%;
+}

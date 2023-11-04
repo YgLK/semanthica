@@ -1,0 +1,45 @@
+<div class="reviewsWrapper">
+  <h1>Reviews</h1>
+  <div *ngIf="isSubmitted" class="alert alert-success " role="alert">
+    <strong>Success!</strong> Your review has been submitted.
+    <button (click)="isSubmitted=false" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form class="form-group" [formGroup]="reviewForm" (ngSubmit)="addNewReview(reviewForm.value)">
+    <!--  nickname -->
+    <div class="form-group" [ngClass]="{'error': !validateNickname()}">
+      <label for="nickname">Nickname</label>
+      <em *ngIf="!validateNickname()">Required</em>
+      <input type="text" class="form-control" formControlName="nickname"  id="nickname" placeholder="Your nickname" required>
+    </div>
+    <!--    title -->
+    <div class="form-group" [ngClass]="{'error': !validateTitle()}">
+      <label for="title">Title</label>
+      <em *ngIf="!validateTitle()">Required</em>
+      <input type="text" class="form-control" formControlName="title" id="title" placeholder="Title" required>
+    </div>
+    <!--  review content -->
+    <div class="form-group" [ngClass]="{'error': !validateReviewContent()}">
+      <label for="reviewContent">Review content</label>
+<!--       input error prompts  -->
+      <em *ngIf="!validateReviewContent() && reviewForm.controls['reviewContent']?.errors?.['required']">Required</em>
+      <em *ngIf="!validateReviewContent() && (reviewForm.controls['reviewContent']?.errors?.['minlength'] ||
+      reviewForm.controls['reviewContent']?.errors?.['maxlength'])">Must have between 50 and 500 characters</em>
+      <input type="textarea" class="form-control" formControlName="reviewContent" id="reviewContent" placeholder="Opinion" required>
+    </div>
+    <!--  date -->
+    <label for="date">Order date</label>
+    <input type="date" class="form-control" formControlName="date" id="date" placeholder="Review">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!inputValid()">SUBMIT</button>
+  </form>
+  <mat-divider></mat-divider>
+  <ul class="reviewList">
+    <li *ngFor="let review of reviews" class="review">
+      <p>{{review.user_id}}</p>
+      <p>{{review.title}}</p>
+      <p>{{review.reviewContent}}</p>
+      <p *ngIf="review.date">Date of order:  {{review.date}}</p>
+      <mat-divider></mat-divider>
+  </ul>
+</div>

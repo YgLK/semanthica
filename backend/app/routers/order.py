@@ -12,6 +12,22 @@ router = APIRouter(
 )
 
 
+@router.get("/history", status_code=status.HTTP_200_OK)
+async def get_all_orders(db: Session = Depends(get_db)):
+    """Get order history for frontend since its easier to process it here..."""
+    orders = db.query(models.Order).all()
+    # for all orders add the "order_records" attribute which will contain the name, id, price and quantity of each item
+    for order in orders:
+        order_records = db.query(models.OrderRecord).filter(models.OrderRecord.order_id == order.id).all()
+        order.order_records = order_records
+        # retrieve item name and price
+        for order_record in order_records:
+            item = db.query(models.Item).filter(models.Item.id == order_record.item_id).first()
+            order_record.item_name = item.name
+            order_record.item_price = item.price
+    return orders
+
+
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.OrderOut)
 async def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
     # Check if the user with the provided user_id exists
@@ -46,7 +62,7 @@ async def get_order(order_id: int, db: Session = Depends(get_db)):
     "/{order_id}", status_code=status.HTTP_200_OK, response_model=schemas.OrderOut
 )
 async def update_order(
-    order_id: int, order_updated: schemas.OrderUpdate, db: Session = Depends(get_db)
+        order_id: int, order_updated: schemas.OrderUpdate, db: Session = Depends(get_db)
 ):
     print(order_updated.model_dump())
     order = db.query(models.Order).filter(models.Order.id == order_id).first()
@@ -75,6 +91,8 @@ async def update_order(
 
 @router.delete("/{order_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_order(order_id: int, db: Session = Depends(get_db)):
+    # TODO: does order records be deleted by CASCADE? what about the product quantities, should they
+    #       be added back to the stock?
     order = db.query(models.Order).filter(models.Order.id == order_id).first()
     if not order:
         raise HTTPException(

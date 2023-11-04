@@ -1,0 +1,76 @@
+<div class="registerWrapper">
+  <h1>Register</h1>
+  <form class="form-group" [formGroup]="registerForm" (ngSubmit)="registerUser(registerForm.value)">
+    <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
+      <strong> Success!</strong> Your account has been created. Log in <a (click)="this.router.navigate(['/login'])">here</a>.
+      <button (click)="isSubmitted=false" type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin: 0 auto">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!--  username -->
+    <div class="form-group" [ngClass]="{'error': !validateUsername()}">
+      <label for="username">Username</label>
+      <em *ngIf="!validateUsername()">Required</em>
+      <input type="text" class="form-control" formControlName="username"  id="username" placeholder="Your username" required>
+    </div>
+    <!--    password -->
+    <div class="form-group" [ngClass]="{'error': !validatePassword()}">
+      <label for="password">Password</label>
+      <em *ngIf="!validatePassword()">Required</em>
+      <input type="password" class="form-control" formControlName="password" id="password" placeholder="Password" required>
+    </div>
+    <!-- first name -->
+    <div class="form-group" [ngClass]="{'error': !validateFirstName()}">
+      <label for="firstName">First name</label>
+      <em *ngIf="!validateFirstName()">Required</em>
+      <input type="text" class="form-control" formControlName="firstName" id="firstName" placeholder="First name" required>
+    </div>
+    <!-- last name -->
+    <div class="form-group" [ngClass]="{'error': !validateLastName()}">
+      <label for="lastName">Last name</label>
+      <em *ngIf="!validateLastName()">Required</em>
+      <input type="text" class="form-control" formControlName="lastName" id="lastName" placeholder="Last name" required>
+    </div>
+    <!-- email -->
+    <div class="form-group" [ngClass]="{'error': !validateEmail()}">
+      <label for="email">Email</label>
+      <em *ngIf="!validateEmail()">Required</em>
+      <input type="text" class="form-control" formControlName="email" id="email" placeholder="Email" required>
+    </div>
+    <!-- phone -->
+    <div class="form-group" [ngClass]="{'error': !validatePhone()}">
+      <label for="phone">Phone number</label>
+      <em *ngIf="!validatePhone()">Required</em>
+      <input type="text" class="form-control" formControlName="phone" id="phone" placeholder="Phone number" required>
+    </div>
+    <!-- street -->
+    <div class="form-group" [ngClass]="{'error': !validateStreet()}">
+      <label for="street">Street</label>
+      <em *ngIf="!validateStreet()">Required</em>
+      <input type="text" class="form-control" formControlName="street" id="street" placeholder="e.g. 123 Main Street" required>
+    </div>
+    <!-- postal code -->
+    <div class="form-group" [ngClass]="{'error': !validatePostalCode()}">
+      <label for="postalCode">Postal code</label>
+      <em *ngIf="!validatePostalCode()">Required</em>
+      <input type="text" class="form-control" formControlName="postalCode" id="postalCode" placeholder="e.g. 12-345" required>
+    </div>
+    <!-- city -->
+    <div class="form-group" [ngClass]="{'error': !validateCity()}">
+      <label for="city">City</label>
+      <em *ngIf="!validateCity()">Required</em>
+      <input type="text" class="form-control" formControlName="city" id="city" placeholder="e.g. Anytown" required>
+    </div>
+    <!-- country -->
+    <div class="form-group" [ngClass]="{'error': !validateCountry()}">
+      <label for="country">Country</label>
+      <em *ngIf="!validateCountry()">Required</em>
+      <input type="text" class="form-control" formControlName="country" id="country" placeholder="e.g. Poland" required>
+    </div>
+    <!--  submit -->
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!inputValid()">REGISTER</button>
+      <button mat-raised-button color="basic" (click)="this.router.navigate(['/login']);">BACK</button>
+    </div>
+  </form>
+</div>

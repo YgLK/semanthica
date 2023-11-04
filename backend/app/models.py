@@ -1,7 +1,6 @@
-from sqlalchemy import Column, ForeignKey, Integer, Numeric, String
+from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, Boolean, TIMESTAMP
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
-from sqlalchemy.sql.sqltypes import TIMESTAMP
 
 from .database import Base
 from .schemas import OrderStatus
@@ -23,9 +22,9 @@ class User(Base):
         nullable=False,
         server_default=text("NOW()"),
     )
-    first_name = Column(String, index=True)
-    last_name = Column(String, index=True)
-    phone_number = Column(String, index=True)
+    first_name = Column(String, index=True, nullable=False)
+    last_name = Column(String, index=True, nullable=False)
+    phone_number = Column(String, index=True, nullable=False)
     addresses = relationship("Address", backref="users")
     orders = relationship("Order", back_populates="user")
     reviews = relationship("Review", back_populates="user")
@@ -41,6 +40,7 @@ class Address(Base):
     street = Column(String, index=True, nullable=False)
     city = Column(String, index=True, nullable=False)
     postal_code = Column(String, index=True, nullable=False)
+    country = Column(String, index=True, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True),
         index=True,
@@ -54,15 +54,17 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    status = Column(String, index=True, nullable=False, default=OrderStatus.PENDING)
+    status = Column(String, index=True, nullable=False, default=OrderStatus.CREATED)
     created_at = Column(
         TIMESTAMP(timezone=True),
         index=True,
         nullable=False,
         server_default=text("NOW()"),
     )
+    total = Column(Numeric)
     user = relationship("User", back_populates="orders")
-    order_records = relationship("OrderRecord", back_populates="order")
+    order_records = relationship("OrderRecord", back_populates="order",
+                                 cascade="save-update, merge, delete, delete-orphan")
 
 
 class OrderRecord(Base):
@@ -95,6 +97,18 @@ class Item(Base):
         server_default=text("NOW()"),
     )
     reviews = relationship("Review", back_populates="item")
+    # indicates whether the item has been deleted (SOFT DELETE)
+    is_deleted = Column(Boolean, nullable=False, default=False)
+
+    def is_in_stock(self):
+        return self.stock_quantity > 0
+
+    def update_stock(self, quantity):
+        if quantity < 0:
+            raise ValueError("Quantity must be positive")
+        if self.stock_quantity < quantity:
+            raise ValueError("Not enough stock")
+        self.stock_quantity -= quantity
 
 
 class Review(Base):
@@ -104,7 +118,8 @@ class Review(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
     item_id = Column(Integer, ForeignKey("items.id", ondelete="CASCADE"), index=True)
     rating = Column(Integer)
-    comment = Column(String)
+    title = Column(String, nullable=False)
+    comment = Column(String, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True),
         index=True,

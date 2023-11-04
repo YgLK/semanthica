@@ -1,0 +1,10 @@
+<div class="search-bar">
+  <form class="input-group">
+    <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchQuery" name="searchQuery">
+    <div class="input-group-append">
+      <button class="btn btn-outline-primary" type="button" (click)="classicSearch()">Classic Search</button>
+      <button class="btn btn-outline-primary" type="button" (click)="semanticSearch()">Semantic Search</button>
+      <button class="btn btn-outline-primary" type="button" (click)="imageSearch()">Image Search</button>
+    </div>
+  </form>
+</div>

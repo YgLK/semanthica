@@ -1,0 +1,235 @@
+[
+  {
+    "id": 1,
+    "name": "Pizza",
+    "ratings": [3, 4, 4, 5, 5, 2, 5, 4, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+    "reviews": [
+      {
+        "user_id": 1,
+        "title": "Delicious Pizza",
+        "date": "2022-01-01",
+        "reviewContent": "I recently tried the pepperoni pizza at this establishment and it was absolutely delicious. The crust was perfectly crispy and the toppings were fresh and flavorful. I will definitely be returning for more in the future."
+      },
+      {
+        "user_id": 2,
+        "title": "Outstanding Pizza",
+        "date": "2021-12-15",
+        "reviewContent": "I have been coming to this pizzeria for years and it never disappoints. The staff is always friendly and the pizza is consistently top-notch. Whether I'm in the mood for a classic margherita or something more adventurous, I know I can always count on great taste and quality ingredients. Highly recommend!"
+      },
+      {
+        "user_id": 5,
+        "title": "Best Pizza in Town",
+        "date": "2021-08-20",
+        "reviewContent": "This is hands down the best pizza place in town. The atmosphere is cozy and the service is always fast and friendly. But the real star of the show is the pizza - the crust is always perfectly cooked and the toppings are always fresh and delicious. I can't recommend this place enough!"
+      },
+      {
+        "user_id": 4,
+        "title": "Incredible Pizza",
+        "date": "2021-03-02",
+        "reviewContent": "I recently tried the white truffle and mushroom pizza at this establishment and it was incredible. The flavors were so unique and well-balanced, and the crust was cooked to perfection. I will definitely be coming back to try more of their creative pie offerings."
+      },
+      {
+        "user_id": 2,
+        "title": "Satisfying Pizza",
+        "date": "2020-09-12",
+        "reviewContent": "I always get the large pepperoni pizza from this place and it never disappoints. It's always hot, fresh, and satisfying. The staff is always friendly and helpful, too. I definitely recommend giving this place a try if you're in the mood for some delicious pizza."
+      }
+    ],
+    "cuisine": "Italian",
+    "category": "Main",
+    "ingredients": ["Flour", "Water", "Yeast",  "Salt", "Olive oil", "Tomato sauce", "Cheese"],
+    "maxAvailable": 4,
+    "price": 100.99,
+    "description": "A large pizza with one topping",
+    "imageUrls": [
+      "https://www.twopeasandtheirpod.com/wp-content/uploads/2021/03/Veggie-Pizza-8-500x500.jpg",
+      "https://veenaazmanov.com/wp-content/uploads/2020/04/Classic-Pizza-Margherita1-500x500.jpg",
+      "https://prostepesto.pl/wp-content/uploads/2021/09/pizza-caprese-500x500.jpg"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Pad Thai",
+    "ratings": [4, 4, 4, 5, 5, 2, 1,3, 3, 5, 5],
+    "reviews": [
+      {
+        "user_id": 1,
+        "title": "Delicious Pad Thai",
+        "date": "2018-06-23",
+        "reviewContent": "Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, "
+      }
+    ],
+    "cuisine": "Thai",
+    "category": "Main",
+    "ingredients": ["Rice noodles", "Tofu", "Bean sprouts", "Peanuts", "Lime", "Tamari", "Red pepper flakes"],
+    "maxAvailable": 11,
+    "price": 12.99,
+    "description": "A traditional Thai dish made with rice noodles, tofu, and a variety of vegetables",
+    "imageUrls": ["https://www.kitchensanctuary.com/wp-content/uploads/2019/07/Pad-Thai-square-FS-29-500x500.jpg"]
+  },
+  {
+    "id": 3,
+    "name": "Chicken Tikka Masala",
+    "ratings": [4, 4, 1,3, 3, 5, 5],
+    "reviews": [
+      {
+        "user_id": 1,
+        "title": "Delicious Chicken Tikka Masala",
+        "date": "2018-06-23",
+        "reviewContent": "Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, "
+      }
+    ],
+    "cuisine": "Indian",
+    "category": "Main",
+    "ingredients": ["Boneless chicken", "Greek yogurt", "Lemon juice", "Cumin", "Coriander", "Garam masala", "Tomato sauce", "Heavy cream"],
+    "maxAvailable": 4,
+    "price": 14.99,
+    "description": "A classic Indian dish made with marinated and grilled chicken in a creamy tomato sauce",
+    "imageUrls": ["https://bellyfull.net/wp-content/uploads/2021/05/Chicken-Tikka-Masala-blog-500x500.jpg"]
+  },
+  {
+    "id": 4,
+    "name": "Falafel",
+    "ratings": [2, 1,3, 3, 5, 5],
+    "reviews": [
+      {
+        "user_id": 1,
+        "title": "Delicious Falafel",
+        "date": "2018-06-23",
+        "reviewContent": "Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, "
+      }
+    ],
+    "cuisine": "Middle Eastern",
+    "category": "Appetizer",
+    "ingredients": ["Dried chickpeas", "Onion", "Parsley", "Cilantro", "Garlic", "Cumin", "Corainder", "Baking powder"],
+    "maxAvailable": 4,
+    "price": 7.99,
+    "description": "Deep-fried balls made from ground chickpeas and spices, often served in a pita with vegetables and sauce",
+    "imageUrls": ["https://www.thehungrybites.com/wp-content/uploads/2020/10/falafel-thumb3-500x500.jpg"]
+  },
+  {
+    "id": 5,
+    "name": "Paella",
+    "ratings": [3,1,3, 3, 5, 5],
+    "reviews": [
+      {
+        "user_id":1,
+        "title": "Delicious Paella",
+        "date": "2018-06-23",
+        "reviewContent": "Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, "
+      }
+    ],
+    "cuisine": "Spanish",
+    "category": "Main",
+    "ingredients": ["Saffron", "Short-grain rice", "Chicken", "Seafood", "Peas", "Tomatoes", "Green peppers", "Onion"],
+    "maxAvailable": 4,
+    "price": 18.99,
+    "description": "A traditional Spanish rice dish made with a variety of ingredients, including seafood and chicken",
+    "imageUrls": ["https://m.media-amazon.com/images/I/61qsgN7CWOL._AC_SY1000_.jpg"]
+  },
+  {
+    "id": 6,
+    "name": "Coq au Vin",
+    "ratings": [],
+    "reviews": [],
+    "cuisine": "French",
+    "category": "Main",
+    "ingredients": ["Chicken", "Bacon", "Carrots", "Onion", "Garlic", "Red wine", "Thyme", "Bay leaves"],
+    "maxAvailable": 4,
+    "price": 16.99,
+    "description": "A French dish made with chicken braised in red wine with vegetables and herbs",
+    "imageUrls": ["https://www.oliviascuisine.com/wp-content/uploads/2022/02/coq-au-vin-500x500.jpg"]
+  },
+  {
+    "id": 7,
+    "name": "Moussaka",
+    "ratings": [],
+    "reviews": [
+      {
+        "user_id": 1,
+        "title": "Delicious Moussaka",
+        "date": "2018-06-23",
+        "reviewContent": "Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, "
+      }
+    ],
+    "cuisine": "Greek",
+    "category": "Main",
+    "ingredients": ["Eggplant", "Ground beef", "Tomato sauce", "Onion", "Garlic", "Cinnamon", "Allspice", "Béchamel sauce"],
+    "maxAvailable": 4,
+    "price": 14.99,
+    "description": "A traditional Greek dish made with layers of eggplant, ground beef, and a creamy béchamel sauce",
+    "imageUrls": ["https://elavegan.com/wp-content/uploads/2019/01/gluten-free-vegan-moussaka-on-a-plate-with-a-wooden-spatula-500x500.jpg"]
+  },
+  {
+    "id": 8,
+    "name": "Tempeh Bacon",
+    "ratings": [],
+    "reviews": [
+      {
+        "user_id": 2,
+        "title": "Delicious Moussaka",
+        "date": "2018-06-23",
+        "reviewContent": "Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, Fine food, "
+      }
+    ],
+    "cuisine": "American",
+    "category": "Vegan",
+    "ingredients": ["Tempeh", "Tamari", "Maple syrup", "Liquid smoke", "Smoked paprika"],
+    "maxAvailable": 4,
+    "price": 9.99,
+    "description": "A vegan version of bacon made with tempeh, marinated in a mixture of tamari, maple syrup, and smoky spices",
+    "imageUrls": ["https://thehiddenveggies.com/wp-content/uploads/2020/12/tempeh-bacon-sq-500x500.jpg"]
+  },
+  {
+    "id": 9,
+    "name": "Eggs Benedict",
+    "ratings": [],
+    "reviews": [],
+    "cuisine": "American",
+    "category": "Breakfast",
+    "ingredients": ["Eggs", "English muffins", "Canadian bacon", "Hollandaise sauce"],
+    "maxAvailable": 4,
+    "price": 12.99,
+    "description": "A classic American breakfast dish made with poached eggs, Canadian bacon, and hollandaise sauce served on an English muffin",
+    "imageUrls": ["https://www.jocooks.com/wp-content/uploads/2020/08/eggs-benedict-1-13-500x500.jpg"]
+  },
+  {
+    "id": 10,
+    "name": "Spinach Salad",
+    "ratings": [],
+    "reviews": [],
+    "cuisine": "American",
+    "category": "Salad",
+    "ingredients": ["Spinach", "Bacon", "Egg", "Red onion", "Tomatoes", "Vinegar", "Sugar"],
+    "maxAvailable": 4,
+    "price": 9.99,
+    "description": "A salad made with fresh spinach and topped with a warm bacon dressing and a variety of vegetables",
+    "imageUrls": ["https://www.wholesomelicious.com/wp-content/uploads/2017/04/Spinach-and-Asparagus-Salad-with-Warm-Bacon-Dresssing-Image-500x500.jpg"]
+  },
+  {
+    "id": 11,
+    "name": "Minestrone Soup",
+    "ratings": [],
+    "reviews": [],
+    "cuisine": "Italian",
+    "category": "Soup",
+    "ingredients": ["Olive oil", "Onion", "Carrots", "Celery", "Tomatoes", "Beans", "Zucchini", "Pasta"],
+    "maxAvailable": 4,
+    "price": 8.99,
+    "description": "A traditional Italian soup made with a variety of vegetables and beans, often served with pasta",
+    "imageUrls": ["https://www.ambitiouskitchen.com/wp-content/uploads/fly-images/41064/Classic-Minestrone-Soup-5-500x500-c.jpg"]
+  },
+  {
+    "id": 12,
+    "name": "Chocolate Cake",
+    "ratings": [],
+    "reviews": [],
+    "cuisine": "American",
+    "category": "Dessert",
+    "ingredients": ["Flour", "Sugar", "Eggs", "Butter", "Baking powder", "Milk", "Chocolate"],
+    "maxAvailable": 4,
+    "price": 14.99,
+    "description": "A rich and moist chocolate cake with layers of chocolate frosting",
+    "imageUrls": ["https://sugargeekshow.com/wp-content/uploads/2021/03/easy_chocolate_cake_featured-500x500.jpg"]
+  }
+]

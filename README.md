@@ -19,6 +19,12 @@ The following environment variables are required for this project:
 
 #### backend
 1. Create a virtual environment for the backend, install requirements, and activate the virtual environment.
+```shell
+# create virtual env from conda environment.yml
+conda env create -f backend/environment.yml
+# activate virtual env
+conda activate semanthica
+```
 2. Run the docker-compose file to start the databases.
 ```shell
 cd backend

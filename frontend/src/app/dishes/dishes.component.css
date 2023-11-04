@@ -1,0 +1,120 @@
+.menuWrapper {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgba(0, 0, 0, 0.11);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 1%;
+  font-weight: bold;
+  min-height: 150vh;
+}
+
+.menu-head {
+  text-align: center;
+}
+
+.sectionName {
+  margin-left: 2%;
+  font-size: 2vw;
+  font-weight: bold;
+}
+
+app-menu-filter {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.11);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 1%;
+  padding: 0.5%;
+  width: 23vw;
+}
+
+
+.dishList {
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  margin: 1%;
+  /*border: 1px solid rgba(0, 0, 0, 0.11);*/
+  min-height: 100vh;
+}
+
+.dishCard{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 20vw;
+  width: 100%;
+  /*min-height: 0;*/
+  margin-bottom: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.11);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.dish-info {
+  display: flex;
+  flex-direction: column;
+  padding: 1%;
+  width: 60%;
+}
+
+.dishImg {
+  aspect-ratio : 1 / 1;
+  max-height: 100%;
+  max-width: 100%;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.buttons {
+  /*border: 1px solid black;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding-right: 3%;
+}
+
+button {
+  height: 3.5vw;
+  width: 3.5vw;
+}
+
+button mat-icon {
+  align-items: center;
+  font-size: 1.5vw;
+}
+
+.rating {
+  margin: 0;
+}
+
+.span {
+  margin-bottom: 5%;
+}
+
+.property-description {
+  /*font-size: 1vw;*/
+  font-size: smaller;
+  padding: 0;
+  margin: 0;
+}
+
+.name {
+  font-size: 1.3vw;
+  font-weight: bold;
+}
+
+.statsDiv{
+  margin-top: 0.5vw;
+  width: 30%;
+  text-align: center;
+  border-radius: 5px;
+}
+
+pagination-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2%;
+}

@@ -1,0 +1,34 @@
+ngb-rating {
+  color: #FFC107;
+  font-size: 2vw;
+}
+
+.example-section {
+  margin: 12px 0;
+}
+
+.example-margin {
+  margin: 0 12px;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
+
+.filterName {
+  font-size: 1vw;
+  /*font-size: medium;*/
+  padding: 0;
+  margin: 0;
+}
+
+.filterName {
+  font-weight: bold;
+  font-size: 1.3vw;
+}
+
+.priceFilters {
+  display: flex;
+  flex-direction: column;
+}

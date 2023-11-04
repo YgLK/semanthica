@@ -1,0 +1,21 @@
+<div class="loginWrapper">
+  <h1>Login</h1>
+  <form class="form-group" [formGroup]="loginForm" (ngSubmit)="login()">
+    <!--  username -->
+    <div class="form-group" [ngClass]="{'error': !validateUsername()}">
+      <label for="username">Username</label>
+      <em *ngIf="!validateUsername()">Required</em>
+      <input type="text" class="form-control" formControlName="username"  id="username" placeholder="Your username" required>
+    </div>
+    <!--    password -->
+    <div class="form-group" [ngClass]="{'error': !validatePassword()}">
+      <label for="password">Password</label>
+      <em *ngIf="!validatePassword()">Required</em>
+      <input type="text" class="form-control" formControlName="password" id="password" placeholder="Password" required>
+    </div>
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!inputValid()">LOGIN</button>
+      <button mat-raised-button color="basic" (click)="this.router.navigate(['/register']);">REGISTER</button>
+    </div>
+  </form>
+</div>

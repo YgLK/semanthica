@@ -15,7 +15,7 @@ router = APIRouter(
 @router.post(
     "/", status_code=status.HTTP_201_CREATED, response_model=schemas.AddressOut
 )
-async def create_address(address: schemas.AddressBase, db: Session = Depends(get_db)):
+async def create_address(address: schemas.AddressCreate, db: Session = Depends(get_db)):
     # Check if the user with the provided user_id exists
     user = db.query(models.User).filter(models.User.id == address.user_id).first()
     if not user:

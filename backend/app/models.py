@@ -1,7 +1,6 @@
-from sqlalchemy import Column, ForeignKey, Integer, Numeric, String
+from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, Boolean, TIMESTAMP
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
-from sqlalchemy.sql.sqltypes import TIMESTAMP
 
 from .database import Base
 from .schemas import OrderStatus
@@ -99,7 +98,7 @@ class Item(Base):
     )
     reviews = relationship("Review", back_populates="item")
     # indicates whether the item has been deleted (SOFT DELETE)
-    is_deleted = Column(String, nullable=False, default="false")
+    is_deleted = Column(Boolean, nullable=False, default=False)
 
     def is_in_stock(self):
         return self.stock_quantity > 0

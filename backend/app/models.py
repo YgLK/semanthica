@@ -23,9 +23,9 @@ class User(Base):
         nullable=False,
         server_default=text("NOW()"),
     )
-    first_name = Column(String, index=True)
-    last_name = Column(String, index=True)
-    phone_number = Column(String, index=True)
+    first_name = Column(String, index=True, nullable=False)
+    last_name = Column(String, index=True, nullable=False)
+    phone_number = Column(String, index=True, nullable=False)
     addresses = relationship("Address", backref="users")
     orders = relationship("Order", back_populates="user")
     reviews = relationship("Review", back_populates="user")
@@ -41,6 +41,7 @@ class Address(Base):
     street = Column(String, index=True, nullable=False)
     city = Column(String, index=True, nullable=False)
     postal_code = Column(String, index=True, nullable=False)
+    country = Column(String, index=True, nullable=False)
     created_at = Column(
         TIMESTAMP(timezone=True),
         index=True,

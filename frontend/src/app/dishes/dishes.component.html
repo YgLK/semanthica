@@ -8,9 +8,9 @@
 <div class="menuWrapper">
   <app-menu-filter
     [allCategories]="getAllCategories()"
-    [allCuisines]="getAllOfCuisines()"
     [filter]="filter"
   ></app-menu-filter>
+  <!--    [categoryToSubcategories]="getSubcategories()"-->
   <!-- LIST OF ITEMS -->
   <ul class="dishList">
       <li *ngFor="let item of items | filterPipe:filter | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"

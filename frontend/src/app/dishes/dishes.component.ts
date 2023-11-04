@@ -67,10 +67,6 @@ export class DishesComponent implements OnInit{
     this.cartService.addItemToCart(item);
   }
 
-  removeItemFromCart(item: Item) {
-    this.cartService.removeItemFromCart(item);
-  }
-
   getMaxPrice() {
     return Math.max(...this.items.map(item => item.price));
   }
@@ -85,9 +81,14 @@ export class DishesComponent implements OnInit{
     return Array.from(categories);
   }
 
-  getAllOfCuisines() {
-    let cuisines = new Set<string>();
-    this.items.forEach(item => cuisines.add(item.subCategory));
-    return Array.from(cuisines);
-  }
+  // getSubcategories() {
+  //   let categoryToSubcategories = new Map<string, Set<string>>();
+  //   this.items.forEach(item => {
+  //     if (!categoryToSubcategories.has(item.mainCategory)) {
+  //       categoryToSubcategories.set(item.mainCategory, new Set<string>());
+  //     }
+  //     categoryToSubcategories.get(item.mainCategory)!.add(item.subCategory);
+  //   });
+  //   return categoryToSubcategories;
+  // }
 }

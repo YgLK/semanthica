@@ -80,15 +80,4 @@ export class DishesComponent implements OnInit{
     this.items.forEach(item => categories.add(item.mainCategory));
     return Array.from(categories);
   }
-
-  // getSubcategories() {
-  //   let categoryToSubcategories = new Map<string, Set<string>>();
-  //   this.items.forEach(item => {
-  //     if (!categoryToSubcategories.has(item.mainCategory)) {
-  //       categoryToSubcategories.set(item.mainCategory, new Set<string>());
-  //     }
-  //     categoryToSubcategories.get(item.mainCategory)!.add(item.subCategory);
-  //   });
-  //   return categoryToSubcategories;
-  // }
 }

@@ -19,18 +19,19 @@ class OrderStatus(str, Enum):
 
 
 class AddressBase(BaseModel):
-    user_id: int
     street: str
     city: str
     postal_code: str
+    country: str
 
 
 class AddressCreate(AddressBase):
-    pass
+    user_id: int
 
 
 class AddressOut(AddressBase):
     id: int
+    user_id: int
     created_at: PastDatetime
 
 
@@ -39,15 +40,16 @@ class AddressUpdate(BaseModel):
     street: Optional[str] = None
     city: Optional[str] = None
     postal_code: Optional[str] = None
+    country: Optional[str] = None
 
 
 class UserBase(BaseModel):
     username: str
     email: EmailStr
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    role: Optional[Role] = None
-    phone_number: Optional[PhoneNumber] = None
+    first_name: str
+    last_name: str
+    role: Optional[Role] = Role.USER
+    phone_number: PhoneNumber
 
 
 class UserCreate(UserBase):
@@ -220,3 +222,13 @@ class ResponseItem(BaseModel):
 
 class SearchResponse(BaseModel):
     items: List[ResponseItem]
+
+
+class UserFullCreate(UserCreate):
+    addresses: List[AddressBase]
+
+
+class UserFullOut(UserFullCreate):
+    id: int
+    addresses: List[AddressOut]
+    created_at: PastDatetime

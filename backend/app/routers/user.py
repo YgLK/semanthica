@@ -8,14 +8,13 @@ from ..database import get_db
 
 router = APIRouter(
     prefix="/users",
-    # group name for docs
     tags=["Users"],
 )
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
 async def create_user(
-    user: schemas.UserCreate, db: Session = Depends(get_db)
+        user: schemas.UserCreate, db: Session = Depends(get_db)
 ):  # -> schemas.User:
     # hash password
     user.password = utils.PasswordHasher.get_password_hash(user.password)
@@ -44,7 +43,7 @@ async def get_user(user_id: str, db: Session = Depends(get_db)):  # -> schemas.U
     "/{user_id}", status_code=status.HTTP_200_OK, response_model=schemas.UserOut
 )
 async def update_user(
-    user_id: str, user_updated: schemas.UserUpdate, db: Session = Depends(get_db)
+        user_id: str, user_updated: schemas.UserUpdate, db: Session = Depends(get_db)
 ):
     user = db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -76,7 +75,6 @@ async def delete_user(user_id: str, db: Session = Depends(get_db)):
     db.delete(user)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-
 
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.UserOut])

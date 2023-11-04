@@ -166,7 +166,6 @@ class ItemOut(ItemBase):
     id: int
     created_at: PastDatetime
     reviews: Optional[List[ReviewOut]] = None
-    is_deleted: bool
 
 
 class ItemCreate(ItemBase):
@@ -181,7 +180,6 @@ class ItemUpdate(BaseModel):
     image_url: Optional[str] = None
     stock_quantity: Optional[int] = None
     price: Optional[float] = None
-    is_deleted: Optional[bool] = None
 
 
 class OrderRecordBase(BaseModel):

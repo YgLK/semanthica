@@ -100,12 +100,7 @@ async def get_items(
     offset = (page - 1) * items_per_page if page and items_per_page else 0
 
     # Query the database with pagination
-    items = (
-        db.query(models.Item)
-        .filter(models.Item.is_deleted == False)
-        .offset(offset).limit(items_per_page).all()
-    )
-
+    items = db.query(models.Item).offset(offset).limit(items_per_page).all()
     return items
 
 

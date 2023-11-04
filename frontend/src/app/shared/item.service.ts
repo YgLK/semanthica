@@ -24,9 +24,10 @@ export class ItemService {
 
   getItems() {
     let itemsPrepared: Item[] = [];
-    this.http.get<any>('/api/items/?page=2&items_per_page=100') // TODO: limit items and pagination
+    this.http.get<any>('/api/items/?page=20&items_per_page=2') // TODO: limit items and pagination
       .subscribe((data: any) => {
         data.forEach((item: any) => {
+          console.log(item);
           itemsPrepared.push(Item.createItem(item));
         });
       });
@@ -34,6 +35,7 @@ export class ItemService {
   }
 
   getItemReviews(itemId: number): Review[] {
+    // let dishesPrepared: Dish[] = [];
     let reviews: Review[] = [];
     this.http.get<any>(`/api/items/${itemId}/reviews`) // TODO: limit items and pagination
       .subscribe((data: any) => {
@@ -82,20 +84,14 @@ export class ItemService {
     });
   }
 
-  softDeleteItem(itemId: number) {
-      this.http.put(
-          `/api/items/${itemId}`,
-          {
-            is_deleted: true
-          },
-          {headers: new HttpHeaders({'Content-Type': 'application/json'})}
-      ).subscribe(() => {
-          console.log('item soft deleted');
-      });
+  deleteItem(itemId: number) {
+    // TODO: Remove item from db by switching switching some flag telling if the item is available or deleted
+    //      Its just SOFT DELETE, hard delete can be done only manually by admin in the db
+      return
   }
 
   getItemById(itemId: number): Observable<Item> {
-    return this.http.get<any>(`/api/items/${itemId}`)
+    return this.http.get<any>('/api/items/' + itemId)
       .pipe(
         map((itemData: any) => {
           console.log(itemData);

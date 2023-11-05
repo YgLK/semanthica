@@ -8,10 +8,25 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+    env:
+      # relational db config
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      # models config
+      TEXT_EMBEDDING_MODEL: ${{ vars.TEXT_EMBEDDING_MODEL }}
+      TEXT_EMBEDDING_DIM: ${{ vars.TEXT_EMBEDDING_DIM }}
+      IMAGE_EMBEDDING_DIM: ${{ vars.IMAGE_EMBEDDING_DIM }}
+      # vector db config
+      QDRANT_DB_HOST: ${{ secrets.QDRANT_DB_HOST }}
+      QDRANT_DB_PORT: ${{ secrets.QDRANT_DB_PORT }}
+      QDRANT_DB_COLLECTION_NAME:  ${{ secrets.QDRANT_DB_COLLECTION_NAME }}
+
     strategy:
       matrix:
         python-version: [3.9]
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -29,8 +44,9 @@ jobs:
           flake8 ./backend/ --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 ./backend/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Unit Testing with pytest
-#        env:
-#           add environment variables for tests
+      - name: Run Docker container with databases
         run: |
-          pytest
+          docker-compose -f ./backend/docker-compose.github.yml up -d
+      - name: Unit Testing with pytest
+        run: |
+          pytest ./backend/tests/

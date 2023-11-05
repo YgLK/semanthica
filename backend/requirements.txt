@@ -11,3 +11,4 @@ sentence_transformers==2.2.2
 SQLAlchemy==2.0.21
 tensorflow==2.14.0
 pytest==7.4.3
+psycopg2-binary==2.9.9

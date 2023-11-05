@@ -4,6 +4,7 @@ opencv_python==4.8.1.78
 opencv_python_headless==4.8.1.78
 passlib==1.7.4
 pydantic==2.4.2
+pydantic[email]
 pydantic_extra_types==2.1.0
 python-dotenv==1.0.0
 qdrant_client==1.6.4

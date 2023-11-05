@@ -10,19 +10,19 @@ jobs:
     environment: test
     env:
       # relational db config
-      POSTGRES_USER: ${{secrets.POSTGRES_USER}}
-      POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
-      POSTGRES_HOST: ${{secrets.POSTGRES_HOST}}
-      POSTGRES_PORT: ${{secrets.POSTGRES_PORT}}
-      POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+      POSTGRES_USER: ${{vars.POSTGRES_USER}}
+      POSTGRES_PASSWORD: ${{vars.POSTGRES_PASSWORD}}
+      POSTGRES_HOST: ${{vars.POSTGRES_HOST}}
+      POSTGRES_PORT: ${{vars.POSTGRES_PORT}}
+      POSTGRES_DB: ${{vars.POSTGRES_DB}}
       # models config
       TEXT_EMBEDDING_MODEL: ${{vars.TEXT_EMBEDDING_MODEL}}
       TEXT_EMBEDDING_DIM: ${{vars.TEXT_EMBEDDING_DIM}}
       IMAGE_EMBEDDING_DIM: ${{vars.IMAGE_EMBEDDING_DIM}}
       # vector db config
-      QDRANT_DB_HOST: ${{secrets.QDRANT_DB_HOST}}
-      QDRANT_DB_PORT: ${{secrets.QDRANT_DB_PORT}}
-      QDRANT_DB_COLLECTION_NAME:  ${{secrets.QDRANT_DB_COLLECTION_NAME}}
+      QDRANT_DB_HOST: ${{vars.QDRANT_DB_HOST}}
+      QDRANT_DB_PORT: ${{vars.QDRANT_DB_PORT}}
+      QDRANT_DB_COLLECTION_NAME:  ${{vars.QDRANT_DB_COLLECTION_NAME}}
 
     strategy:
       matrix:

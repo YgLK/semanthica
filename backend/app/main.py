@@ -29,4 +29,9 @@ app.include_router(register.router, prefix="/api")
 
 @app.get("/")
 def index():
-    return {"Hello": "World"}
+    return {"message": "Hello World"}
+
+
+@app.get("/healthcheck", include_in_schema=False)
+def healthcheck():
+    return {"status": "ok"}

@@ -27,6 +27,12 @@ jobs:
     services:
       postgres:
         image: postgres:15
+        env:
+          POSTGRES_USER: ${{vars.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{vars.POSTGRES_PASSWORD}}
+          POSTGRES_HOST: ${{vars.POSTGRES_HOST}}
+          POSTGRES_PORT: ${{vars.POSTGRES_PORT}}
+          POSTGRES_DB: ${{vars.POSTGRES_DB}}
         ports:
           - 5432/tcp
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5

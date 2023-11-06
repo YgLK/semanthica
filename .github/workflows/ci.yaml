@@ -24,23 +24,23 @@ jobs:
       QDRANT_DB_PORT: ${{vars.QDRANT_DB_PORT}}
       QDRANT_DB_COLLECTION_NAME:  ${{vars.QDRANT_DB_COLLECTION_NAME}}
     
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: ${{vars.POSTGRES_USER}}
-          POSTGRES_PASSWORD: ${{vars.POSTGRES_PASSWORD}}
-          POSTGRES_HOST: ${{vars.POSTGRES_HOST}}
-          POSTGRES_PORT: ${{vars.POSTGRES_PORT}}
-          POSTGRES_DB: ${{vars.POSTGRES_DB}}
-        ports:
-          - 5432/tcp
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      qdrant:
-        image: qdrant/qdrant:v1.4.1
-        ports:
-          - 6333/tcp
-          - 6334/tcp
+#    services:
+#      postgres:
+#        image: postgres:15
+#        env:
+#          POSTGRES_USER: ${{vars.POSTGRES_USER}}
+#          POSTGRES_PASSWORD: ${{vars.POSTGRES_PASSWORD}}
+#          POSTGRES_HOST: ${{vars.POSTGRES_HOST}}
+#          POSTGRES_PORT: ${{vars.POSTGRES_PORT}}
+#          POSTGRES_DB: ${{vars.POSTGRES_DB}}
+#        ports:
+#          - 5432/tcp
+#        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+#      qdrant:
+#        image: qdrant/qdrant:v1.4.1
+#        ports:
+#          - 6333/tcp
+#          - 6334/tcp
 
     strategy:
       matrix:
@@ -62,9 +62,9 @@ jobs:
           flake8 ./backend/ --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 ./backend/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      # - name: Run Docker container with databases
-      #   run: |
-      #     docker-compose -f ./backend/docker-compose.github.yml up -d
+      - name: Run Docker container with databases
+        run: |
+          docker-compose -f ./backend/docker-compose.github.yml up -d
       - name: Unit Testing with pytest
         run: |
           pytest ./backend/tests/

@@ -1,0 +1,70 @@
+name: FastAPI CI
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: test
+    env:
+      # relational db config
+      POSTGRES_USER: ${{vars.POSTGRES_USER}}
+      POSTGRES_PASSWORD: ${{vars.POSTGRES_PASSWORD}}
+      POSTGRES_HOST: ${{vars.POSTGRES_HOST}}
+      POSTGRES_PORT: ${{vars.POSTGRES_PORT}}
+      POSTGRES_DB: ${{vars.POSTGRES_DB}}
+      # models config
+      TEXT_EMBEDDING_MODEL: ${{vars.TEXT_EMBEDDING_MODEL}}
+      TEXT_EMBEDDING_DIM: ${{vars.TEXT_EMBEDDING_DIM}}
+      IMAGE_EMBEDDING_DIM: ${{vars.IMAGE_EMBEDDING_DIM}}
+      # vector db config
+      QDRANT_DB_HOST: ${{vars.QDRANT_DB_HOST}}
+      QDRANT_DB_PORT: ${{vars.QDRANT_DB_PORT}}
+      QDRANT_DB_COLLECTION_NAME:  ${{vars.QDRANT_DB_COLLECTION_NAME}}
+    
+#    services:
+#      postgres:
+#        image: postgres:15
+#        env:
+#          POSTGRES_USER: ${{vars.POSTGRES_USER}}
+#          POSTGRES_PASSWORD: ${{vars.POSTGRES_PASSWORD}}
+#          POSTGRES_HOST: ${{vars.POSTGRES_HOST}}
+#          POSTGRES_PORT: ${{vars.POSTGRES_PORT}}
+#          POSTGRES_DB: ${{vars.POSTGRES_DB}}
+#        ports:
+#          - 5432/tcp
+#        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+#      qdrant:
+#        image: qdrant/qdrant:v1.4.1
+#        ports:
+#          - 6333/tcp
+#          - 6334/tcp
+
+    strategy:
+      matrix:
+        python-version: [3.9]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+          pip install -r ./backend/requirements.txt
+      - name: Static Code Linting with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 ./backend/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 ./backend/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Run Docker container with databases
+        run: |
+          docker-compose -f ./backend/docker-compose.github.yml up -d
+      - name: Unit Testing with pytest
+        run: |
+          pytest ./backend/tests/

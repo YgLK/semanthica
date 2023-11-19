@@ -12,8 +12,21 @@ export class SearchService {
     if (searchQuery === '') {
       return [];
     }
-    // TODO
-    return [];
+    console.log(searchQuery)
+    let itemsPrepared: Item[] = [];
+    this.http.post(
+      '/api/search/classic',
+      {
+        "text_query": searchQuery,
+        "top_k": 30, // TODO: top k isnt taken into account yet
+      },
+      {headers: new HttpHeaders({'Content-Type': 'application/json'})}
+    ).subscribe((items: any) => {
+      items.forEach((item_data: any) => {
+        itemsPrepared.push(Item.createItem(item_data));
+      })
+    });
+    return itemsPrepared;
   }
 
   semanticSearch(searchQuery: string): Item[] {
@@ -25,7 +38,7 @@ export class SearchService {
       '/api/search/text',
       {
         "text_query": searchQuery,
-        "top_k": 30,
+        "top_k": 30, // TODO: top k isnt taken into account yet
       },
       {headers: new HttpHeaders({'Content-Type': 'application/json'})}
     ).subscribe((data: any) => {

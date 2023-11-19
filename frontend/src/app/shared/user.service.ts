@@ -11,7 +11,7 @@ export class UserService {
 
   constructor() {
     // create sample user
-    this.user = new User(2, "user1", "password1", Role.USER, "John", "Doe",
+    this.user = new User(1, "user1", "password1", Role.USER, "John", "Doe",
       "johndoe@gmail.com", "+48777888999",
       [new Address("123 Maple Street, Any-town", "Any-town", "12345", "USA")]);
   }

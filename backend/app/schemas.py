@@ -139,7 +139,7 @@ class ItemReviewsOut(ReviewBase):
     """
     id: int
     created_at: PastDatetime
-    title: str = Field("Temporary title, TBD", max_length=50)
+    title: str  # = Field("Temporary title, TBD", max_length=50)
     username: str
 
 
@@ -210,6 +210,7 @@ class SearchQuery(BaseModel):
 
 class SearchQueryText(SearchQuery):
     text_query: str
+    top_k: Optional[int]
 
 
 class SearchQueryImage(SearchQuery):

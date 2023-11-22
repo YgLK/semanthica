@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from pydantic import BaseModel, EmailStr, Field, PastDatetime, conint
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -235,3 +235,13 @@ class UserFullOut(UserFullCreate):
     id: int
     addresses: List[AddressOut]
     created_at: PastDatetime
+
+
+# Authentication
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Union[str, None] = None

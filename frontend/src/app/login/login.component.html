@@ -14,7 +14,7 @@
       <input type="text" class="form-control" formControlName="password" id="password" placeholder="Password" required>
     </div>
     <div class="buttons">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!inputValid()">LOGIN</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!this.loginForm.valid">LOGIN</button>
       <button mat-raised-button color="basic" (click)="this.router.navigate(['/register']);">REGISTER</button>
     </div>
   </form>

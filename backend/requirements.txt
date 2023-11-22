@@ -16,3 +16,5 @@ pytest==7.4.3
 psycopg2-binary==2.9.9
 phonenumbers==8.13.22
 sqlalchemy-utils==0.41.1
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4

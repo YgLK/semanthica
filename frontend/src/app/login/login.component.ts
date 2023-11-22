@@ -1,14 +1,14 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-// import {AuthenticationService} from "../shared/authentication.service";
+import {AuthService} from "../shared/auth.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   // form
   loginForm!: FormGroup;
   //if all fields are filled correctly, changes submit button from disabled to enabled and vice versa
@@ -16,7 +16,7 @@ export class LoginComponent {
   isSubmitted:boolean = false;
 
   constructor(public router: Router,
-              // private authenticationService: AuthenticationService
+              private authenticationService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -30,15 +30,14 @@ export class LoginComponent {
   }
 
   login(){
-    //   // this.authenticationService.authorize(
-    //   //   this.loginForm.controls['username'].value,
-    //   //   this.loginForm.controls['password'].value
-    //   // );
-    //   // show success message or error message when login is successful or not
-  }
-
-  inputValid() {
-    return this.loginForm.valid;
+    if (this.loginForm.valid){
+      this.authenticationService.login(
+        this.loginForm.controls['username'].value,
+        this.loginForm.controls['password'].value
+      );
+    } else {
+      console.log("Invalid form")
+    }
   }
 
   validateUsername() {

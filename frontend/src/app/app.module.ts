@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule} from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +37,7 @@ import { RegisterComponent } from './register/register.component';
 import { SearchComponent } from './search/search.component';
 // import { LoginComponent } from './login/login.component';
 // import { RegisterComponent } from './register/register.component';
-
+import { TokenInterceptorService } from "./shared/token-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -78,7 +78,11 @@ import { SearchComponent } from './search/search.component';
     NgImageSliderModule,
     HttpClientModule
   ],
-  providers: [DishService],
+  providers: [DishService, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

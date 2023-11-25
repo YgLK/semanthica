@@ -164,7 +164,9 @@ cython_debug/
 # db files
 **/relational/data
 /backend/db/
+/backend/testenv/*
+/backend/db_backup/
 /backend/TODO.md
 /backend/app/semantic_search/test_*
 /backend/app/alembic/versions/*
-/backend/testenv/*
+**/meili_config.yml

@@ -16,4 +16,13 @@ export class Address {
       country: this.country
     };
   }
+
+  static fromJSON(address: any): Address {
+    return new Address(
+      address.street,
+      address.city,
+      address.postal_code,
+      address.country
+    );
+  }
 }

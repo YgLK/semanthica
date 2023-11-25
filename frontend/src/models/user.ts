@@ -31,4 +31,18 @@ export class User {
       addresses: this.addresses.map(address => address.toJSON())
     };
   }
+
+  static fromJSON(userJSON: any): User {
+    return new User(
+      userJSON.id,
+      userJSON.username,
+      userJSON.password,
+      userJSON.role,
+      userJSON.first_name,
+      userJSON.last_name,
+      userJSON.email,
+      userJSON.phone_number,
+      userJSON.addresses.map((address: any) => Address.fromJSON(address))
+    );
+  }
 }

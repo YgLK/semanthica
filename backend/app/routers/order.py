@@ -12,10 +12,10 @@ router = APIRouter(
 )
 
 
-@router.get("/history", status_code=status.HTTP_200_OK)
-async def get_all_orders(db: Session = Depends(get_db)):
+@router.get("/history/{user_id}", status_code=status.HTTP_200_OK)
+async def get_all_orders(user_id: int, db: Session = Depends(get_db)):
     """Get order history for frontend since its easier to process it here..."""
-    orders = db.query(models.Order).all()
+    orders = db.query(models.Order).filter(models.Order.user_id == user_id).all()
     # for all orders add the "order_records" attribute which will contain the name, id, price and quantity of each item
     for order in orders:
         order_records = db.query(models.OrderRecord).filter(models.OrderRecord.order_id == order.id).all()

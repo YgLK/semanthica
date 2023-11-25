@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Order, OrderRecord} from "../../models/order";
 import {Subject} from "rxjs";
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +11,20 @@ export class OrderService {
   ordersList: Order[] = [];
   ordersListSubject = new Subject<Order[]>();
 
-  constructor(private http: HttpClient) {
-    this.getOrders();
+  constructor(private http: HttpClient, private authService: AuthService) {
+    if (authService.isLoggedIn()){
+      this.getOrders(authService.currentUser$.getValue()?.id);
+    }
   }
 
-  getOrders() {
+  getOrders(userId?: number) {
     /*
     * Get orders from db with order records and prepare them to show in the Order history
      */
-    this.http.get<any>('/api/orders/history')
+    if (!userId) {
+        console.log('No user id provided in order retrieval');
+    }
+    this.http.get<any>('/api/orders/history/' + userId)
         .subscribe((data: any) => {
           this.ordersList = data.map((order: any) => this.prepareOrder(order));
           this.ordersListSubject.next(this.ordersList);

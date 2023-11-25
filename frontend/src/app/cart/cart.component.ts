@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
 import {CartService} from "../shared/cart.service";
-import {UserService} from "../shared/user.service";
-import {User} from "../../models/user";
 import {OrderService} from "../shared/order.service";
 import {Order, OrderRecord, OrderStatus} from "../../models/order";
 import {Item} from "../../models/item";
+import {AuthService} from "../shared/auth.service";
 
 @Component({
   selector: 'app-cart',
@@ -17,11 +16,10 @@ export class CartComponent {
   // itemsCart as a map: item -> quantity
   itemsCart: Map<Item, number>;
   isOrderPlaced: boolean = false;
-  TEMP_CONST_USER_ID = 2;
 
   constructor(protected cartService: CartService,
-              private userService: UserService,
               private orderService: OrderService,
+              private authService: AuthService
       ) {
     this.itemsCart = cartService.itemsCart;
   }
@@ -38,22 +36,31 @@ export class CartComponent {
     /*
      Place order for all dishes in the cart and put it in the db.
      */
-    if(this.itemsCart.size > 0) {
-      this.isOrderPlaced = true;
-      let orderRecords: OrderRecord[] = [];
-      this.itemsCart.forEach(
-        (count, item) => {
-          orderRecords.push(new OrderRecord(item.id, count));
-        });
-      // add order
-      let order = new Order(this.userService.user.id, new Date().toLocaleString(), OrderStatus.CREATED, orderRecords, this.calculateTotal());
-      // save order in the database
-      this.orderService.addOrder(order);
-      this.itemsCart.clear();
-    } else {
-      console.log("Cart is empty! Please add some dishes to your cart before placing the order.");
-      this.isOrderPlaced = false;
+    // user must be logged in
+    if (!(this.authService.isLoggedIn() && this.authService.currentUser$.getValue())) {
+      console.log("Please log in to place an order.");
+      return;
     }
+
+    // cart must not be empty
+    if (this.itemsCart.size === 0) {
+      console.log("Cart is empty! Please add some dishes to your cart before placing the order.");
+      return;
+    }
+
+    const user_id: number = this.authService.currentUser$.getValue()!.id;
+    // update stock quantity
+    let orderRecords: OrderRecord[] = [];
+    this.itemsCart.forEach(
+      (count, item) => {
+        orderRecords.push(new OrderRecord(item.id, count));
+      });
+    // add order
+    let order = new Order(user_id, new Date().toLocaleString(), OrderStatus.CREATED, orderRecords, this.calculateTotal());
+    // save order in the database
+    this.orderService.addOrder(order);
+    this.itemsCart.clear();
+    this.isOrderPlaced = true
   }
 
   // get map: dishId -> quantity instead of dish -> quantity

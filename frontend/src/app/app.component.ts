@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {Filter} from "../models/filter";
 import {Router} from "@angular/router";
 import {CartService} from "./shared/cart.service";
 import {Item} from "../models/item";
 import {ItemService} from "./shared/item.service";
 import {AuthService} from "./shared/auth.service";
+import {OrderService} from "./shared/order.service";
 
 @Component({
   selector: 'app-root',
@@ -16,11 +17,14 @@ export class AppComponent implements OnInit{
   itemsList: Item[];
   itemsCart: Map<Item, number>;
   filter: Filter;
+  is_logged_in: boolean = false;
 
   constructor(private itemService: ItemService,
+              private orderService: OrderService,
               public router: Router,
               private cartService: CartService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              private cdr: ChangeDetectorRef) {
     this.itemsCart = cartService.itemsCart;
   }
 
@@ -29,6 +33,11 @@ export class AppComponent implements OnInit{
     this.itemsList = this.itemService.itemsList;
     // initialize filter used for dishes filtering
     this.filter = new Filter();
+  }
+
+  ngAfterViewChecked(){
+    this.is_logged_in = this.authService.isLoggedIn();
+    this.cdr.detectChanges();
   }
 
   getAllCategories() {
@@ -53,6 +62,7 @@ export class AppComponent implements OnInit{
 
   logout() {
     this.authService.logout();
+    this.orderService.clearOrders();
     this.authService.setCurrentUser();
     this.router.navigate(['/login']);
   }

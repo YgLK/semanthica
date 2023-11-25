@@ -128,7 +128,11 @@ async def get_current_user(
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
+
     user = db.query(models.User).filter(models.User.username == token_data.username).first()
     if user is None:
         raise credentials_exception
+
+    addresses = db.query(models.Address).filter(models.Address.user_id == user.id).all()
+    user.addresses = addresses
     return user.__dict__

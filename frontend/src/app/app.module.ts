@@ -35,9 +35,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { SearchComponent } from './search/search.component';
-// import { LoginComponent } from './login/login.component';
-// import { RegisterComponent } from './register/register.component';
 import { TokenInterceptorService } from "./shared/token-interceptor.service";
+import {AuthGuardService} from "./shared/auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -82,7 +81,7 @@ import { TokenInterceptorService } from "./shared/token-interceptor.service";
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true
-  }],
+  }, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

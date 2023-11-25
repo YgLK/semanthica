@@ -7,14 +7,15 @@ import {HomeComponent} from "./home/home.component";
 import {OrderHistoryComponent} from "./order-history/order-history.component";
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
+import {AuthGuardService} from "./shared/auth-guard.service";
 
 export const appRoutes:Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'menu', component: DishesComponent },
-  { path: 'item/:id', component: DishDetailsComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'order-history', component: OrderHistoryComponent },
-  { path: 'create-dish', component: CreateDishFormComponent },
+  { path: 'home', component: HomeComponent},
+  { path: 'menu', component: DishesComponent, canActivate: [AuthGuardService] },
+  { path: 'item/:id', component: DishDetailsComponent, canActivate: [AuthGuardService]},
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuardService]},
+  { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuardService] },
+  { path: 'create-dish', component: CreateDishFormComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: '/menu', pathMatch: 'full' },

@@ -1,12 +1,11 @@
 import os
 from pathlib import Path
-
 from dotenv import load_dotenv
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, database_exists
-
 import meilisearch
 
 # Load environment variables from the specified .env file

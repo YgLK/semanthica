@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/user";
-import {UserService} from "../shared/user.service";
-import {Order, OrderRecord} from "../../models/order";
+import {Order} from "../../models/order";
 import {OrderService} from "../shared/order.service";
-import {ItemService} from "../shared/item.service";
+import {AuthService} from "../shared/auth.service";
 
 @Component({
   selector: 'app-order-history',
@@ -14,15 +13,17 @@ export class OrderHistoryComponent implements OnInit{
   user: User;
   orders: Order[] = [];
 
-  constructor(private userService: UserService,
-              private orderService: OrderService,
-  ) {}
+  constructor(private orderService: OrderService,
+              private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.user = this.userService.user;
+    this.orderService.getOrders(this.authService.currentUser$.getValue()?.id);
+    this.orderService.ordersListSubject.subscribe((ordersList: Order[]) => {
+      this.orders = ordersList;
+    });
   }
 
   getOrderHistory(): Order[] {
-    return this.orderService.ordersList;
+    return this.orders;
   }
 }

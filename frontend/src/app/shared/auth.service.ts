@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("id_token");
+    localStorage.removeItem("access_token");
     localStorage.removeItem("expires_at");
   }
 

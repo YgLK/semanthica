@@ -1,0 +1,111 @@
+[
+  {
+  "id": 1,
+  "username": "johndoe",
+  "password": "password123",
+  "role": "admin",
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "johndoe@email.com",
+  "phone": "555-555-5555",
+  "address": "123 Main St",
+  "orderHistory": [
+    {
+      "id": 1,
+      "userId": 1,
+      "date": "01/01/2022",
+      "dishes": [
+        {
+          "id": 1,
+          "quantity": 2
+        },
+        {
+          "id": 2,
+          "quantity": 1
+        }
+      ],
+      "total": 30
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "date": "01/02/2022",
+      "dishes": [
+        {
+          "id": 1,
+          "quantity": 2
+        },
+        {
+          "id": 2,
+          "quantity": 1
+        }
+      ],
+      "total": 25
+    }
+    ]
+  },
+  {
+    "id": 2,
+    "username": "janedoe",
+    "password": "password456",
+    "role": "user",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "janedoe@email.com",
+    "phone": "555-555-5556",
+    "address": "456 Park Ave",
+    "orderHistory": [
+      {
+        "id": 3,
+        "userId": 2,
+        "date": "01/03/2022",
+        "dishes": {
+          "1": 1,
+          "2": 2
+        },
+        "total": 25
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "username": "bobsmith",
+    "password": "password789",
+    "role": "user",
+    "firstName": "Bob",
+    "lastName": "Smith",
+    "email": "bobsmith@email.com",
+    "phone": "555-555-5557",
+    "address": "789 Elm St",
+    "orderHistory": []
+  },
+  {
+    "id": 4,
+    "username": "sarahjones",
+    "password": "password101112",
+    "role": "admin",
+    "firstName": "Sarah",
+    "lastName": "Jones",
+    "email": "sarahjones@email.com",
+    "phone": "555-555-5558",
+    "address": "101 Oak St",
+    "orderHistory": [
+      {
+        "id": 4,
+        "userId": 4,
+        "date": "01/04/2022",
+        "dishes": [
+          {
+            "id": 1,
+            "quantity": 1
+          },
+          {
+            "id": 2,
+            "quantity": 2
+          }
+        ],
+        "total": 35
+      }
+    ]
+  }
+]

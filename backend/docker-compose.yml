@@ -1,0 +1,58 @@
+version: '3'
+services:
+  psql_db:
+    build:
+      context: ./docker/postgres/.
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/relational/data:/var/lib/postgresql/data
+    networks:
+      - semanthica_net
+    restart: always
+
+  qdrant:
+    image: qdrant/qdrant:v1.4.1
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./db/vector/data:/qdrant/storage
+      - ./db/vector/snapshots:/qdrant/snapshots
+    networks:
+      - semanthica_net
+
+  meilisearch:
+    container_name: meilisearch
+    image: getmeili/meilisearch:v1.4
+    env_file:
+      - .env
+    environment:
+      - http_proxy
+      - https_proxy
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-masterKey}
+      - MEILI_NO_ANALYTICS=${MEILI_NO_ANALYTICS:-true}
+      - MEILI_ENV=${MEILI_ENV:-development}
+      - MEILI_LOG_LEVEL
+      - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
+    ports:
+      - ${MEILI_PORT:-7700}:7700
+    networks:
+      - semanthica_net
+    volumes:
+      - ./db/meili/data.ms:/data.ms
+    restart: unless-stopped
+
+  meilisync:
+    image: long2ice/meilisync
+    volumes:
+      - ./meili_config.yml:/meilisync/config.yml
+    restart: always
+    networks:
+      - semanthica_net
+
+networks:
+  semanthica_net:
+    driver: bridge

@@ -1,0 +1,24 @@
+<!-- Navbar -->
+<nav class="toolbar" role="banner">
+  <button *ngIf="!is_logged_in" (click)="this.router.navigate(['/login']);" mat-icon-button color="black"  aria-label="Account box" >
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <button *ngIf="is_logged_in" (click)="logout()" mat-icon-button color="black" aria-label="Logout">
+    <mat-icon>exit_to_app</mat-icon>
+  </button>
+  <button (click)="this.router.navigate(['/cart']);" mat-icon-button color="black"  aria-label="Shopping cart" >
+    <mat-icon>shopping_cart</mat-icon>
+  </button>
+  <button (click)="this.router.navigate(['/menu']);" mat-icon-button color="black" aria-label="Main menu" >
+    <mat-icon> restaurant_menu</mat-icon>
+  </button>
+  <button (click)="this.router.navigate(['/order-history']);" mat-icon-button color="black" aria-label="Order history" >
+    <mat-icon>receipt</mat-icon>
+  </button>
+  <button (click)="this.router.navigate(['/home']);" mat-icon-button color="black" aria-label="Home">
+    <mat-icon>home</mat-icon>
+  </button>
+</nav>
+
+<div class="toDel"></div>
+<router-outlet></router-outlet>

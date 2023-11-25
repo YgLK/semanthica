@@ -1,0 +1,32 @@
+.toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  background-color: #4bd099;
+  color: white;
+  font-weight: 600;
+  margin-bottom: 60px;
+}
+
+.toolbar button {
+  background-color: #1b608c;
+  margin-right: 1%;
+}
+
+.toDel {
+  display: flex;
+  margin: 42px auto 32px;
+  padding: 0 16px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 767px) {
+}
+
+@media screen and (max-width: 575px) {
+}

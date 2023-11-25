@@ -1,0 +1,53 @@
+<h2>Add new item</h2>
+
+<form class="form-group" [formGroup]="itemForm" (ngSubmit)="addNewItem(itemForm.value)">
+  <div *ngIf="isSubmitted" class="alert alert-success" role="alert">
+    <strong> Success!</strong> Item has been added to the database.
+    <button (click)="isSubmitted=false" type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin: 0 auto">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!--  ITEM NAME -->
+  <div [ngClass]="{'error': !validateItemName()}">
+    <em *ngIf="!validateItemName()">Required</em>
+    <label for="itemName">Name</label>
+    <input type="text" class="form-control" formControlName="name"  id="itemName" placeholder="e.g. Pixel 8 256GB" required>
+  </div>
+  <!--  ITEM DESCRIPTION -->
+  <div [ngClass]="{'error': !validateDescription()}">
+    <em *ngIf="!validateDescription()">Required</em>
+    <label for="itemDescription">Description</label>
+    <input type="text" class="form-control" formControlName="description" id="itemDescription"
+           placeholder="e.g. The Pixel 8 is a high-performance smartphone with a sleek design." required>
+  </div>
+  <!--  CATEGORY -->
+  <label for="category">Category</label>
+  <select class="form-control" formControlName="category" [(ngModel)]='categorySelect' (change)="this.onCategoryChange()" id="category" required>
+    <option *ngFor="let cat of categoriesUnique" [value]="cat">{{cat}}</option>
+  </select>
+  <!--  SUBCATEGORY -->
+  <label for="subcategory">Subcategory</label>
+  <select class="form-control" formControlName="subCategory" [(ngModel)]='subCategorySelect' id="subcategory" required>
+    <option *ngFor="let subCat of subCategoriesUnique" [value]="subCat">{{subCat}}</option>
+  </select>
+  <!--  STOCK QUANTITY -->
+  <div [ngClass]="{'error': !validateStockQuantity()}">
+    <em *ngIf="!validateStockQuantity()">Required</em>
+    <label for="stockQuantity">Stock quantity</label>
+    <input type="number" class="form-control" formControlName="stockQuantity" id="stockQuantity" placeholder="e.g. 10" required>
+  </div>
+  <!--  ITEM PRICE -->
+  <div [ngClass]="{'error': !validatePrice()}">
+    <em *ngIf="!validatePrice()">Required</em>
+    <label for="itemPrice">Price</label>
+    <input type="number" class="form-control" formControlName="price" id="itemPrice" placeholder="e.g. 699.99" required>
+  </div>
+    <!--  ITEM IMAGES URLS -->
+  <div [ngClass]="{'error': !validateImageUrls()}">
+    <em *ngIf="!validateImageUrls()">Required</em>
+    <label for="itemImage">Image URLs (CSV format)</label>
+    <input type="text" class="form-control" formControlName="imageUrls" id="itemImage" placeholder="e.g. images.com/pixel8_01.jpg, images.com/pixel8_02.jpg" required>
+  </div>
+  <!--  SUBMIT-->
+  <button mat-raised-button color="primary" type="submit" [disabled]="!inputValid()">SUBMIT</button>
+</form>

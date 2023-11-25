@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {CartService} from "./shared/cart.service";
 import {Item} from "../models/item";
 import {ItemService} from "./shared/item.service";
+import {AuthService} from "./shared/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,10 @@ export class AppComponent implements OnInit{
   itemsCart: Map<Item, number>;
   filter: Filter;
 
-  constructor(private itemService: ItemService, public router: Router, private cartService: CartService) {
+  constructor(private itemService: ItemService,
+              public router: Router,
+              private cartService: CartService,
+              public authService: AuthService) {
     this.itemsCart = cartService.itemsCart;
   }
 
@@ -45,5 +49,11 @@ export class AppComponent implements OnInit{
 
   removeItemFromCart(item: Item) {
     this.cartService.removeItemFromCart(item);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.authService.setCurrentUser();
+    this.router.navigate(['/login']);
   }
 }

@@ -3,7 +3,7 @@ import {User} from "../../models/user";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import * as moment from "moment";
 import {JwtHelperService} from '@auth0/angular-jwt';
-
+import {BehaviorSubject} from "rxjs";
 const jwtHelper = new JwtHelperService ();
 
 
@@ -11,14 +11,14 @@ const jwtHelper = new JwtHelperService ();
   providedIn: 'root'
 })
 export class AuthService {
-  currentUser: User | null;
+  currentUser$ = new BehaviorSubject<User | null | undefined>(undefined);
 
   // JWT authentication usage
   // https://blog.angular-university.io/angular-jwt-authentication/#:~:text=Using%20Session%20Information,and%20getExpiration().
 
-  constructor(private http: HttpClient) {
-    this.currentUser = null;
+  constructor(private http: HttpClient){ //, private currentUserService: CurrentUserService) {
   }
+
   registerUser(user: User) {
     this.http.post(
       '/api/register', // TODO
@@ -39,10 +39,20 @@ export class AuthService {
       formData
     ).subscribe((data: any) => {
       this.setSession(data);
+      this.setCurrentUser();
+      console.log("currentUser", this.currentUser$.getValue());
       // console.log('JWT token received', data);
       // console.log("user_id", this.getCurrentUserId());
       console.log("isLOggedIn", this.isLoggedIn())
-    });
+    },(error) => {
+        // Handle error response
+        if (error.status === 401) {
+          console.log("Unauthorized - Invalid credentials");
+        } else {
+          console.error("Error in HTTP post request:", error);
+        }
+      }
+    );
   }
 
   private setSession(authResult: any) {
@@ -84,14 +94,22 @@ export class AuthService {
     return null;
   }
 
-  getCurrentUserId() {
-    const token = localStorage.getItem("access_token"); // Replace "your_token_key" with the actual key used to store the token
-
-    if (token && !jwtHelper.isTokenExpired(token)) {
-      const decodedToken = jwtHelper.decodeToken(token);
-       // Replace with the actual key used in your token for the user ID
-      return decodedToken.id;
+  setCurrentUser() {
+    if (this.isLoggedIn()) {
+      this.http.get<User>('/api/auth/users/me').subscribe(
+        (data: any) => {
+          // Assuming the received data is a single user, not an array
+          const currentUser: User = User.fromJSON(data);
+          this.currentUser$.next(currentUser);
+        },
+        (error) => {
+          console.error('Error fetching current user:', error);
+          this.currentUser$.next(null); // Set to null in case of an error
+        }
+      );
+    } else {
+      this.currentUser$.next(null);
     }
-    return null; // Return null if there is no valid token or an error occurred
   }
+
 }

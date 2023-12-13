@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DishesComponent } from './dishes/dishes.component';
+import { ItemsComponent } from './items/items.component';
 import {MatIconModule} from "@angular/material/icon";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
@@ -41,7 +41,7 @@ import {ItemService} from "./shared/item.service";
 @NgModule({
   declarations: [
     AppComponent,
-    DishesComponent,
+    ItemsComponent,
     CartComponent,
     MenuFilterComponent,
     CreateItemFormComponent,

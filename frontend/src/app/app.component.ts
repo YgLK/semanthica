@@ -31,7 +31,7 @@ export class AppComponent implements OnInit{
   ngOnInit() {
     // this.dishesList = this.dishService.dishesList;
     this.itemsList = this.itemService.itemsList;
-    // initialize filter used for dishes filtering
+    // initialize filter used for items filtering
     this.filter = new Filter();
   }
 

@@ -25,16 +25,16 @@
       <img [src]=item.imageUrls[0] [routerLink]="['/item', item.id]" routerLinkActive="active" class="dishImg">
       <div class="dish-info">
         <p class="property-description">dish name</p>
-        <span class="name">
+        <span>
          {{item.name | uppercase}}
-          <span *ngIf="item.stockQuantity == 0" class="name" style="color: red">[SOLD OUT]</span>
+          <span *ngIf="item.stockQuantity == 0" style="color: red">[SOLD OUT]</span>
         </span>
-        <p class="property-description">average rating</p>
+<!--        <p class="property-description">average rating</p>-->
 <!--        TODO: <p class="rating">⭐{{item.ratings.length > 0 ?  this.dish.getAvgRating() + " (" + dish.ratings.length + ")" : "Not rated yet" }}</p>-->
-        <p class="property-description">cuisine</p>
-        <span class="cuisine">{{item.mainCategory | uppercase}}</span>
         <p class="property-description">category</p>
-        <span class="category">{{item.subCategory}}</span>
+        <span class="cuisine">{{item.mainCategory | uppercase}}</span>
+<!--        <p class="property-description">category</p>-->
+<!--        <span class="category">{{item.subCategory}}</span>-->
         <p class="property-description">price</p>
         <span class="price">{{item.price | currency:'USD'}}</span>
         <!--          INGREDIENTS AND MORE IMAGES WILL BE SHOWN IN DISH INFO VIEW -->

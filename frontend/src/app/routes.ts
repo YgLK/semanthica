@@ -15,7 +15,7 @@ export const appRoutes:Routes = [
   { path: 'item/:id', component: ItemDetailsComponent, canActivate: [AuthGuardService]},
   { path: 'cart', component: CartComponent, canActivate: [AuthGuardService]},
   { path: 'order-history', component: OrderHistoryComponent, canActivate: [AuthGuardService] },
-  { path: 'create-dish', component: CreateItemFormComponent, canActivate: [AuthGuardService] },
+  { path: 'create-item', component: CreateItemFormComponent, canActivate: [AuthGuardService] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: '/menu', pathMatch: 'full' },

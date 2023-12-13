@@ -3,6 +3,7 @@ import {Review} from "../../models/review";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
+import {UserService} from "../shared/user.service";
 
 @Component({
   selector: 'app-reviews',
@@ -18,19 +19,17 @@ export class ReviewsComponent implements OnInit{
   fieldsCorrect: boolean = false;
   isSubmitted:boolean = false;
 
-  constructor(private itemService: ItemService) {}
+  constructor(private itemService: ItemService, private userService: UserService) {}
 
   ngOnInit(): void {
     //  get reviews from dish
     this.reviews = this.itemService.getItemReviews(this.item.id);
     // create form group for new review
-    let nickname = new FormControl(null, Validators.required);
     let title = new FormControl(null, Validators.required);
     let date = new FormControl();
     let reviewContent = new FormControl(null,
       Validators.compose([Validators.required, Validators.minLength(50), Validators.maxLength(500)]));
     this.reviewForm = new FormGroup({
-      nickname: nickname,
       title: title,
       reviewContent: reviewContent,
       date: date
@@ -43,7 +42,7 @@ export class ReviewsComponent implements OnInit{
 
   addNewReview(formValues: any) {
     if (this.reviewForm.valid){
-      let newReview = new Review(formValues.nickname, formValues.title, formValues.date, formValues.reviewContent);
+      let newReview = new Review(this.userService.user.id, formValues.title, formValues.date, formValues.reviewContent);
       // add review to database
       this.itemService.addReview(this.item.id, newReview);
       this.isSubmitted = true;
@@ -52,10 +51,6 @@ export class ReviewsComponent implements OnInit{
     } else {
       console.log('invalid input');
     }
-  }
-
-  validateNickname() {
-    return this.reviewForm.controls['nickname'].valid || this.reviewForm.controls['nickname'].untouched;
   }
 
   validateTitle() {

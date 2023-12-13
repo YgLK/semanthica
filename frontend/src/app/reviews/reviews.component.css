@@ -1,6 +1,6 @@
 @import url('https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css');
 
-.reviewsWrapper {
+.reviews-wrapper {
   margin: 0 auto;
   width: 80%;
   border: 1px solid rgba(0, 0, 0, 0.11);
@@ -8,55 +8,81 @@
   padding: 2%;
 }
 
-.form-group {
-  /*border: 1px solid blue;*/
+.review-form {
   text-align: center;
 }
 
-.form-group button {
+.review-form button {
   margin: 2%;
   width: 15vw;
 }
 
-.form-group button:disabled {
+.review-form button:disabled {
   background-color: #67635e;
   color: #000000;
 }
 
-.review {
-  /*border: 1px solid blue;*/
-  text-align: center;
-}
-
-ul {
+.review-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-/* error - incorrect input in form */
-em {
-  float:right;
-  color:#E05C65;
-  padding-left:10px;
+.review-item {
+  text-align: left;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.error input {
-  background-color:#E3C3C5;
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.error ::-webkit-input-placeholder {
-  color: #999;
+.user-id {
+  font-weight: bold;
 }
 
-.error ::-moz-placeholder {
-  color: #999;
+.order-date {
+  color: #555;
+  font-size: 0.8em;
 }
 
-.error :-moz-placeholder {
-  color: #999;
+.review-body {
+  margin-top: 10px;
 }
 
+.review-title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.review-content {
+  color: #333;
+}
+
+.mat-divider {
+  margin: 15px 0;
+}
+
+.error em {
+  float: right;
+  color: #e05c65;
+  padding-left: 10px;
+}
+
+.error input,
+.error textarea {
+  background-color: #e3c3c5;
+}
+
+.error ::-webkit-input-placeholder,
+.error ::-moz-placeholder,
+.error :-moz-placeholder,
 .error :-ms-input-placeholder {
   color: #999;
 }

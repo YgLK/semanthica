@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Role, User} from "../../models/user";
-import {Dish} from "../../models/dish";
 import {Address} from "../../models/address";
 
 @Injectable({
@@ -15,8 +14,4 @@ export class UserService {
       "johndoe@gmail.com", "+48777888999",
       [new Address("123 Maple Street, Any-town", "Any-town", "12345", "USA")]);
   }
-
-  // addOrder(dishes: Map<Dish, number>) {
-  //   this.user.addOrder(dishes);
-  // }
 }

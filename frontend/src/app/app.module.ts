@@ -13,17 +13,16 @@ import {MatDividerModule} from "@angular/material/divider";
 import { CartComponent } from './cart/cart.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import { MenuFilterComponent } from './menu-filter/menu-filter.component';
-import { CreateDishFormComponent } from './create-dish-form/create-dish-form.component';
+import { CreateItemFormComponent } from './create-item-form/create-item-form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {CommonModule} from "@angular/common";
-import {DishService} from "./shared/dish.service";
 import { FilterPipe } from './shared/filter.pipe';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { RatingComponent } from './rating/rating.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DishDetailsComponent } from './dish-details/dish-details.component';
+import { ItemDetailsComponent } from './item-details/item-details.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { NgImageSliderModule } from 'ng-image-slider';
 
@@ -37,6 +36,7 @@ import { RegisterComponent } from './register/register.component';
 import { SearchComponent } from './search/search.component';
 import { TokenInterceptorService } from "./shared/token-interceptor.service";
 import {AuthGuardService} from "./shared/auth-guard.service";
+import {ItemService} from "./shared/item.service";
 
 @NgModule({
   declarations: [
@@ -44,10 +44,10 @@ import {AuthGuardService} from "./shared/auth-guard.service";
     DishesComponent,
     CartComponent,
     MenuFilterComponent,
-    CreateDishFormComponent,
+    CreateItemFormComponent,
     FilterPipe,
     RatingComponent,
-    DishDetailsComponent,
+    ItemDetailsComponent,
     ReviewsComponent,
     OrderHistoryComponent,
     HomeComponent,
@@ -77,7 +77,7 @@ import {AuthGuardService} from "./shared/auth-guard.service";
     NgImageSliderModule,
     HttpClientModule
   ],
-  providers: [DishService, {
+  providers: [ItemService, {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true

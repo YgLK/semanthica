@@ -3,14 +3,13 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CartService} from "../shared/cart.service";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
-import {Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-dish-details',
-  templateUrl: './dish-details.component.html',
-  styleUrls: ['./dish-details.component.css']
+  selector: 'app-item-details',
+  templateUrl: './item-details.component.html',
+  styleUrls: ['./item-details.component.css']
 })
-export class DishDetailsComponent implements OnInit{
+export class ItemDetailsComponent implements OnInit{
   item: Item = new Item();
   itemsCart: Map<Item, number>;
   // image for the slider

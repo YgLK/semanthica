@@ -6,11 +6,11 @@ import {ItemService} from "../shared/item.service";
 import {Item} from "../../models/item";
 
 @Component({
-  selector: 'app-create-dish-form',
-  templateUrl: './create-dish-form.component.html',
-  styleUrls: ['./create-dish-form.component.css']
+  selector: 'app-create-item-form',
+  templateUrl: './create-item-form.component.html',
+  styleUrls: ['./create-item-form.component.css']
 })
-export class CreateDishFormComponent implements OnInit {
+export class CreateItemFormComponent implements OnInit {
   // passed to update min/max price
   filter: Filter;
   categories: any[] = [

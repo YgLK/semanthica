@@ -55,7 +55,7 @@ export class ItemService {
     const rating = 4;
 
     const body = {
-        user_id: this.userService.user.id,
+        user_id: review.user_id,
         item_id: itemId,
         rating: rating,
         title: review.title,

@@ -1,43 +1,51 @@
-<h1>CART</h1>
 
-<div *ngIf="isOrderPlaced" class="alert alert-success" role="alert">
-  <strong> Success!</strong> Your order has been placed.
-  <button (click)="isOrderPlaced=false" type="button" class="close" data-dismiss="alert" aria-label="Close" style="margin: 0 auto">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div *ngIf="this.cartService.itemsCart.size > 0" class="cartWrapper">
-  <ul class="cartContent">
-    <li class="orderWrapper">
-      <div class="orderName">NAME</div>
-      <div class="orderPrice">PRICE</div>
-      <div class="orderQuantity">QUANTITY</div>
-      <div class="orderQuantity">SUM</div>
-      <div class="buttons"></div>
-    </li>
-    <li *ngFor="let order of this.cartService.itemsCart.keys()" class="orderWrapper">
-      <div class="orderName">{{order.name}}</div>
-      <div class="orderPrice">{{order.price}}</div>
-      <div class="orderQuantity">{{this.cartService.itemsCart.get(order)}}</div>
-      <div class="orderQuantity">{{this.cartService.itemsCart.get(order)! * order.price}}</div>
-      <div class="buttons">
-        <button mat-raised-button color="primary" [disabled]="order.stockQuantity == 0" (click)="this.cartService.addItemToCart(order)">+</button>
-        <button mat-raised-button color="warn" (click)="this.cartService.removeItemFromCart(order)">-</button>
-<!--        Buy the position instantly -->
-<!--        <button mat-raised-button style="background-color: #69F0AE" (click)="orderSingleDish(order)"><mat-icon>payment</mat-icon></button>-->
-      </div>
-    </li>
-  </ul>
-  <div class="cartTotal">
-    <div class="cartTotalText">TOTAL</div>
-    <div class="cartTotalPrice">{{calculateTotal()}}</div>
-  </div>
-  <div class="buttons">
-    <button mat-raised-button color="primary" (click)="placeOrder()">PLACE ORDER</button>
-    <button mat-raised-button color="warn" (click)="clearCart()">CLEAR CART</button>
-  </div>
-</div>
+<div class="cart-container">
+  <h1>CART</h1>
 
-<div *ngIf="this.cartService.itemsCart.size == 0">
-  <h3>Cart is empty!</h3>
+  <div *ngIf="isOrderPlaced" class="alert alert-success" role="alert">
+    <strong> Success!</strong> Your order has been placed.
+    <button (click)="isOrderPlaced=false" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div *ngIf="cartService.itemsCart.size > 0" class="cart-wrapper">
+    <table class="cart-content">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Sum</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let order of cartService.itemsCart.keys()">
+        <td>{{ order.name }}</td>
+        <td>{{ order.price }}</td>
+        <td>{{ cartService.itemsCart.get(order) }}</td>
+        <td>{{ cartService.itemsCart.get(order)! * order.price }}</td>
+        <td>
+          <button mat-raised-button color="primary" [disabled]="order.stockQuantity === 0" (click)="cartService.addItemToCart(order)">+</button>
+          <button mat-raised-button color="warn" (click)="cartService.removeItemFromCart(order)">-</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="cart-total">
+      <div class="cart-total-text">TOTAL</div>
+      <div class="cart-total-price">{{ calculateTotal() }}</div>
+    </div>
+
+    <div class="action-buttons">
+      <button mat-raised-button color="primary" (click)="placeOrder()">PLACE ORDER</button>
+      <button mat-raised-button color="warn" (click)="clearCart()">CLEAR CART</button>
+    </div>
+  </div>
+
+  <div *ngIf="cartService.itemsCart.size === 0">
+    <h3>Cart is empty!</h3>
+  </div>
 </div>

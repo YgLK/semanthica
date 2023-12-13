@@ -34,7 +34,7 @@ export class CartComponent {
 
   placeOrder() {
     /*
-     Place order for all dishes in the cart and put it in the db.
+     Place order for all items in the cart and put it in the db.
      */
     // user must be logged in
     if (!(this.authService.isLoggedIn() && this.authService.currentUser$.getValue())) {
@@ -44,7 +44,7 @@ export class CartComponent {
 
     // cart must not be empty
     if (this.itemsCart.size === 0) {
-      console.log("Cart is empty! Please add some dishes to your cart before placing the order.");
+      console.log("Cart is empty! Please add some items to your cart before placing the order.");
       return;
     }
 

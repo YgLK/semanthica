@@ -9,15 +9,15 @@ import {Filter} from "../../models/filter";
 
 
 @Component({
-  selector: 'app-dishes',
-  templateUrl: './dishes.component.html',
-  styleUrls: ['./dishes.component.css']
+  selector: 'app-items',
+  templateUrl: './items.component.html',
+  styleUrls: ['./items.component.css']
 })
-export class DishesComponent implements OnInit{
+export class ItemsComponent implements OnInit{
   title: string = 'Items';
   items: Item[];
   itemsCart: Map<Item, number>;
-  // dishes meeting the filter criteria
+  // items meeting the filter criteria
   filteredItemsList: Item[] = [];
   filter: Filter;
   // pagination

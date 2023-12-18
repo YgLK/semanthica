@@ -3,7 +3,7 @@ import {Review} from "../../models/review";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Item} from "../../models/item";
 import {ItemService} from "../shared/item.service";
-import {UserService} from "../shared/user.service";
+import {AuthService} from "../shared/auth.service";
 
 @Component({
   selector: 'app-reviews',
@@ -19,7 +19,7 @@ export class ReviewsComponent implements OnInit{
   fieldsCorrect: boolean = false;
   isSubmitted:boolean = false;
 
-  constructor(private itemService: ItemService, private userService: UserService) {}
+  constructor(private itemService: ItemService, private authService: AuthService) {}
 
   ngOnInit(): void {
     //  get reviews from dish
@@ -42,7 +42,7 @@ export class ReviewsComponent implements OnInit{
 
   addNewReview(formValues: any) {
     if (this.reviewForm.valid){
-      let newReview = new Review(this.userService.user.id, formValues.title, formValues.date, formValues.reviewContent);
+      let newReview = new Review(this.authService.currentUser$.getValue()!.id, formValues.title, formValues.date, formValues.reviewContent);
       // add review to database
       this.itemService.addReview(this.item.id, newReview);
       this.isSubmitted = true;

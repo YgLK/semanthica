@@ -3,7 +3,6 @@ import {Item} from "../../models/item";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Review} from "../../models/review";
 import {BehaviorSubject, map, Observable} from "rxjs";
-import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class ItemService {
   itemsList: Item[] = [];
   itemsList$ = new BehaviorSubject<Item[]>(this.itemsList);
 
-  constructor(private http: HttpClient, private userService : UserService) {
+  constructor(private http: HttpClient) {
     this.itemsList = [];
   }
 

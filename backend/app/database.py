@@ -50,4 +50,6 @@ def get_db():
 
 def get_meili_index():
     """Used for classic search"""
+    if MEILI_INDEX_NAME not in classic_search_client.get_indexes():
+        classic_search_client.create_index(uid=MEILI_INDEX_NAME)
     return classic_search_client.index(MEILI_INDEX_NAME)

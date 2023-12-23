@@ -1,0 +1,31 @@
+debug: true
+plugins:
+  - meilisync.plugin.Plugin
+progress:
+  type: file
+source:
+  type: postgres
+  host: psql_db
+  port: 5432
+  user: user
+  password: "password"
+  database: semanthica_psql_USA
+meilisearch:
+  api_url: http://meilisearch:7700
+  api_key: masterKey
+  insert_size: 1000
+  insert_interval: 10
+sync:
+  - table: items
+    index: items
+    plugins:
+      - meilisync.plugin.Plugin
+    full: true
+    fields:
+      id: id
+      name: name
+      description: description
+      main_category: main_category
+sentry:
+  dsn: ""
+  environment: "development"

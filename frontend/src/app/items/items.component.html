@@ -24,7 +24,7 @@
         class="dishCard">
       <img [src]=item.imageUrls[0] [routerLink]="['/item', item.id]" routerLinkActive="active" class="dishImg">
       <div class="dish-info">
-        <p class="property-description">dish name</p>
+        <p class="property-description">item name</p>
         <span>
          {{item.name | uppercase}}
           <span *ngIf="item.stockQuantity == 0" style="color: red">[SOLD OUT]</span>

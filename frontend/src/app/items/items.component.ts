@@ -25,7 +25,7 @@ export class ItemsComponent implements OnInit{
   itemsPerPage: number = 5;
   private itemsListSubscription: Subscription;
 
-  constructor(private itemService: ItemService, protected cartService: CartService, private filterService: FilterService,
+  constructor(private itemService: ItemService, protected cartService: CartService, filterService: FilterService,
               public router: Router) {
     this.itemsCart = cartService.itemsCart;
     this.filter = filterService.filter;

@@ -1,4 +1,4 @@
-from .search import (vector_client,
-                     text_embedding_generator,
-                     image_embedding_generator,
-                     QDRANT_COLLECTION_NAME)
+from app.semantic_search.search import (vector_client,
+                                        text_embedding_generator,
+                                        image_embedding_generator,
+                                        QDRANT_COLLECTION_NAME)

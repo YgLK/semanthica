@@ -3,16 +3,15 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Response, status, Query
 from sqlalchemy.orm import Session
 
-from .. import models, schemas
-from ..database import get_db
-from ..semantic_search import vector_client, QDRANT_COLLECTION_NAME
+from app import models, schemas
+from app.database import get_db
+from app.semantic_search import vector_client, QDRANT_COLLECTION_NAME
 from app.routers.auth import custom_oauth2_scheme
-
 
 router = APIRouter(
     prefix="/items",
     tags=["Items"],
-    dependencies=[Depends(custom_oauth2_scheme)]
+    # dependencies=[Depends(custom_oauth2_scheme)]
 )
 
 

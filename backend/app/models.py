@@ -2,8 +2,8 @@ from sqlalchemy import Column, ForeignKey, Integer, Numeric, String, Boolean, TI
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import text
 
-from .database import Base
-from .schemas import OrderStatus
+from app.database import Base
+from app.schemas import OrderStatus
 
 
 class User(Base):

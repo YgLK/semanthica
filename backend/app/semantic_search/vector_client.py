@@ -2,7 +2,7 @@ import numpy as np
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from typing import List
-from .embedding import TextEmbeddingGenerator, ImageEmbeddingGenerator
+from app.semantic_search.embedding import TextEmbeddingGenerator, ImageEmbeddingGenerator
 
 
 class QdrantClientWrapper:
@@ -23,7 +23,8 @@ class QdrantClientWrapper:
 
         # config
         vectors_config = {
-            "text": models.VectorParams(size=text_embedding_dim, distance=models.Distance.COSINE),
+            "title": models.VectorParams(size=text_embedding_dim, distance=models.Distance.COSINE),
+            "title_descr": models.VectorParams(size=text_embedding_dim, distance=models.Distance.COSINE),
             "image": models.VectorParams(size=image_embedding_dim, distance=models.Distance.DOT),
         }
         on_disk_payload = True
@@ -37,7 +38,9 @@ class QdrantClientWrapper:
 
         print(f"Collection {self.collection_name} created.")
 
-    def __save_item_embeddings(self, collection_name, item_ids: List[int], text_vectors: List[np.ndarray],
+    def __save_item_embeddings(self, collection_name, item_ids: List[int],
+                               title_vectors:  List[np.ndarray],
+                               title_descr_vectors:  List[np.ndarray],
                                image_vectors: List[np.ndarray]) -> models.UpdateResult:
         """
         Index data into the Qdrant vector database. If record with item_id already exists,
@@ -46,10 +49,11 @@ class QdrantClientWrapper:
         Args:
             collection_name (str): The name of the collection to index into.
             item_ids (List[int]): A list of IDs corresponding to the items to index.
-            text_vectors (np.ndarray): A NumPy array of text vectors to index.
+            title_vectors (np.ndarray): A NumPy array of text vectors to index.
+            title_descr_vectors (np.ndarray): A NumPy array of text vectors to index.
             image_vectors (np.ndarray): Image vectors to index.
         """
-        if not len(item_ids) == len(image_vectors) == len(text_vectors):
+        if not len(item_ids) == len(image_vectors) == len(title_vectors) == len(title_descr_vectors):
             raise ValueError("Length of item_ids and vectors must be equal.")
 
         result = self.client.upsert(
@@ -57,15 +61,16 @@ class QdrantClientWrapper:
             points=models.Batch(
                 ids=item_ids,
                 vectors={
+                    "title": title_vectors,
+                    "title_descr": title_descr_vectors,
                     "image": image_vectors,
-                    "text": text_vectors
                 },
                 # payload=[{"item_id": item_id} for item_id in item_ids]
             )
         )
         return result
 
-    def index_item(self, collection_name: str, item_id: int, item_name: str,
+    def index_item(self, collection_name: str, item_id: int, item_name: str, item_name_descr: str,
                    image_url: str) -> models.UpdateResult:
         """
         Index a single item into the Qdrant vector database. If record with item_id already exists,
@@ -75,20 +80,23 @@ class QdrantClientWrapper:
             collection_name (str): The name of the collection to index into.
             item_id (int): The ID of the item to index.
             item_name (str): A text vector to index.
+            item_name_descr (str): Item name and description concatenated to index.
             image_url (str): An image vector to index.
         """
         item_name_vec = self.text_embedding_generator.generate_embedding(item_name)
+        item_name_descr_vec = self.text_embedding_generator.generate_embedding(item_name_descr)
         image_vec = self.image_embedding_generator.generate_embedding_from_image_url(image_url)
         result = self.__save_item_embeddings(
             collection_name=collection_name,
             item_ids=[item_id],
-            text_vectors=[item_name_vec],
+            title_vectors=[item_name_vec],
+            title_descr_vectors=[item_name_descr_vec],
             image_vectors=[image_vec]
         )
         return result
 
     def index_items(self, collection_name: str, item_ids: List[int], item_names: List[str],
-                    image_urls: List[str]) -> models.UpdateResult:
+                    item_names_descr: List[str], image_urls: List[str]) -> models.UpdateResult:
         """
         Index a single item into the Qdrant vector database. If record with item_id already exists,
         it will be updated.
@@ -97,14 +105,17 @@ class QdrantClientWrapper:
             collection_name (str): The name of the collection to index into.
             item_ids (int): The inserted item IDs.
             item_names (List[str]): List of image names to index.
+            item_names_descr (List[str]): List of item names and descriptions concatenated to index.
             image_urls (List[str]): List of image URLs to index.
         """
         item_name_vectors = self.text_embedding_generator.generate_embeddings_batch(item_names)
+        item_name_descr_vectors = self.text_embedding_generator.generate_embeddings_batch(item_names_descr)
         image_vectors = self.image_embedding_generator.generate_embedding_from_image_url_batch(image_urls)
         result = self.__save_item_embeddings(
             collection_name=collection_name,
             item_ids=item_ids,
-            text_vectors=item_name_vectors,
+            title_vectors=item_name_vectors,
+            title_descr_vectors=item_name_descr_vectors,
             image_vectors=image_vectors
         )
         return result
@@ -184,8 +195,8 @@ class QdrantClientWrapper:
         Returns:
             list: A list of IDs corresponding to the top-k search results.
         """
-        if search_type not in ["image", "text"]:
-            raise ValueError("Invalid search type. Available options: 'image', 'text'.")
+        # if search_type not in ["image", "text"]:
+        #     raise ValueError("Invalid search type. Available options: 'image', 'text'.")
 
         hits = self.client.search(
             collection_name=collection_name,

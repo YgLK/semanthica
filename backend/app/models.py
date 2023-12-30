@@ -110,6 +110,20 @@ class Item(Base):
             raise ValueError("Not enough stock")
         self.stock_quantity -= quantity
 
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "main_category": self.main_category,
+            "sub_category": self.sub_category,
+            "image_url": self.image_url,
+            "stock_quantity": self.stock_quantity,
+            "price": str(self.price),
+            "created_at": self.created_at.isoformat(),
+            "is_deleted": self.is_deleted,
+        }
+
 
 class Review(Base):
     __tablename__ = "reviews"

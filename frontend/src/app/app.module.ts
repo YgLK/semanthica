@@ -20,7 +20,6 @@ import {MatInputModule} from "@angular/material/input";
 import {CommonModule} from "@angular/common";
 import { FilterPipe } from './shared/filter.pipe';
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import { RatingComponent } from './rating/rating.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ItemDetailsComponent } from './item-details/item-details.component';
 import {NgxPaginationModule} from 'ngx-pagination';
@@ -46,7 +45,6 @@ import {ItemService} from "./shared/item.service";
     MenuFilterComponent,
     CreateItemFormComponent,
     FilterPipe,
-    RatingComponent,
     ItemDetailsComponent,
     ReviewsComponent,
     OrderHistoryComponent,

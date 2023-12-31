@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateItemFormComponent } from './create-item-form.component';
 
-describe('CreateDishFormComponent', () => {
+describe('CreateItemFormComponent', () => {
   let component: CreateItemFormComponent;
   let fixture: ComponentFixture<CreateItemFormComponent>;
 

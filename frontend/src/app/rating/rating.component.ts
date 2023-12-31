@@ -7,20 +7,20 @@ import {FormControl} from "@angular/forms";
   styleUrls: ['./rating.component.css']
 })
 export class RatingComponent {
-  // @Input() dish: Dish;
+  // @Input() item: Item;
   rating: number;
   ratingControl = new FormControl(0);
-  // flag to show inform if user has already rated the dish
+  // flag to show inform if user has already rated the item
   hasRated: boolean = false;
 
-  // constructor(private dishService: DishService) {}
+  // constructor(private itemService: ItemService) {}
 
   addRating() {
     if(this.hasRated){
       return;
     }
     //add rating to database
-    // this.dishService.addRating(this.dish.id, this.ratingControl.value!);
+    // this.itemService.addRating(this.item.id, this.ratingControl.value!);
     this.hasRated = true;
     console.log(this.ratingControl.value);
   }

@@ -1,6 +1,6 @@
-<h1 class="pageTitle">Order history</h1>
-<div *ngIf="getOrderHistory().length > 0" class="cartWrapper">
-  <table class="table table-bordered orderTable">
+<h1 class="page-title">Order history</h1>
+<div *ngIf="getOrderHistory().length > 0" class="cart-wrapper">
+  <table class="table table-bordered order-table">
     <thead>
     <tr>
       <th>Order ID</th>
@@ -10,11 +10,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let order of getOrderHistory()" class="orderWrapper">
+    <tr *ngFor="let order of getOrderHistory()" class="order-wrapper">
       <td>{{ order.id }}</td>
       <td>{{ order.createdAt }}</td>
       <td>
-        <table class="table itemSubTable">
+        <table class="table item-sub-table">
           <tr *ngFor="let orderRecord of order.orderRecords" [routerLink]="['/item', orderRecord.item_id]" routerLinkActive="active">
             <td>{{ orderRecord.item_name }}</td>
             <td>{{ orderRecord.item_price }}</td>
@@ -29,5 +29,5 @@
 </div>
 
 <div *ngIf="getOrderHistory().length == 0">
-  <h3 class="emptyHistory">Order history is empty.</h3>
+  <h3 class="empty-history">Order history is empty.</h3>
 </div>

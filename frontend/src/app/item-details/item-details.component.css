@@ -1,4 +1,4 @@
-.dishCard{
+.item-card{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -10,14 +10,14 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.dish-info {
+.item-info {
   display: flex;
   flex-direction: column;
   padding: 1%;
   width: 60%;
 }
 
-.dishImg {
+.item-img {
   aspect-ratio : 1 / 1;
   max-height: 100%;
   max-width: 100%;
@@ -57,7 +57,7 @@
   font-weight: bold;
 }
 
-.statsDiv{
+.stats-div{
   margin-top: 1vw;
   padding: 1px;
   width: 30%;

@@ -11,7 +11,7 @@
     [filter]="filter"
   ></app-menu-filter>
   <!-- LIST OF ITEMS -->
-  <ul class="dishList">
+  <ul class="item-list">
       <li *ngFor="let item of items | filterPipe:filter | paginate: { itemsPerPage: itemsPerPage, currentPage: page}"
         [ngStyle]="{'box-shadow':
       (item.price == getMaxPrice()) ?
@@ -21,26 +21,19 @@
       '0 4px 8px 0 rgba(196, 20, 20, 0.2), 0 6px 20px 0 rgba(238, 13, 13, 0.19)'
        :
        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)') }"
-        class="dishCard">
-      <img [src]=item.imageUrls[0] [routerLink]="['/item', item.id]" routerLinkActive="active" class="dishImg">
-      <div class="dish-info">
+        class="item-card">
+      <img [src]=item.imageUrls[0] [routerLink]="['/item', item.id]" routerLinkActive="active" class="item-img">
+      <div class="item-info">
         <p class="property-description">item name</p>
         <span>
          {{item.name | uppercase}}
           <span *ngIf="item.stockQuantity == 0" style="color: red">[SOLD OUT]</span>
         </span>
-<!--        <p class="property-description">average rating</p>-->
-<!--        TODO: <p class="rating">⭐{{item.ratings.length > 0 ?  this.dish.getAvgRating() + " (" + dish.ratings.length + ")" : "Not rated yet" }}</p>-->
         <p class="property-description">category</p>
-        <span class="cuisine">{{item.mainCategory | uppercase}}</span>
-<!--        <p class="property-description">category</p>-->
-<!--        <span class="category">{{item.subCategory}}</span>-->
+        <span>{{item.mainCategory | uppercase}}</span>
         <p class="property-description">price</p>
         <span class="price">{{item.price | currency:'USD'}}</span>
-        <!--          INGREDIENTS AND MORE IMAGES WILL BE SHOWN IN DISH INFO VIEW -->
-<!--        <p class="property-description" style="display: none">ingredients</p>-->
-<!--        <span class="ingredients" style="display: none">{{dish.ingredients}}</span>-->
-        <div class="statsDiv" [style.background-color]="(itemsCart.get(item) === undefined || itemsCart.get(item)! < 10) ? 'rgba(255,145,0,0.58)' : 'rgba(0,233,255,0.71)'">
+        <div class="stats-div" [style.background-color]="(itemsCart.get(item) === undefined || itemsCart.get(item)! < 10) ? 'rgba(255,145,0,0.58)' : 'rgba(0,233,255,0.71)'">
           <p class="property-description">Available </p>
           <span class="availability" [style.color]="item.stockQuantity > 3 ? 'black' : 'red'">{{item.stockQuantity}} </span>
         </div>

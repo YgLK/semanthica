@@ -2,9 +2,11 @@
 
 ## Project Setup
 
-1. Replace the placeholder values in the `backend/.env.template` file with your actual configuration details.
-2. Rename `.env.template` to `.env`.
-3. Make sure to never commit your `.env` file with sensitive information.
+1. Replace the placeholder values in the `backend/.env.template` and `backend/meili_config.yml.template`  file with your actual configuration details.
+2. Rename `.env.template` to `.env` and `meili_config.yml.template` to `meili_config.yml`.
+3. Make sure to never commit your config files with sensitive information.
+
+For local development you can just use the `local.env` and `local_meili_config.yml` files. Rename them to `.env` and `meili_config.yml` respectively.
 
 ### Environment Variables
 
@@ -25,13 +27,23 @@ conda env create -f backend/environment.yml
 # activate virtual env
 conda activate semanthica
 ```
+
 2. Run the docker-compose file to start the databases.
 ```shell
 cd backend
 docker-compose up -d
 ```
+
 3. Run the backend server.
 ```shell
 cd backend
 uvicorn app.main:app --reload
+```
+
+### frontend
+1. Install dependencies and run the frontend server.
+```shell
+cd frontend
+npm install
+npm start 
 ```
